@@ -3,11 +3,13 @@ import { SectionHeader } from "../util/SectionHeader";
 import Reveal from "../util/Reveal";
 import { MyLinks } from "../nav/Header";
 import { Stats } from "./Stats";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const About = () => {
+  const { t } = useLanguage();
   return (
     <section id="about" className="section-wrapper">
-      <SectionHeader title="About" dir="l" />
+      <SectionHeader title={t("aboutTitle")} dir="l" />
       <div className="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8">
         <div className="space-y-4">
           <Reveal>
@@ -15,38 +17,28 @@ export const About = () => {
               <span className="bg-green-400 text-white py-2 px-3 rounded font-bold mr-1 float-left text-2xl">
                 H
               </span>
-              ey! I&apos;m Bob, if you haven&apos;t already gathered that by
-              now. I&apos;m a painter turned software engineer from Daytona,
-              Florida. I specialize in the backend, primarily Node and Rust, but
-              love building with whatever tools are right for the job.
+              {t("aboutP1")}
             </p>
           </Reveal>
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
-              I currently work for Google on Google Photos. I also toss in my ¢2
-              with the design systems teams from time to time (once an artist,
-              always an artist, amirite?).
+              {t("aboutP2")}
             </p>
           </Reveal>
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
-              Outside of work, I still love to paint. Any given Sunday
-              you&apos;ll find me scribbling some happy clouds with my son ☁️ I
-              even teach courses online if you&apos;re looking to learn!
+              {t("aboutP3")}
             </p>
           </Reveal>
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
-              I&apos;m passively looking for new positions where I can merge my
-              love for code with my love for the canvas. If you think
-              you&apos;ve got an opening that I might like, let&apos;s connect
-              🔗
+              {t("aboutP4")}
             </p>
           </Reveal>
           <Reveal>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-4 text-sm text-green-400">
-                <span>My links</span>
+                <span>{t("aboutMyLinks")}</span>
                 <AiOutlineArrowRight />
               </div>
               <MyLinks />

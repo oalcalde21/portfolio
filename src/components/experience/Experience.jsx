@@ -1,10 +1,12 @@
 import { SectionHeader } from "../util/SectionHeader";
 import { ExperienceItem } from "./ExperienceItem";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const Experience = () => {
+  const { t } = useLanguage();
   return (
     <section className="section-wrapper" id="experience">
-      <SectionHeader title="Experience" dir="l" />
+      <SectionHeader title={t("experienceTitle")} dir="l" />
       {experience.map((item) => (
         <ExperienceItem key={item.title} {...item} />
       ))}

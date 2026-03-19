@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SideBarLink } from "./SideBarLink";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const SideBar = () => {
+  const { t } = useLanguage();
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export const SideBar = () => {
       className="no-scrollbar bg-zinc-950 h-screen sticky top-0 left-0 z-20 flex flex-col items-center overflow-y-scroll"
     >
       <span className="shrink-0 text-xl font-black leading-[1] size-10 flex items-center justify-center my-4">
-        B<span className="text-green-400">.</span>
+        O<span className="text-green-400">.</span>
       </span>
       <SideBarLink
         selected={selected}
@@ -41,7 +43,7 @@ export const SideBar = () => {
         value="about"
         href="#about"
       >
-        About
+        {t("navAbout")}
       </SideBarLink>
       <SideBarLink
         selected={selected}
@@ -49,7 +51,7 @@ export const SideBar = () => {
         value="projects"
         href="#projects"
       >
-        Projects
+        {t("navProjects")}
       </SideBarLink>
       <SideBarLink
         selected={selected}
@@ -57,7 +59,7 @@ export const SideBar = () => {
         value="experience"
         href="#experience"
       >
-        Exp.
+        {t("navExp")}
       </SideBarLink>
       <SideBarLink
         selected={selected}
@@ -65,7 +67,7 @@ export const SideBar = () => {
         value="contact"
         href="#contact"
       >
-        Contact
+        {t("navContact")}
       </SideBarLink>
     </motion.nav>
   );

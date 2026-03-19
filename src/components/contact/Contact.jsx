@@ -1,42 +1,43 @@
 import { AiFillMail } from "react-icons/ai";
 import Link from "next/link";
 import Reveal from "../util/Reveal";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const Contact = () => {
+  const { t } = useLanguage();
   return (
     <section className="section-wrapper" id="contact">
       <div className="max-w-xl mx-auto bg-zinc-800 px-8 py-12 rounded-xl">
         <Reveal width="w-full">
           <h4 className="text-4xl md:text-5xl text-center font-black">
-            Contact<span className="text-green-400">.</span>
+            {t("contactTitle")}<span className="text-green-400">.</span>
           </h4>
         </Reveal>
         <Reveal width="w-full">
           <p className="text-center my-8 text-zinc-300 leading-relaxed">
-            Shoot me an email if you want to connect! You can also find me on{" "}
+            {t("contactText")}{" "}
             <Link
               href="https://www.linkedin.com"
               target="_blank"
               className="text-green-400 hover:underline"
             >
-              Linkedin
+              {t("contactLinkedin")}
             </Link>{" "}
-            or{" "}
+            {t("contactOr")}{" "}
             <Link
               href="https://www.twitter.com"
               target="_blank"
               className="text-green-400 hover:underline"
             >
-              Twitter
-            </Link>{" "}
-            if that&apos;s more your speed.
+              {t("contactTwitter")}
+            </Link>
           </p>
         </Reveal>
         <Reveal width="w-full">
-          <Link href="mailto:bob.ross@notreal.com">
+          <Link href="mailto:oscar@email.com">
             <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
               <AiFillMail />
-              <span>bob@notreal.com</span>
+              <span>{t("contactEmail")}</span>
             </div>
           </Link>
         </Reveal>

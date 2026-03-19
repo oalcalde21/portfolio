@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { AiFillGithub, AiOutlineExport } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const ProjectModal = ({
   modalContent,
@@ -15,6 +16,8 @@ export const ProjectModal = ({
   code,
   tech,
 }) => {
+  const { t } = useLanguage();
+
   useEffect(() => {
     const body = document.querySelector("body");
 
@@ -57,7 +60,7 @@ export const ProjectModal = ({
 
           <div>
             <p className="font-bold mb-2 text-xl">
-              Project Links<span className="text-green-400">.</span>
+              {t("projectLinks")}<span className="text-green-400">.</span>
             </p>
             <div className="flex items-center gap-4 text-sm">
               <Link
@@ -66,7 +69,7 @@ export const ProjectModal = ({
                 className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
                 href={code}
               >
-                <AiFillGithub /> Source Code
+                <AiFillGithub /> {t("projectSourceCode")}
               </Link>
               <Link
                 target="_blank"
@@ -74,7 +77,7 @@ export const ProjectModal = ({
                 className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
                 href={projectLink}
               >
-                <AiOutlineExport /> Live Project
+                <AiOutlineExport /> {t("projectLiveProject")}
               </Link>
             </div>
           </div>
@@ -85,6 +88,5 @@ export const ProjectModal = ({
 
   if (!isOpen) return <></>;
 
-  // @ts-ignore
   return ReactDOM.createPortal(content, document.getElementById("root"));
 };

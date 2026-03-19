@@ -1,11 +1,13 @@
 import React from "react";
 import { SectionHeader } from "../util/SectionHeader";
 import { Project } from "./Project";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const Projects = () => {
+  const { t } = useLanguage();
   return (
     <section className="section-wrapper" id="projects">
-      <SectionHeader title="Projects" dir="r" />
+      <SectionHeader title={t("projectsTitle")} dir="r" />
 
       <div className="grid gap-12 grid-cols-1 md:grid-cols-2">
         {projects.map((project) => {

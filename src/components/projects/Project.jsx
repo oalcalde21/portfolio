@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AiFillGithub, AiOutlineExport } from "react-icons/ai";
 import { ProjectModal } from "./ProjectModal";
 import Reveal from "../util/Reveal";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const Project = ({
   modalContent,
@@ -14,6 +15,7 @@ export const Project = ({
   code,
   tech,
 }) => {
+  const { t } = useLanguage();
   const [hovered, setHovered] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -88,7 +90,7 @@ export const Project = ({
                 className="inline-block text-sm text-green-400 cursor-pointer"
                 onClick={() => setIsOpen(true)}
               >
-                Learn more {">"}
+                {t("projectLearnMore")} {">"}
               </span>
             </p>
           </Reveal>

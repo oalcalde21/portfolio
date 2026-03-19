@@ -3,15 +3,17 @@ import React from "react";
 import { FaCodepen, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { OutlineButton } from "../buttons/OutlineButton";
 import { LanguageToggle } from "../buttons/LanguageToggle";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const Header = () => {
+  const { t } = useLanguage();
   return (
     <header className="h-[72px] px-4 flex items-center justify-between sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
       <MyLinks />
       <div className="flex items-center gap-3">
         <LanguageToggle />
         <OutlineButton onClick={() => window.open("/fake_resume.pdf")}>
-          My Resume
+          {t("resumeBtn")}
         </OutlineButton>
       </div>
     </header>

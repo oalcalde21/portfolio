@@ -1,12 +1,8 @@
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const LanguageToggle = ({ className }) => {
-  const [lang, setLang] = useState("EN");
-
-  const toggleLang = () => {
-    setLang(lang === "EN" ? "ES" : "EN");
-  };
+  const { lang, toggleLang } = useLanguage();
 
   return (
     <button
