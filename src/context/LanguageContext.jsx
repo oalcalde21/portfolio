@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const translations = {
   EN: {
@@ -109,15 +109,17 @@ const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
   const [lang, setLang] = useState("EN");
+  const [transitionKey, setTransitionKey] = useState(0);
 
-  const toggleLang = () => {
-    setLang(lang === "EN" ? "ES" : "EN");
-  };
+  const toggleLang = useCallback(() => {
+    setLang((prev) => (prev === "EN" ? "ES" : "EN"));
+    setTransitionKey((prev) => prev + 1);
+  }, []);
 
   const t = (key) => translations[lang][key] || key;
 
   return (
-    <LanguageContext.Provider value={{ lang, toggleLang, t }}>
+    <LanguageContext.Provider value={{ lang, toggleLang, t, transitionKey }}>
       {children}
     </LanguageContext.Provider>
   );
