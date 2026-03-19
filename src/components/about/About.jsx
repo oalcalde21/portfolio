@@ -12,7 +12,7 @@ export const About = () => {
         <div className="space-y-4">
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
-              <span className="bg-indigo-500 text-white py-2 px-3 rounded font-bold mr-1 float-left text-2xl">
+              <span className="bg-green-400 text-white py-2 px-3 rounded font-bold mr-1 float-left text-2xl">
                 H
               </span>
               ey! I&apos;m Bob, if you haven&apos;t already gathered that by
@@ -45,7 +45,7 @@ export const About = () => {
           </Reveal>
           <Reveal>
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-4 text-sm text-indigo-300">
+              <div className="flex items-center gap-4 text-sm text-green-400">
                 <span>My links</span>
                 <AiOutlineArrowRight />
               </div>

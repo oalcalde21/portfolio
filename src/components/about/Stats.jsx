@@ -8,7 +8,7 @@ export const Stats = () => {
       <Reveal>
         <div>
           <h4 className="flex items-center mb-6">
-            <AiFillCode className="text-indigo-500 text-2xl" />
+            <AiFillCode className="text-green-400 text-2xl" />
             <span className="font-bold ml-2">Use at work</span>
           </h4>
           <div className="flex flex-wrap gap-2 mb-12">
@@ -32,7 +32,7 @@ export const Stats = () => {
       <Reveal>
         <div>
           <h4 className="flex items-center mb-6">
-            <AiFillSmile className="text-indigo-500 text-2xl" />
+            <AiFillSmile className="text-green-400 text-2xl" />
             <span className="font-bold ml-2">Use for fun</span>
           </h4>
           <div className="flex flex-wrap gap-2 mb-12">

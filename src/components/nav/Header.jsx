@@ -2,14 +2,18 @@ import Link from "next/link";
 import React from "react";
 import { FaCodepen, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { OutlineButton } from "../buttons/OutlineButton";
+import { LanguageToggle } from "../buttons/LanguageToggle";
 
 export const Header = () => {
   return (
     <header className="h-[72px] px-4 flex items-center justify-between sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
       <MyLinks />
-      <OutlineButton onClick={() => window.open("/fake_resume.pdf")}>
-        My Resume
-      </OutlineButton>
+      <div className="flex items-center gap-3">
+        <LanguageToggle />
+        <OutlineButton onClick={() => window.open("/fake_resume.pdf")}>
+          My Resume
+        </OutlineButton>
+      </div>
     </header>
   );
 };
@@ -17,7 +21,7 @@ export const Header = () => {
 export const MyLinks = () => (
   <div className="flex items-center text-lg gap-4">
     <Link
-      className="text-zinc-300 hover:text-indigo-300 transition-colors"
+      className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://www.linkedin.com"
       target="_blank"
       rel="nofollow"
@@ -25,7 +29,7 @@ export const MyLinks = () => (
       <FaLinkedin />
     </Link>
     <Link
-      className="text-zinc-300 hover:text-indigo-300 transition-colors"
+      className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://www.github.com"
       target="_blank"
       rel="nofollow"
@@ -33,7 +37,7 @@ export const MyLinks = () => (
       <FaGithub />
     </Link>
     <Link
-      className="text-zinc-300 hover:text-indigo-300 transition-colors"
+      className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://www.x.com"
       target="_blank"
       rel="nofollow"
@@ -41,7 +45,7 @@ export const MyLinks = () => (
       <FaTwitter />
     </Link>
     <Link
-      className="text-zinc-300 hover:text-indigo-300 transition-colors"
+      className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://www.codepen.io"
       target="_blank"
       rel="nofollow"

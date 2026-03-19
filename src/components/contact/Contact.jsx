@@ -8,7 +8,7 @@ export const Contact = () => {
       <div className="max-w-xl mx-auto bg-zinc-800 px-8 py-12 rounded-xl">
         <Reveal width="w-full">
           <h4 className="text-4xl md:text-5xl text-center font-black">
-            Contact<span className="text-indigo-500">.</span>
+            Contact<span className="text-green-400">.</span>
           </h4>
         </Reveal>
         <Reveal width="w-full">
@@ -17,7 +17,7 @@ export const Contact = () => {
             <Link
               href="https://www.linkedin.com"
               target="_blank"
-              className="text-indigo-300 hover:underline"
+              className="text-green-400 hover:underline"
             >
               Linkedin
             </Link>{" "}
@@ -25,7 +25,7 @@ export const Contact = () => {
             <Link
               href="https://www.twitter.com"
               target="_blank"
-              className="text-indigo-300 hover:underline"
+              className="text-green-400 hover:underline"
             >
               Twitter
             </Link>{" "}
@@ -34,7 +34,7 @@ export const Contact = () => {
         </Reveal>
         <Reveal width="w-full">
           <Link href="mailto:bob.ross@notreal.com">
-            <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-indigo-300 transition-colors">
+            <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
               <AiFillMail />
               <span>bob@notreal.com</span>
             </div>

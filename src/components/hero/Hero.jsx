@@ -9,13 +9,13 @@ const Hero = () => {
         <div className="pointer-events-none relative z-10">
           <Reveal>
             <h1 className="pointer-events-auto text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
-              Hi, I'm Bob<span className="text-indigo-500">.</span>
+              Hi, I'm Bob<span className="text-green-400">.</span>
             </h1>
           </Reveal>
           <Reveal>
             <h2 className="pointer-events-auto my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
               I'm a{" "}
-              <span className="font-semibold text-indigo-500">
+              <span className="font-semibold text-green-400">
                 Full Stack Developer
               </span>
             </h2>
@@ -32,7 +32,7 @@ const Hero = () => {
               onClick={() => {
                 document.getElementById("contact")?.scrollIntoView();
               }}
-              className="pointer-events-auto before:bg-indigo-700 hover:text-white hover:border-indigo-700 mt-4 bg-indigo-500 text-zinc-100 border-indigo-500 md:mt-6"
+              className="pointer-events-auto before:bg-green-400-dark hover:text-white hover:border-green-400-dark mt-4 bg-green-400 text-zinc-100 border-green-400 md:mt-6"
             >
               Contact Me
             </OutlineButton>

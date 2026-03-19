@@ -22,7 +22,7 @@ export const ExperienceItem = ({
 
       <div className="flex items-center justify-between mb-4">
         <Reveal>
-          <span className="text-indigo-300 font-bold">{position}</span>
+          <span className="text-green-400 font-bold">{position}</span>
         </Reveal>
         <Reveal>
           <span>{location}</span>
