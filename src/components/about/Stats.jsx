@@ -14,20 +14,15 @@ export const Stats = () => {
             <span className="font-bold ml-2">{t("statsUseAtWork")}</span>
           </h4>
           <div className="flex flex-wrap gap-2 mb-12">
-            <Chip>{t("statsJS")}</Chip>
-            <Chip>{t("statsTS")}</Chip>
-            <Chip>{t("statsHTML")}</Chip>
-            <Chip>{t("statsCSS")}</Chip>
-            <Chip>{t("statsReact")}</Chip>
-            <Chip>{t("statsRedux")}</Chip>
-            <Chip>{t("statsNode")}</Chip>
-            <Chip>{t("statsExpress")}</Chip>
-            <Chip>{t("statsPostgres")}</Chip>
-            <Chip>{t("statsMongo")}</Chip>
-            <Chip>{t("statsGitHub")}</Chip>
-            <Chip>{t("statsJira")}</Chip>
-            <Chip>{t("statsHeroku")}</Chip>
-            <Chip>{t("statsAWS")}</Chip>
+            <Chip>{t("statsWindows")}</Chip>
+            <Chip>{t("statsNetwork")}</Chip>
+            <Chip>{t("statsTroubleshooting")}</Chip>
+            <Chip>{t("statsDocumentation")}</Chip>
+            <Chip>{t("statsServiceNow")}</Chip>
+            <Chip>{t("statsIntune")}</Chip>
+            <Chip>{t("statsMicrosoft")}</Chip>
+            <Chip>{t("statsApple")}</Chip>
+            <Chip>{t("statsHardware")}</Chip>
           </div>
         </div>
       </Reveal>
@@ -38,16 +33,13 @@ export const Stats = () => {
             <span className="font-bold ml-2">{t("statsUseForFun")}</span>
           </h4>
           <div className="flex flex-wrap gap-2 mb-12">
-            <Chip>{t("statsRust")}</Chip>
+            <Chip>{t("statsJS")}</Chip>
+            <Chip>{t("statsReact")}</Chip>
             <Chip>{t("statsTailwind")}</Chip>
-            <Chip>{t("statsJava")}</Chip>
-            <Chip>{t("statsSpring")}</Chip>
-            <Chip>{t("statsFigma")}</Chip>
-            <Chip>{t("statsWhimsical")}</Chip>
-            <Chip>{t("statsPlanetscale")}</Chip>
-            <Chip>{t("statsGraphQL")}</Chip>
-            <Chip>{t("statsPython")}</Chip>
-            <Chip>{t("statsFastAPI")}</Chip>
+            <Chip>{t("statsHTML")}</Chip>
+            <Chip>{t("statsCSS")}</Chip>
+            <Chip>{t("statsGit")}</Chip>
+            <Chip>{t("statsGitHub")}</Chip>
           </div>
         </div>
       </Reveal>
