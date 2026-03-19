@@ -8,7 +8,6 @@ export const Projects = () => {
   return (
     <section className="section-wrapper" id="projects">
       <SectionHeader title={t("projectsTitle")} dir="r" />
-
       <div className="grid gap-12 grid-cols-1 md:grid-cols-2">
         {projects.map((project) => {
           return <Project key={project.title} {...project} />;
@@ -20,134 +19,44 @@ export const Projects = () => {
 
 const projects = [
   {
-    title: "Paint.app",
-    imgSrc: "project-imgs/example-project.jpg",
-    code: "https://www.github.com",
-    projectLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    tech: ["Flutter", "MUI", "Python", "FastAPI"],
-    description:
-      "A real-time coaching app for students learning to paint. This app is my baby, designed and built on my own.",
+    title: "PlenitudFit",
+    imgSrc: "project-imgs/plenitud.png",
+    projectLink: "https://plenitudfit.com.uy",
+    tech: ["NextJS", "Tailwind", "React"],
+    description: "Landing page para gimnasio de entrenamiento funcional en Montevideo, Uruguay. Diseño moderno y responsive.",
     modalContent: (
       <>
-        <p>
-          Pain.app is a real-time coaching app for students learning to paint.
-          This app is my baby, designed and built on my own.
-        </p>
-        <p>
-          The tech stack is based on top of Flutter for the mobile app,
-          connected to a Python & FastAPI backend, with data stored in Postgres,
-          deployed on Heroku.
-        </p>
-        <p>
-          Because this isn&apos;t real, here&apos;s some gibberish to fill space{" "}
-          {":)"}
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur
-          quia officia odio nulla consectetur aperiam ad tempora magni magnam
-          nesciunt.
-        </p>
-        <p>
-          Fuga id sapiente facere ipsa eius exercitationem officiis deleniti,
-          rerum dolorum. Deserunt soluta modi culpa animi.
-        </p>
+        <p>PlenitudFit es un gimnasio de entrenamiento funcional ubicado en Montevideo, Uruguay. Operando desde 2016, se especializan en entrenamiento deportivo y promoción de vida saludable.</p>
+        <p>Desarrollo una landing page moderna y responsive que presenta sus servicios, actividades, horarios y planes de membresía de forma clara y atractiva.</p>
+        <p>El sitio web ayuda a nuevos miembros a conocer el gimnasio, ver horarios de clases y obtener información de contacto de manera rápida y sencilla.</p>
       </>
     ),
   },
   {
-    title: "The Canvas Club",
-    imgSrc: "project-imgs/example-project.jpg",
-    code: "https://www.github.com",
-    projectLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    tech: ["Node", "Express", "Postgres", "Kafka", "Redis"],
-    description:
-      "A social community for painters to connect with others in their community. I handle everything backend (50K monthly active users).",
+    title: "CFR Estudio",
+    imgSrc: "project-imgs/cfrestudio.png",
+    projectLink: "https://cfrestudio.com/",
+    tech: ["NextJS", "Tailwind", "React"],
+    description: "Sitio web para estudio de arquitectura en Montevideo, Uruguay. Presenta proyectos y servicios de arquitectura.",
     modalContent: (
       <>
-        <p>
-          The Canvas Club is a social community for painters to connect with
-          others in their community.
-        </p>
-        <p>
-          I work primarily on the backend, a collection of Node & Express
-          microservices. Data is stored primarily in Postgres & cached in Redis.
-        </p>
-        <p>
-          The team in total consists of 5 developers. This is a passion project
-          for all of us.
-        </p>
-        <p>
-          Because this isn&apos;t real, here&apos;s some gibberish to fill space{" "}
-          {":)"}
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur
-          quia officia odio nulla consectetur aperiam ad tempora magni magnam
-          nesciunt.
-        </p>
-        <p>
-          Fuga id sapiente facere ipsa eius exercitationem officiis deleniti,
-          rerum dolorum. Deserunt soluta modi culpa animi.
-        </p>
+        <p>CFR Estudio es un estudio de arquitectura ubicado en Montevideo, Uruguay, especializado en proyectos residenciales y comerciales.</p>
+        <p>Desarrollo un sitio web profesional que muestra su portafolio de proyectos, servicios ofrecidos e información de contacto.</p>
+        <p>El diseño refleja la estética arquitectónica del estudio, con un enfoque en la presentación visual de sus obras y proyectos.</p>
       </>
     ),
   },
   {
-    title: "BrushWire",
-    imgSrc: "project-imgs/example-project.jpg",
-    code: "https://www.github.com",
-    projectLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    tech: ["NextJS", "Java", "Spring", "AWS Aurora"],
-    description:
-      "Think Zapier but for paint. Built with a team of four college friends and scaled to > 1 billion requests per day. This was a fun one.",
+    title: "Revision Automotriz",
+    imgSrc: "project-imgs/revisionautomotriz.png",
+    projectLink: "https://revisionautomotriz.com/",
+    tech: ["React", "Bootstrap"],
+    description: "Sitio web para servicio de revisión de vehículos usados en Uruguay. Presenta servicios de inspección automotriz.",
     modalContent: (
       <>
-        <p>
-          Brush wire is essentially Zapier but for paint. Built with a team of
-          four college friends and scaled to {">"} 1 billion requests per day.
-          This was a fun one.
-        </p>
-        <p>
-          Since &quot;Zapier for paint&quot; doesn&apos;t mean anything, be
-          creative {":)"}
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur
-          quia officia odio nulla consectetur aperiam ad tempora magni magnam
-          nesciunt.
-        </p>
-        <p>
-          Fuga id sapiente facere ipsa eius exercitationem officiis deleniti,
-          rerum dolorum. Deserunt soluta modi culpa animi.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: "Paint Reference 4",
-    imgSrc: "project-imgs/example-project.jpg",
-    code: "https://www.github.com",
-    projectLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    tech: ["Python", "FastAPI", "SQLAlchemy"],
-    description:
-      "I couldn't think of another paint reference app, so here we are. I think you get the idea, right? Use your imagination 🌈",
-    modalContent: (
-      <>
-        <p>Alright, you got me. I&apos;m all out of paint references.</p>
-        <p>
-          Point is, use this space to explain a bit further WHAT this project
-          is, as well as what YOU contributed to it.
-        </p>
-        <p>You get the idea. Now more lorem {":)"}</p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur
-          quia officia odio nulla consectetur aperiam ad tempora magni magnam
-          nesciunt.
-        </p>
-        <p>
-          Fuga id sapiente facere ipsa eius exercitationem officiis deleniti,
-          rerum dolorum. Deserunt soluta modi culpa animi.
-        </p>
+        <p>Revision Automotriz es un servicio de inspección vehicular que ayuda a compradores de vehículos usados a tomar decisiones informadas.</p>
+        <p>Desarrollo el sitio web con React y Bootstrap, presentando sus servicios de revisión de más de 200 puntos del vehículo.</p>
+        <p>El sitio incluye información sobre el proceso de inspección, beneficios del servicio y formas de contacto para solicitar una revisión.</p>
       </>
     ),
   },

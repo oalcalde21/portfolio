@@ -20,7 +20,6 @@ export const ProjectModal = ({
 
   useEffect(() => {
     const body = document.querySelector("body");
-
     if (isOpen) {
       body.style.overflowY = "hidden";
     } else {
@@ -43,11 +42,13 @@ export const ProjectModal = ({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-2xl h-fit rounded-lg overflow-hidden bg-zinc-900 shadow-lg cursor-auto"
       >
-        <img
-          className="w-full"
-          src={imgSrc}
-          alt={`An image of the ${title} project.`}
-        />
+        {imgSrc && (
+          <img
+            className="w-full"
+            src={imgSrc}
+            alt={`An image of the ${title} project.`}
+          />
+        )}
         <div className="p-8">
           <h4 className="text-3xl font-bold mb-2">{title}</h4>
           <div className="flex flex-wrap gap-2 text-sm text-green-400">
@@ -63,22 +64,26 @@ export const ProjectModal = ({
               {t("projectLinks")}<span className="text-green-400">.</span>
             </p>
             <div className="flex items-center gap-4 text-sm">
-              <Link
-                target="_blank"
-                rel="nofollow"
-                className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
-                href={code}
-              >
-                <AiFillGithub /> {t("projectSourceCode")}
-              </Link>
-              <Link
-                target="_blank"
-                rel="nofollow"
-                className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
-                href={projectLink}
-              >
-                <AiOutlineExport /> {t("projectLiveProject")}
-              </Link>
+              {code && (
+                <Link
+                  target="_blank"
+                  rel="nofollow"
+                  className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
+                  href={code}
+                >
+                  <AiFillGithub /> {t("projectSourceCode")}
+                </Link>
+              )}
+              {projectLink && (
+                <Link
+                  target="_blank"
+                  rel="nofollow"
+                  className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1"
+                  href={projectLink}
+                >
+                  <AiOutlineExport /> {t("projectLiveProject")}
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -86,7 +91,7 @@ export const ProjectModal = ({
     </div>
   );
 
-  if (!isOpen) return <></>;
+  if (!isOpen) return null;
 
   return ReactDOM.createPortal(content, document.getElementById("root"));
 };

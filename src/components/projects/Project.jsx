@@ -58,7 +58,7 @@ export const Project = ({
               width: hovered ? "90%" : "85%",
               rotate: hovered ? "2deg" : "0deg",
             }}
-            className="w-[85%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4 transition-all rounded"
+            className="w-[100%] absolute bottom-0 left-1/2 -translate-x-1/2 transition-all rounded"
           />
         </div>
         <div className="mt-6">
@@ -69,9 +69,11 @@ export const Project = ({
               </h4>
               <div className="w-full h-[1px] bg-zinc-600" />
 
-              <Link href={code} target="_blank" rel="nofollow">
-                <AiFillGithub className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
-              </Link>
+              {code && (
+                <Link href={code} target="_blank" rel="nofollow">
+                  <AiFillGithub className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
+                </Link>
+              )}
 
               <Link href={projectLink} target="_blank" rel="nofollow">
                 <AiOutlineExport className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
