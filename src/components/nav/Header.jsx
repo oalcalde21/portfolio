@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { FaCodepen, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { OutlineButton } from "../buttons/OutlineButton";
 import { LanguageToggle } from "../buttons/LanguageToggle";
 import { useLanguage } from "../../context/LanguageContext";
@@ -24,7 +24,7 @@ export const MyLinks = () => (
   <div className="flex items-center text-lg gap-4">
     <Link
       className="text-zinc-300 hover:text-green-400 transition-colors"
-      href="https://www.linkedin.com"
+      href="https://www.linkedin.com/in/oscar-alcalde/"
       target="_blank"
       rel="nofollow"
     >
@@ -32,27 +32,11 @@ export const MyLinks = () => (
     </Link>
     <Link
       className="text-zinc-300 hover:text-green-400 transition-colors"
-      href="https://www.github.com"
+      href="https://github.com/oalcalde21"
       target="_blank"
       rel="nofollow"
     >
       <FaGithub />
-    </Link>
-    <Link
-      className="text-zinc-300 hover:text-green-400 transition-colors"
-      href="https://www.x.com"
-      target="_blank"
-      rel="nofollow"
-    >
-      <FaTwitter />
-    </Link>
-    <Link
-      className="text-zinc-300 hover:text-green-400 transition-colors"
-      href="https://www.codepen.io"
-      target="_blank"
-      rel="nofollow"
-    >
-      <FaCodepen />
     </Link>
   </div>
 );
