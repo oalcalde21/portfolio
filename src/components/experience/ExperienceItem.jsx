@@ -3,9 +3,9 @@ import Reveal from "../util/Reveal";
 import { useLanguage } from "../../context/LanguageContext";
 
 const expKeys = {
-  "RCI Latinoamericana (Travel + Leisure)": { title: "expRciTitle", pos: "expRciPos", desc: "expRciDesc" },
-  "ITS - Infrastructure Technology Services": { title: "expItsTitle", pos: "expItsPos", desc: "expItsDesc" },
-  "Infocorp": { title: "expInfoTitle", pos: "expInfoPos", desc: "expInfoDesc" },
+  "RCI Latinoamericana (Travel + Leisure)": { title: "expRciTitle", pos: "expRciPos", time: "expRciTime", desc: "expRciDesc" },
+  "ITS - Infrastructure Technology Services": { title: "expItsTitle", pos: "expItsPos", time: "expItsTime", desc: "expItsDesc" },
+  "Infocorp": { title: "expInfoTitle", pos: "expInfoPos", time: "expInfoTime", desc: "expInfoDesc" },
 };
 
 export const ExperienceItem = ({ title, position, time, location, description, tech }) => {
@@ -14,6 +14,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
   
   const translatedTitle = keys.title ? t(keys.title) : title;
   const translatedPos = keys.pos ? t(keys.pos) : position;
+  const translatedTime = keys.time ? t(keys.time) : time;
   const translatedDesc = keys.desc ? t(keys.desc) : description;
 
   return (
@@ -23,7 +24,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
           <span className="font-bold text-xl">{translatedTitle}</span>
         </Reveal>
         <Reveal>
-          <span>{time}</span>
+          <span>{translatedTime}</span>
         </Reveal>
       </div>
 
