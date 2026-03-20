@@ -12,6 +12,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <title>Oscar Alonso</title>
         {/* Google Tag Manager */}
         <script dangerouslySetInnerHTML={{ __html: gtmScript }} />
         {/* End Google Tag Manager */}
