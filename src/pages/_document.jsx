@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* Primary Meta Tags */}
-        <meta name="title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
+        <meta name="title" content="Oscar Alonso - Help Desk &amp; Frontend Developer | Uruguay" />
         <meta name="description" content="Portfolio of Oscar Alonso - IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development. Specializing in React, JavaScript, and modern web technologies." />
         <meta name="keywords" content="Oscar Alonso, Help Desk, Helpdesk, Frontend, Frontend Developer, IT Support, IT Specialist, React, JavaScript, Uruguay, Montevideo, ServiceNow, Intune, Web Developer, RCI Latin America" />
         <meta name="author" content="Oscar Alonso" />
@@ -16,7 +16,7 @@ export default function Document() {
         {/* Open Graph / Facebook - For social sharing */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://oscaralcalde.dev/" />
-        <meta property="og:title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
+        <meta property="og:title" content="Oscar Alonso - Help Desk &amp; Frontend Developer | Uruguay" />
         <meta property="og:description" content="IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development. View my projects and experience." />
         <meta property="og:image" content="/og-image.png" />
         <meta property="og:locale" content="en_US" />
@@ -25,7 +25,7 @@ export default function Document() {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://oscaralcalde.dev/" />
-        <meta name="twitter:title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
+        <meta name="twitter:title" content="Oscar Alonso - Help Desk &amp; Frontend Developer | Uruguay" />
         <meta name="twitter:description" content="IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development." />
         <meta name="twitter:image" content="/og-image.png" />
         
