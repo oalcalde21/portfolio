@@ -14,7 +14,7 @@ export const Header = () => {
   
   return (
     <div className="sticky top-0 z-20 bg-zinc-900/80 backdrop-blur-md -mx-4 px-4">
-      <header className="h-[72px] flex items-center justify-between max-w-5xl mx-auto">
+      <header className="h-[72px] flex items-center justify-between">
         <MyLinks />
         <div className="flex items-center gap-3">
           <LanguageToggle />
