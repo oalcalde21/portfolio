@@ -4,7 +4,7 @@
 
 ### What is this?
 
-This is Oscar's personal portfolio website. It's a single-page portfolio that showcases his professional experience transitioning from IT Support to Frontend Development.
+This is Oscar's personal portfolio website. It's a single-page portfolio that showcases his professional experience changing now from IT Support to Frontend Development.
 
 ### Key Features
 

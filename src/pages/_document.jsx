@@ -7,11 +7,11 @@ export default function Document() {
         {/* Primary Meta Tags */}
         <meta
           name="title"
-          content="Oscar Alcalde - Help Desk &amp; Frontend Developer | Uruguay"
+          content="Oscar Alcalde - Sr. Help Desk Analyst &amp; Frontend Developer | Uruguay"
         />
         <meta
           name="description"
-          content="Portfolio of Oscar Alcalde - IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development. Specializing in React, JavaScript, and modern web technologies."
+          content="Portfolio of Oscar Alcalde - IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. Specializing in React, JavaScript, and modern web technologies."
         />
         <meta
           name="keywords"
@@ -34,7 +34,7 @@ export default function Document() {
         />
         <meta
           property="og:description"
-          content="IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development. View my projects and experience."
+          content="IT Help Desk Sr. Analyst with 13+ years experience changing now my profile to Frontend Development. View my projects and experience."
         />
         <meta property="og:image" content="/og-image.png" />
         <meta property="og:locale" content="en_US" />
@@ -49,7 +49,7 @@ export default function Document() {
         />
         <meta
           name="twitter:description"
-          content="IT Help Desk Sr. Analyst with 13+ years experience transitioning to Frontend Development."
+          content="IT Help Desk Sr. Analyst with 13+ years experience changing now my profile to Frontend Development. View my projects and experience"
         />
         <meta name="twitter:image" content="/og-image.png" />
 
@@ -78,7 +78,7 @@ export default function Document() {
                 name: "RCI Latinoamérica",
               },
               description:
-                "IT Help Desk Sr. Analyst with 13+ years of experience, transitioning to Frontend Development with skills in React, JavaScript, and modern web technologies.",
+                "IT Help Desk Sr. Analyst with 13+ years of experience, changing now my profile to Frontend Development with skills in React, JavaScript, and modern web technologies.",
               knowsAbout: [
                 "IT Support",
                 "Help Desk",
@@ -109,7 +109,7 @@ export default function Document() {
               name: "Oscar Alcalde Portfolio",
               url: "https://oscaralcalde.dev",
               description:
-                "Personal portfolio of Oscar Alcalde - IT Professional transitioning to Frontend Development",
+                "Personal portfolio of Oscar Alcalde - IT Professional changing now to Frontend Development",
               author: {
                 "@type": "Person",
                 name: "Oscar Alcalde",
