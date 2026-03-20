@@ -12,25 +12,43 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Oscar Alonso</title>
+        <title>Oscar Alcalde</title>
         {/* Google Tag Manager */}
         <script dangerouslySetInnerHTML={{ __html: gtmScript }} />
         {/* End Google Tag Manager */}
 
         {/* Primary Meta Tags */}
-        <meta name="title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
-        <meta name="description" content="Portfolio of Oscar Alonso - IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. Specializing in React, JavaScript, and modern web technologies." />
-        <meta name="keywords" content="Oscar Alonso, Help Desk, Helpdesk, Frontend, Frontend Developer, IT Support, IT Specialist, React, JavaScript, Uruguay, Montevideo, ServiceNow, Intune, Web Developer, RCI Latin America" />
-        <meta name="author" content="Oscar Alonso" />
+        <meta
+          name="title"
+          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+        />
+        <meta
+          name="description"
+          content="Portfolio of Oscar Alcalde - IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. Specializing in React, JavaScript, and modern web technologies."
+        />
+        <meta
+          name="keywords"
+          content="Oscar Alcalde, Help Desk, Helpdesk, Frontend, Frontend Developer, IT Support, IT Specialist, React, JavaScript, Uruguay, Montevideo, ServiceNow, Intune, Web Developer, RCI Latin America"
+        />
+        <meta name="author" content="Oscar Alcalde" />
         <meta name="robots" content="index, follow" />
-        <meta name="google-site-verification" content="F8cAZEW4clSCYruTPwoAiio1bgyV31n4S6fSWxBncVI" />
+        <meta
+          name="google-site-verification"
+          content="F8cAZEW4clSCYruTPwoAiio1bgyV31n4S6fSWxBncVI"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://oscaralcalde.dev/" />
-        <meta property="og:title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
-        <meta property="og:description" content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. View my projects and experience." />
+        <meta
+          property="og:title"
+          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+        />
+        <meta
+          property="og:description"
+          content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. View my projects and experience."
+        />
         <meta property="og:image" content="/og-image.png" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:locale:alternate" content="es_ES" />
@@ -38,8 +56,14 @@ export default function Document() {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://oscaralcalde.dev/" />
-        <meta name="twitter:title" content="Oscar Alonso - Help Desk & Frontend Developer | Uruguay" />
-        <meta name="twitter:description" content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development." />
+        <meta
+          name="twitter:title"
+          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+        />
+        <meta
+          name="twitter:description"
+          content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development."
+        />
         <meta name="twitter:image" content="/og-image.png" />
 
         {/* Canonical URL */}
@@ -53,25 +77,36 @@ export default function Document() {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Oscar Alonso",
-              "url": "https://oscaralcalde.dev",
-              "sameAs": [
+              name: "Oscar Alcalde",
+              url: "https://oscaralcalde.dev",
+              sameAs: [
                 "https://www.linkedin.com/in/oscar-alcalde/",
-                "https://github.com/oalcalde21"
+                "https://github.com/oalcalde21",
               ],
-              "jobTitle": "Sr. Help Desk Support Analyst",
-              "worksFor": {
+              jobTitle: "Sr. Help Desk Support Analyst",
+              worksFor: {
                 "@type": "Organization",
-                "name": "RCI Latinoamérica"
+                name: "RCI Latinoamérica",
               },
-              "description": "IT Help Desk Sr. Analyst with 13+ years of experience, changing now to Frontend Development with skills in React, JavaScript, and modern web technologies.",
-              "knowsAbout": ["IT Support", "Help Desk", "ServiceNow", "Intune", "Frontend Development", "React", "JavaScript", "HTML", "CSS"],
-              "address": {
+              description:
+                "IT Help Desk Sr. Analyst with 13+ years of experience, changing now to Frontend Development with skills in React, JavaScript, and modern web technologies.",
+              knowsAbout: [
+                "IT Support",
+                "Help Desk",
+                "ServiceNow",
+                "Intune",
+                "Frontend Development",
+                "React",
+                "JavaScript",
+                "HTML",
+                "CSS",
+              ],
+              address: {
                 "@type": "PostalAddress",
-                "addressLocality": "Montevideo",
-                "addressCountry": "UY"
-              }
-            })
+                addressLocality: "Montevideo",
+                addressCountry: "UY",
+              },
+            }),
           }}
         />
 
@@ -82,14 +117,15 @@ export default function Document() {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "Oscar Alonso Portfolio",
-              "url": "https://oscaralcalde.dev",
-              "description": "Personal portfolio of Oscar Alonso - IT Professional changing now to Frontend Development",
-              "author": {
+              name: "Oscar Alcalde Portfolio",
+              url: "https://oscaralcalde.dev",
+              description:
+                "Personal portfolio of Oscar Alcalde - IT Professional changing now to Frontend Development",
+              author: {
                 "@type": "Person",
-                "name": "Oscar Alonso"
-              }
-            })
+                name: "Oscar Alcalde",
+              },
+            }),
           }}
         />
       </Head>
