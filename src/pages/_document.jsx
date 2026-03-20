@@ -10,6 +10,7 @@ export default function Document() {
         <meta name="keywords" content="Oscar Alcalde, IT Support, Frontend Developer, React, JavaScript, Uruguay, Montevideo, Help Desk, ServiceNow, Intune, Web Developer" />
         <meta name="author" content="Oscar Alcalde" />
         <meta name="robots" content="index, follow" />
+        <meta name="google-site-verification" content="F8cAZEW4clSCYruTPwoAiio1bgyV31n4S6fSWxBncVI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Open Graph / Facebook - For social sharing */}
