@@ -83,7 +83,7 @@ export const Project = ({ projectLink, description, imgSrc, title, code, tech })
             <p className="text-zinc-300 leading-relaxed">
               {translatedDesc}{" "}
               <span className="inline-block text-sm text-green-400 cursor-pointer" onClick={() => setIsOpen(true)}>
-                {t("projectLearnMore")} {">"}
+                <span className="text-white">V</span>er más {">"}
               </span>
             </p>
           </Reveal>

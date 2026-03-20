@@ -135,7 +135,7 @@ const translations = {
     heroDescription: "Apasionado por construir experiencias web y aprendiendo constantemente nuevas tecnologías. Con mucha experiencia en soporte de TI, ahora estoy incursionando, capacitándome y probando este mundo del desarrollo frontend.",
     contactBtn: "Contáctame",
     aboutTitle: "Sobre mí",
-    aboutP1: "¡Hola! Soy Oscar. He pasado más de 13 años trabajando en soporte de TI, ayudando a usuarios a resolver problemas reales en entornos exigentes y multinacionales. Esa experiencia dio forma a mi forma de abordar la tecnología: no solo desde una perspectiva técnica, sino entendiendo cómo las herramientas impactan el trabajo diario de las personas.",
+    aboutP1: "ola! Soy Oscar. He pasado más de 13 años trabajando en soporte de TI, ayudando a usuarios a resolver problemas reales en entornos exigentes y multinacionales. Esa experiencia dio forma a mi forma de abordar la tecnología: no solo desde una perspectiva técnica, sino entendiendo cómo las herramientas impactan el trabajo diario de las personas.",
     aboutP2: "Actualmente, estoy cambiando mi enfoque, capacitándome, probando y trabajando en desarrollo frontend, construyendo aplicaciones web modernas con React, Vite y Tailwind. Estoy especialmente interesado en crear interfaces limpias e intuitivas que realmente marquen la diferencia para los usuarios.",
     aboutP3: "Disfruto combinar mi experiencia en resolución de problemas con el desarrollo, aportando un enfoque más práctico y centrado en el usuario a los productos que construyo.",
     aboutP4: "Siempre estoy abierto a nuevas oportunidades donde pueda crecer como desarrollador y fusionar mi experiencia en TI con mi pasión por construir.",
