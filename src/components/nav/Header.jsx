@@ -6,13 +6,14 @@ import { LanguageToggle } from "../buttons/LanguageToggle";
 import { useLanguage } from "../../context/LanguageContext";
 
 export const Header = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const cvUrl = language === "EN" ? "/resume.pdf" : "/cv.pdf";
   return (
     <header className="h-[72px] px-4 flex items-center justify-between sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
       <MyLinks />
       <div className="flex items-center gap-3">
         <LanguageToggle />
-        <OutlineButton onClick={() => window.open("/fake_resume.pdf")}>
+        <OutlineButton onClick={() => window.open(cvUrl)}>
           {t("resumeBtn")}
         </OutlineButton>
       </div>
