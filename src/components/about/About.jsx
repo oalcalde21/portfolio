@@ -7,7 +7,7 @@ import { useLanguage } from "../../context/LanguageContext";
 
 export const About = () => {
   const { t, language } = useLanguage();
-  const hiText = language === "EN" ? "Hi!" : "ola!";
+  const hiText = language === "EN" ? "Hi!" : "H";
   return (
     <section id="about" className="section-wrapper">
       <SectionHeader title={t("aboutTitle")} dir="l" />
@@ -15,7 +15,7 @@ export const About = () => {
         <div className="space-y-4">
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
-              <span className="text-green-400 font-bold mr-1">
+              <span className="bg-green-400 text-white py-2 px-3 rounded font-bold mr-1 float-left text-2-xl">
                 {hiText}
               </span>
               {language === "EN" ? t("aboutP1").replace("Hi! ", "") : t("aboutP1")}
