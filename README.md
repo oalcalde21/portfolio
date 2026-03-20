@@ -170,4 +170,60 @@ Para cambiar texto:
 
 ---
 
+## SEO (Search Engine Optimization)
+
+This portfolio includes several SEO improvements to help it rank when searching for "Oscar Alcalde".
+
+### What's Included
+
+1. **Meta Tags** (`src/pages/_document.jsx`)
+   - Title, description, and keywords optimized for IT Support + Frontend Development
+   - Open Graph tags for social media sharing (LinkedIn, Facebook)
+   - Twitter Card tags for rich Twitter previews
+
+2. **Structured Data / Schema.org** (`src/pages/_document.jsx`)
+   - Person schema with name, job title, location, and social links
+   - WebSite schema for search engines
+
+3. **Sitemap** (`public/sitemap.xml`)
+   - Helps search engines discover and index the site
+   - Update `lastmod` date when content changes significantly
+
+4. **Robots.txt** (`public/robots.txt`)
+   - Tells search engines how to crawl the site
+   - Points to sitemap location
+
+5. **Security Headers** (`next.config.mjs`)
+   - X-Frame-Options, X-Content-Type-Options, etc.
+
+### Important: Update These for Production
+
+1. **Replace the placeholder URL** in these files:
+   - `src/pages/_document.jsx` - Change `https://oscaralcalde.dev` to your actual domain
+   - `public/robots.txt` - Same
+   - `public/sitemap.xml` - Same
+
+2. **Create a proper OG image** (1200x630px recommended):
+   - Replace `public/og-image.svg` with a PNG/JPG version
+   - Use a tool like Canva or Figma to create a branded image
+   - Should include your name and title clearly
+
+3. **Submit to Google Search Console**:
+   - Go to https://search.google.com/search-console
+   - Add your domain
+   - Submit the sitemap at `/sitemap.xml`
+
+4. **Submit to Bing Webmaster Tools**:
+   - Go to https://www.bing.com/webmasters
+   - Helps Bing index your site
+
+### SEO Tips for the Future
+
+- Keep the `lastmod` date in sitemap.xml updated
+- Add new projects to the sitemap as you create them
+- When adding new sections, maintain the semantic HTML structure (h1, h2, h3)
+- Use descriptive alt text for any images you add
+
+---
+
 **Credits**: Template inspired by [hover.dev](https://hover.dev)
