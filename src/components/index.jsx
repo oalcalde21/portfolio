@@ -30,7 +30,7 @@ export const HomPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="mx-auto max-w-5xl px-4 md:px-8 pt-[72px] space-y-32 pb-24"
+            className="mx-auto max-w-5xl px-4 md:px-8 space-y-32 pb-24"
           >
             <Hero />
             <About />
