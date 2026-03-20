@@ -47,7 +47,7 @@ export const MyLinks = () => (
       className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://www.linkedin.com/in/oscar-alcalde/"
       target="_blank"
-      rel="nofollow"
+      rel="noopener noreferrer"
     >
       <FaLinkedin />
     </Link>
@@ -55,7 +55,7 @@ export const MyLinks = () => (
       className="text-zinc-300 hover:text-green-400 transition-colors"
       href="https://github.com/oalcalde21"
       target="_blank"
-      rel="nofollow"
+      rel="noopener noreferrer"
     >
       <FaGithub />
     </Link>

@@ -31,8 +31,9 @@ export const Contact = () => {
           <p className="text-center my-8 text-zinc-300 leading-relaxed">
             {t("contactText")}{" "}
             <Link
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/oscar-alcalde/"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-400 hover:underline"
             >
               {t("contactLinkedin")}
@@ -41,6 +42,7 @@ export const Contact = () => {
             <Link
               href="https://github.com/oalcalde21"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-400 hover:underline"
             >
               {t("contactTwitter")}
