@@ -1,5 +1,16 @@
+/**
+ * Stats component - displays skill chips in the About section.
+ * 
+ * Skills are divided into two categories:
+ * 1. Work skills - tools and technologies used in IT support (left column)
+ * 2. Hobby skills - technologies learned for frontend development (right column)
+ * 
+ * Each skill is rendered as a Chip component with a subtle border.
+ */
+
 import { Chip } from "../util/Chip";
 import Reveal from "../util/Reveal";
+// Icons for visual flair
 import { AiFillCode, AiFillSmile } from "react-icons/ai";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -7,6 +18,7 @@ export const Stats = () => {
   const { t } = useLanguage();
   return (
     <div className="relative">
+      {/* Work skills section */}
       <Reveal>
         <div>
           <h4 className="flex items-center mb-6">
@@ -26,6 +38,8 @@ export const Stats = () => {
           </div>
         </div>
       </Reveal>
+      
+      {/* Hobby/fun skills section */}
       <Reveal>
         <div>
           <h4 className="flex items-center mb-6">

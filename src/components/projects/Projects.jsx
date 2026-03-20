@@ -1,3 +1,14 @@
+/**
+ * Projects section - showcases Oscar's portfolio work.
+ * 
+ * Displays project cards in a responsive grid:
+ * - 1 column on mobile
+ * - 2 columns on medium+ screens
+ * 
+ * Each project is rendered by the Project component.
+ * Projects are defined as a static array at the bottom of this file.
+ */
+
 import React from "react";
 import { SectionHeader } from "../util/SectionHeader";
 import { Project } from "./Project";
@@ -17,6 +28,7 @@ export const Projects = () => {
   );
 };
 
+// Project data - each project has its title, image, link, and technologies used
 const projects = [
   {
     title: "Plenitud Fit",

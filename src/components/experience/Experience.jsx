@@ -1,3 +1,14 @@
+/**
+ * Experience section - shows Oscar's work history.
+ * 
+ * Iterates through the experience array and renders an ExperienceItem
+ * for each job. Each item shows:
+ * - Company name and time period
+ * - Position and location
+ * - Detailed description(s)
+ * - Technology/skills used
+ */
+
 import { SectionHeader } from "../util/SectionHeader";
 import { ExperienceItem } from "./ExperienceItem";
 import { useLanguage } from "../../context/LanguageContext";
@@ -14,6 +25,7 @@ export const Experience = () => {
   );
 };
 
+// Work experience data - ordered from most recent to oldest
 const experience = [
   {
     title: "RCI Latinoamericana (Travel + Leisure)",

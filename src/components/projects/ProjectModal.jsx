@@ -1,3 +1,17 @@
+/**
+ * ProjectModal - detailed view for a project, shown as an overlay.
+ * 
+ * Opens when the user clicks "Learn more" on a project card.
+ * Shows:
+ * - Large project screenshot
+ * - Full title and technology tags
+ * - Detailed description
+ * - Link to the live project
+ * 
+ * Clicking outside the modal or the X button closes it.
+ * Uses ReactDOM.createPortal to render above everything else.
+ */
+
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
@@ -9,18 +23,24 @@ import { useLanguage } from "../../context/LanguageContext";
 export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isOpen, title, code, tech }) => {
   const { t } = useLanguage();
 
+  // Lock/unlock body scroll when modal opens/closes
   useEffect(() => {
     const body = document.querySelector("body");
     if (isOpen) {
-      body.style.overflowY = "hidden";
+      body.style.overflowY = "hidden"; // Prevent background scrolling
     } else {
       body.style.overflowY = "scroll";
     }
   }, [isOpen]);
 
+  // The modal content - rendered as a portal
   const content = (
+    // Clicking the backdrop closes the modal
     <div className="fixed inset-0 z-50 px-4 py-12 bg-zinc-950/50 backdrop-blur overflow-y-scroll flex justify-center cursor-pointer" onClick={() => setIsOpen(false)}>
+      {/* Close button */}
       <button className="absolute top-4 md:top-6 text-xl right-4"><MdClose /></button>
+      
+      {/* Modal card - clicking it doesn't close (stops propagation) */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -47,6 +67,9 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
     </div>
   );
 
+  // Only render if open
   if (!isOpen) return null;
+  
+  // Portal renders the modal at the root level (outside the main component tree)
   return ReactDOM.createPortal(content, document.getElementById("root"));
 };

@@ -1,3 +1,15 @@
+/**
+ * Hero section - the first thing visitors see when they land on the page.
+ * 
+ * Contains:
+ * - Big name with a green accent
+ * - Typewriter animation showing roles (IT Support / Frontend Developer)
+ * - Short tagline/description
+ * - Contact button that scrolls down to the contact section
+ * 
+ * The decorative dot grid is in the background for visual interest.
+ */
+
 import Reveal from "../util/Reveal";
 import DotGrid from "./DotGrid";
 import { OutlineButton } from "../buttons/OutlineButton";
@@ -9,22 +21,30 @@ const Hero = () => {
   return (
     <section className="text-slat-100 overflow-hidden py-24 md:py-32">
       <div className="relative">
+        {/* Content layer - z-10 keeps it above the dot grid */}
         <div className="pointer-events-none relative z-10">
+          {/* Main heading: "Hi, I'm Oscar." */}
           <Reveal>
             <h1 className="pointer-events-auto text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
               {t("heroTitle")}{t("heroName")}<span className="text-green-400">.</span>
             </h1>
           </Reveal>
+          
+          {/* Typewriter effect: cycles through roles */}
           <Reveal>
             <h2 className="pointer-events-auto my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
               <Typewriter />
             </h2>
           </Reveal>
+          
+          {/* Short description */}
           <Reveal>
             <p className="pointer-events-auto leading-relaxed md:leading-relaxed max-w-xl text-sm text-zinc-300 md:text-base">
               {t("heroDescription")}
             </p>
           </Reveal>
+          
+          {/* Contact button - scrolls to contact section */}
           <Reveal>
             <OutlineButton
               onClick={() => {
@@ -36,6 +56,8 @@ const Hero = () => {
             </OutlineButton>
           </Reveal>
         </div>
+        
+        {/* Background decorative dot grid */}
         <DotGrid />
       </div>
     </section>

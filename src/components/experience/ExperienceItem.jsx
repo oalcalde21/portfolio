@@ -1,13 +1,24 @@
-import { Chip } from "../util/Chip";
-import Reveal from "../util/Reveal";
-import { useLanguage } from "../../context/LanguageContext";
+/**
+ * ExperienceItem - displays a single job experience entry.
+ * 
+ * Shows:
+ * - Company name (translated)
+ * - Time period
+ * - Position and location
+ * - Multiple description paragraphs (translated)
+ * - Technology/skills chips (translated)
+ * 
+ * Each field is translated using the LanguageContext.
+ */
 
+// Maps company names to their translation keys
 const expKeys = {
   "RCI Latinoamericana (Travel + Leisure)": { title: "expRciTitle", pos: "expRciPos", time: "expRciTime", desc: "expRciDesc", desc2: "expRciDesc2", desc3: "expRciDesc3", desc4: "expRciDesc4", desc5: "expRciDesc5" },
   "ITS - Infrastructure Technology Services": { title: "expItsTitle", pos: "expItsPos", time: "expItsTime", desc: "expItsDesc", desc2: "expItsDesc2", desc3: "expItsDesc3", desc4: "expItsDesc4" },
   "Infocorp": { title: "expInfoTitle", pos: "expInfoPos", time: "expInfoTime", desc: "expInfoDesc", desc2: "expInfoDesc2", desc3: "expInfoDesc3" },
 };
 
+// Maps tech names to their translation keys
 const techKeys = {
   "ITIL": "techITIL",
   "English Support": "techEnglish",
@@ -48,10 +59,15 @@ const techKeys = {
   "Massive Migrations": "techMassiveMigrations",
 };
 
+import { Chip } from "../util/Chip";
+import Reveal from "../util/Reveal";
+import { useLanguage } from "../../context/LanguageContext";
+
 export const ExperienceItem = ({ title, position, time, location, description, tech }) => {
   const { t } = useLanguage();
   const keys = expKeys[title] || {};
   
+  // Translate all the fields
   const translatedTitle = keys.title ? t(keys.title) : title;
   const translatedPos = keys.pos ? t(keys.pos) : position;
   const translatedTime = keys.time ? t(keys.time) : time;
@@ -61,6 +77,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
   const translatedDesc4 = keys.desc4 ? t(keys.desc4) : null;
   const translatedDesc5 = keys.desc5 ? t(keys.desc5) : null;
 
+  // Translate each technology
   const translateTech = (techItem) => {
     const key = techKeys[techItem];
     return key ? t(key) : techItem;
@@ -68,6 +85,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
 
   return (
     <div className="mb-6 border-b pb-6 border-zinc-700">
+      {/* Header: title and time */}
       <div className="flex items-center justify-between mb-2">
         <Reveal>
           <span className="font-bold text-xl">{translatedTitle}</span>
@@ -77,6 +95,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
         </Reveal>
       </div>
 
+      {/* Subheader: position and location */}
       <div className="flex items-center justify-between mb-4">
         <Reveal>
           <span className="text-green-400 font-bold">{translatedPos}</span>
@@ -85,6 +104,8 @@ export const ExperienceItem = ({ title, position, time, location, description, t
           <span>{location}</span>
         </Reveal>
       </div>
+      
+      {/* Description paragraphs - conditionally rendered if they exist */}
       <Reveal>
         <p className="mb-4 text-zinc-300 leading-relaxed">{translatedDesc}</p>
       </Reveal>
@@ -108,6 +129,8 @@ export const ExperienceItem = ({ title, position, time, location, description, t
           <p className="mb-6 text-zinc-300 leading-relaxed">{translatedDesc5}</p>
         </Reveal>
       )}
+      
+      {/* Technology chips */}
       <Reveal>
         <div className="flex flex-wrap gap-2">
           {tech.map((item) => (

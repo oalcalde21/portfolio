@@ -1,5 +1,20 @@
+/**
+ * LanguageContext handles all the bilingual magic for the portfolio.
+ * 
+ * This context provides:
+ * - The current language (EN or ES)
+ * - A way to toggle between languages
+ * - A translation function (t) to get any text in the current language
+ * - A transitionKey that updates on language change (used for animations)
+ * 
+ * All text lives here in the translations object. Each key has both
+ * English and Spanish versions. Components just call t("key") and 
+ * the right text appears based on the current language setting.
+ */
+
 import { createContext, useContext, useState, useCallback } from "react";
 
+// All the text used throughout the portfolio, organized by language
 const translations = {
   EN: {
     navAbout: "About",
@@ -249,17 +264,30 @@ const translations = {
   },
 };
 
+// Create the context - this is what components will use to access language features
 const LanguageContext = createContext();
 
+/**
+ * LanguageProvider wraps the app and gives all components access to language features.
+ * 
+ * @param {React.ReactNode} children - The app content to wrap
+ */
 export const LanguageProvider = ({ children }) => {
+  // Current language: "EN" or "ES"
   const [language, setLanguage] = useState("EN");
+  
+  // This key increments every time the language changes
+  // Components use this as a React key to trigger re-renders and animations
   const [transitionKey, setTransitionKey] = useState(0);
 
+  // Toggles between EN and ES
   const toggleLanguage = useCallback(() => {
     setLanguage((prev) => (prev === "EN" ? "ES" : "EN"));
     setTransitionKey((prev) => prev + 1);
   }, []);
 
+  // The translation function - pass a key, get the text in the current language
+  // If a key is missing, it just returns the key itself (fallback behavior)
   const t = useCallback(
     (key) => {
       return translations[language][key] || key;
@@ -274,4 +302,13 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
+/**
+ * Hook to access language context in any component.
+ * 
+ * Returns:
+ * - language: current language ("EN" or "ES")
+ * - toggleLanguage: function to switch languages
+ * - t: translation function - t("key") returns the text in current language
+ * - transitionKey: increments on language change (useful for triggering animations)
+ */
 export const useLanguage = () => useContext(LanguageContext);
