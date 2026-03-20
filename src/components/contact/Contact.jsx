@@ -25,7 +25,7 @@ export const Contact = () => {
             </Link>{" "}
             {t("contactOr")}{" "}
             <Link
-              href="https://www.twitter.com"
+              href="https://github.com/oalcalde21"
               target="_blank"
               className="text-green-400 hover:underline"
             >
@@ -34,7 +34,7 @@ export const Contact = () => {
           </p>
         </Reveal>
         <Reveal width="w-full">
-          <Link href="mailto:oscar@email.com">
+          <Link href="mailto:oalcalde211@gmail.com">
             <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
               <AiFillMail />
               <span>{t("contactEmail")}</span>
