@@ -1,5 +1,6 @@
 /**
  * Header component - the sticky top bar that stays visible while scrolling.
+ * Covers the full screen width including notched phones.
  */
 
 import Link from "next/link";
@@ -13,16 +14,18 @@ export const Header = () => {
   const cvUrl = language === "EN" ? "/resume.pdf" : "/cv.pdf";
   
   return (
-    <header className="h-[72px] px-4 flex items-center justify-between sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
-      <MyLinks />
-      <div className="flex items-center gap-3">
-        <LanguageToggle />
-        <button 
-          onClick={() => window.open(cvUrl)} 
-          className="w-[120px] text-center border border-white text-white px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors"
-        >
-          {t("resumeBtn")}
-        </button>
+    <header className="fixed top-0 left-0 right-0 z-20 bg-zinc-900/80 backdrop-blur-md">
+      <div className="h-[72px] px-4 flex items-center justify-between max-w-5xl mx-auto">
+        <MyLinks />
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <button 
+            onClick={() => window.open(cvUrl)} 
+            className="w-[120px] text-center border border-white text-white px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors"
+          >
+            {t("resumeBtn")}
+          </button>
+        </div>
       </div>
     </header>
   );
