@@ -10,7 +10,7 @@ import { Contact } from "./contact/Contact";
 import { useLanguage } from "../context/LanguageContext";
 
 export const HomPage = () => {
-  const { transitionKey } = useLanguage();
+  const { transitionKey, t } = useLanguage();
   
   return (
     <div className="grid grid-cols-[54px_1fr]">
@@ -33,6 +33,9 @@ export const HomPage = () => {
             <Contact />
           </motion.div>
         </AnimatePresence>
+        <footer className="text-center text-zinc-500 text-sm py-4">
+          {t("legalText")}
+        </footer>
       </main>
     </div>
   );
