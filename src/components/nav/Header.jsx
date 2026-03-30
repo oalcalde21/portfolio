@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import React from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { LanguageToggle } from "../buttons/LanguageToggle";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -35,6 +35,9 @@ export const MyLinks = () => (
     </Link>
     <Link href="https://github.com/oalcalde21" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
       <FaGithub />
+    </Link>
+    <Link href="https://wa.me/59894299470" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
+      <FaWhatsapp />
     </Link>
   </div>
 );
