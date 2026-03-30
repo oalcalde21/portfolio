@@ -36,7 +36,7 @@ export const MyLinks = () => (
     <Link href="https://github.com/oalcalde21" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
       <FaGithub />
     </Link>
-    <Link href="https://wa.me/59894299470" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
+    <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
       <FaWhatsapp />
     </Link>
   </div>

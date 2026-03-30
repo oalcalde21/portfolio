@@ -51,7 +51,7 @@ export const Contact = () => {
         </Reveal>
         
         <Reveal width="w-full">
-          <Link href="https://wa.me/59894299470" target="_blank" rel="noopener noreferrer">
+          <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer">
             <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-xl whitespace-normal mx-auto mt-4 text-green-400 hover:underline">
               <AiOutlineWhatsApp />
               <span>{t("contactWriteMe")}</span>
