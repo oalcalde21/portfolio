@@ -24,6 +24,7 @@ const projectKeys = {
   "Plenitud Fit": { title: "plenitudTitle", desc: "plenitudDescription", m1: "plenitudModal1", m2: "plenitudModal2", m3: "plenitudModal3" },
   "CFR Estudio": { title: "cfrTitle", desc: "cfrDescription", m1: "cfrModal1", m2: "cfrModal2", m3: "cfrModal3" },
   "Revision Automotriz": { title: "revisionTitle", desc: "revisionDescription", m1: "revisionModal1", m2: "revisionModal2", m3: "revisionModal3" },
+  "AltasWeb": { title: "altaswebTitle", desc: "altaswebDescription", m1: "altaswebModal1", m2: "altaswebModal2", m3: "altaswebModal3" },
 };
 
 export const Project = ({ projectLink, description, imgSrc, title, code, tech }) => {

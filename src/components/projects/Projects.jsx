@@ -48,4 +48,10 @@ const projects = [
     projectLink: "https://revisionautomotriz.com/",
     tech: ["React", "Bootstrap"],
   },
+  {
+    title: "AltasWeb",
+    imgSrc: "project-imgs/altasweb.png",
+    projectLink: "https://altasweb.uy",
+    tech: ["React", "Next.js", "Tailwind"],
+  },
 ];

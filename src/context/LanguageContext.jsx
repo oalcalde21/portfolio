@@ -139,6 +139,11 @@ const translations = {
     revisionModal1: "Revision Automotriz is a vehicle inspection service that helps used car buyers make informed decisions.",
     revisionModal2: "I developed the website with React and Bootstrap.",
     revisionModal3: "The site includes information about the inspection process and service benefits.",
+    altaswebTitle: "AltasWeb",
+    altaswebDescription: "Personal web development company focused on conversion-driven.",
+    altaswebModal1: "AltasWeb is my personal web development company.",
+    altaswebModal2: "We specialize in creating websites optimized for conversion, using modern technologies like React, Next.js, and Tailwind.",
+    altaswebModal3: "Our focus is on helping businesses turn visitors into customers through strategic design and development.",
   },
   ES: {
     navAbout: "Sobre mí",
@@ -263,6 +268,11 @@ const translations = {
     revisionModal1: "Revisión Automotriz es un servicio de inspección de vehículos que ayuda a compradores de autos usados a tomar decisiones informadas.",
     revisionModal2: "Desarrollé el sitio web con React y Bootstrap.",
     revisionModal3: "El sitio incluye información sobre el proceso de inspección y los beneficios del servicio.",
+    altaswebTitle: "AltasWeb",
+    altaswebDescription: "Empresa personal de desarrollo web enfocada en conversión.",
+    altaswebModal1: "AltasWeb es mi empresa personal de desarrollo web.",
+    altaswebModal2: "Nos especializamos en crear sitios web optimizados para conversión, usando tecnologías modernas como React, Next.js y Tailwind.",
+    altaswebModal3: "Nuestro enfoque es ayudar a negocios a convertir visitantes en clientes a través de diseño y desarrollo estratégico.",
   },
 };
 
