@@ -11,12 +11,14 @@
 
 import "@/styles/globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App({ Component, pageProps }) {
   return (
     // LanguageProvider wraps everything so all components can use t() and toggleLanguage
     <LanguageProvider>
       <Component {...pageProps} />
+      <Analytics />
     </LanguageProvider>
   );
 }
