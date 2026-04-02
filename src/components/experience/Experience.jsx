@@ -16,8 +16,8 @@ import { useLanguage } from "../../context/LanguageContext";
 export const Experience = () => {
   const { t } = useLanguage();
   return (
-    <section className="section-wrapper" id="experience">
-      <SectionHeader title={t("experienceTitle")} dir="l" />
+    <section className="section-wrapper" id="experience" aria-labelledby="experience-heading">
+      <SectionHeader title={t("experienceTitle")} dir="l" id="experience-heading" />
       {experience.map((item) => (
         <ExperienceItem key={item.title} {...item} />
       ))}

@@ -24,8 +24,8 @@ export const About = () => {
   const hiText = language === "EN" ? "Hi!" : "H";
   
   return (
-    <section id="about" className="section-wrapper">
-      <SectionHeader title={t("aboutTitle")} dir="l" />
+    <section id="about" className="section-wrapper" aria-labelledby="about-heading">
+      <SectionHeader title={t("aboutTitle")} dir="l" id="about-heading" />
       <div className="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8">
         {/* Left side: text content */}
         <div className="space-y-4">
@@ -63,7 +63,7 @@ export const About = () => {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-4 text-sm text-green-400">
                 <span>{t("aboutMyLinks")}</span>
-                <AiOutlineArrowRight />
+                <AiOutlineArrowRight aria-hidden="true" />
               </div>
               <MyLinks />
             </div>

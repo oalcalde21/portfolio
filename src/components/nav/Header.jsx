@@ -19,7 +19,8 @@ export const Header = () => {
         <LanguageToggle />
         <button 
           onClick={() => window.open(cvUrl)} 
-          className="w-[120px] text-center border border-white text-white px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors"
+          aria-label={t("resumeBtn")}
+          className="w-[120px] text-center border border-white text-white px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
         >
           {t("resumeBtn")}
         </button>
@@ -30,13 +31,13 @@ export const Header = () => {
 
 export const MyLinks = () => (
   <div className="flex items-center text-lg gap-4">
-    <Link href="https://www.linkedin.com/in/oscar-alcalde/" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
+    <Link href="https://www.linkedin.com/in/oscar-alcalde/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-zinc-300 hover:text-green-400">
       <FaLinkedin />
     </Link>
-    <Link href="https://github.com/oalcalde21" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
+    <Link href="https://github.com/oalcalde21" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-zinc-300 hover:text-green-400">
       <FaGithub />
     </Link>
-    <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-green-400">
+    <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-zinc-300 hover:text-green-400">
       <FaWhatsapp />
     </Link>
   </div>

@@ -55,7 +55,6 @@ const techKeys = {
   "OSD Images": "techOSDImages",
   "Bitlocker": "techBitlocker",
   "Global Teams": "techGlobalTeams",
-  "Global Support": "techGlobalSupport",
   "Massive Migrations": "techMassiveMigrations",
 };
 

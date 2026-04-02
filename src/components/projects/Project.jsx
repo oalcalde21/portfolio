@@ -27,7 +27,7 @@ const projectKeys = {
   "AltasWeb": { title: "altaswebTitle", desc: "altaswebDescription", m1: "altaswebModal1", m2: "altaswebModal2", m3: "altaswebModal3" },
 };
 
-export const Project = ({ projectLink, description, imgSrc, title, code, tech }) => {
+export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
   const { t } = useLanguage();
   const [hovered, setHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -71,19 +71,24 @@ export const Project = ({ projectLink, description, imgSrc, title, code, tech })
         transition={{ duration: 0.75 }}
       >
         {/* Project screenshot - interactive hover effect */}
-        <div
+        <button
+          type="button"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onClick={() => setIsOpen(true)}
+          aria-label={`View details for ${translatedTitle}`}
           className="w-full aspect-video bg-zinc-700 cursor-pointer relative rounded-lg overflow-hidden"
         >
           <img
             src={imgSrc}
-            alt={`An image of the ${translatedTitle} project.`}
+            alt={`Screenshot of ${translatedTitle} project`}
+            width={800}
+            height={450}
+            loading="lazy"
             style={{ width: hovered ? "90%" : "85%", rotate: hovered ? "2deg" : "0deg" }}
             className="w-[100%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-3 transition-all rounded"
           />
-        </div>
+        </button>
         
         {/* Project info below the image */}
         <div className="mt-6">
@@ -92,10 +97,7 @@ export const Project = ({ projectLink, description, imgSrc, title, code, tech })
             <div className="flex items-center gap-2 w-full">
               <h4 className="font-bold text-lg shrink-0 max-w-[calc(100%_-_150px)]">{translatedTitle}</h4>
               <div className="w-full h-[1px] bg-zinc-600" />
-              {code && (
-                <span className="text-zinc-500 text-sm">Code</span>
-              )}
-              <Link href={projectLink} target="_blank" rel="nofollow">
+              <Link href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${translatedTitle} website`}>
                 <AiOutlineExport className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
               </Link>
             </div>
@@ -106,13 +108,17 @@ export const Project = ({ projectLink, description, imgSrc, title, code, tech })
             <div className="flex flex-wrap gap-4 text-sm text-green-400 my-2">{tech.join(" - ")}</div>
           </Reveal>
           
-          {/* Description with "Learn more" link */}
+          {/* Description with "Learn more" button */}
           <Reveal>
             <p className="text-zinc-300 leading-relaxed">
               {translatedDesc}{" "}
-              <span className="inline-block text-sm text-green-400 cursor-pointer" onClick={() => setIsOpen(true)}>
+              <button
+                type="button"
+                onClick={() => setIsOpen(true)}
+                className="inline-block text-sm text-green-400 cursor-pointer hover:underline"
+              >
                 {t("projectLearnMore")} {">"}
-              </span>
+              </button>
             </p>
           </Reveal>
         </div>
@@ -126,7 +132,6 @@ export const Project = ({ projectLink, description, imgSrc, title, code, tech })
         isOpen={isOpen}
         imgSrc={imgSrc}
         title={translatedTitle}
-        code={code}
         tech={tech}
       />
     </>

@@ -10,7 +10,7 @@ const gtmNoscript = `<iframe src="https://www.googletagmanager.com/ns.html?id=GT
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="es">
       <Head>
         <title>Oscar Alcalde</title>
         {/* Google Tag Manager */}
@@ -18,17 +18,20 @@ export default function Document() {
         {/* End Google Tag Manager */}
 
         {/* Primary Meta Tags */}
+        <title>
+          Oscar Alcalde - Portfolio | Frontend Developer & IT Support | Uruguay
+        </title>
         <meta
           name="title"
-          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+          content="Oscar Alcalde - Portfolio | Frontend Developer & IT Support | Uruguay"
         />
         <meta
           name="description"
-          content="Portfolio of Oscar Alcalde - IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. Specializing in React, JavaScript, and modern web technologies."
+          content="Oscar Alcalde - Portfolio profesional. Frontend Developer y Analista Sr. de Soporte IT con 13+ años de experiencia. Especializado en React, JavaScript, Tailwind, ServiceNow, Intune. Montevideo, Uruguay."
         />
         <meta
           name="keywords"
-          content="Oscar Alcalde, Help Desk, Helpdesk, Frontend, Frontend Developer, IT Support, IT Specialist, React, JavaScript, Uruguay, Montevideo, ServiceNow, Intune, Web Developer, RCI Latin America"
+          content="Oscar Alcalde, Oscar Alcalde portfolio, Oscar Alcalde Uruguay, Frontend Developer Uruguay, Help Desk Analyst Uruguay, React Developer Montevideo, IT Support Specialist Uruguay, Oscar Developer, oscar.alcalde.vercel.app"
         />
         <meta name="author" content="Oscar Alcalde" />
         <meta name="robots" content="index, follow" />
@@ -40,35 +43,41 @@ export default function Document() {
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://oscaralcalde.dev/" />
+        <meta property="og:url" content="https://oscar.alcalde.vercel.app/" />
         <meta
           property="og:title"
-          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+          content="Oscar Alcalde - Portfolio | Frontend Developer & IT Support | Uruguay"
         />
         <meta
           property="og:description"
-          content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development. View my projects and experience."
+          content="Portfolio profesional de Oscar Alcalde. Frontend Developer y Analista Sr. de Soporte IT. Especializado en React, JavaScript, Tailwind. Montevideo, Uruguay."
         />
         <meta property="og:image" content="/og-image.png" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:locale:alternate" content="es_ES" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="es_UY" />
+        <meta property="og:locale:alternate" content="en_US" />
+        <meta property="og:site_name" content="Oscar Alcalde Portfolio" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://oscaralcalde.dev/" />
+        <meta name="twitter:site" content="@oalcalde21" />
+        <meta name="twitter:url" content="https://oscar.alcalde.vercel.app/" />
         <meta
           name="twitter:title"
-          content="Oscar Alcalde - Help Desk & Frontend Developer | Uruguay"
+          content="Oscar Alcalde - Portfolio | Frontend Developer & IT Support | Uruguay"
         />
         <meta
           name="twitter:description"
-          content="IT Help Desk Sr. Analyst with 13+ years experience changing now to Frontend Development."
+          content="Portfolio profesional de Oscar Alcalde. Frontend Developer y Analista Sr. de Soporte IT. Montevideo, Uruguay."
         />
         <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:creator" content="@oalcalde21" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://oscaralcalde.dev/" />
+        <link rel="canonical" href="https://oscar.alcalde.vercel.app/" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
         {/* Structured Data - Person Schema */}
         <script
@@ -77,53 +86,180 @@ export default function Document() {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
+              "@id": "https://oscar.alcalde.vercel.app/#person",
               name: "Oscar Alcalde",
-              url: "https://oscaralcalde.dev",
-              sameAs: [
-                "https://www.linkedin.com/in/oscar-alcalde/",
-                "https://github.com/oalcalde21",
-              ],
-              jobTitle: "Sr. Help Desk Support Analyst",
-              worksFor: {
-                "@type": "Organization",
-                name: "RCI Latinoamérica",
-              },
+              givenName: "Oscar",
+              familyName: "Alcalde",
+              url: "https://oscar.alcalde.vercel.app",
+              image: "https://oscar.alcalde.vercel.app/og-image.png",
+              jobTitle: "Frontend Developer & Sr. IT Help Desk Analyst",
               description:
-                "IT Help Desk Sr. Analyst with 13+ years of experience, changing now to Frontend Development with skills in React, JavaScript, and modern web technologies.",
+                "Oscar Alcalde - Frontend Developer y Analista Sr. de Soporte IT con 13+ años de experiencia. Especializado en React, JavaScript, Tailwind, ServiceNow, Intune. Montevideo, Uruguay.",
               knowsAbout: [
-                "IT Support",
-                "Help Desk",
-                "ServiceNow",
-                "Intune",
                 "Frontend Development",
                 "React",
                 "JavaScript",
+                "TypeScript",
+                "Next.js",
+                "Tailwind CSS",
+                "IT Support",
+                "Help Desk",
+                "ServiceNow",
+                "Microsoft Intune",
+                "Windows Administration",
                 "HTML",
                 "CSS",
               ],
+              skillProficiency: [
+                { skillName: "React", proficiencyLevel: "Advanced" },
+                { skillName: "JavaScript", proficiencyLevel: "Advanced" },
+                { skillName: "Tailwind CSS", proficiencyLevel: "Advanced" },
+                { skillName: "IT Support", proficiencyLevel: "Expert" },
+              ],
+              worksFor: {
+                "@type": "Organization",
+                "@id": "https://www.rci.com/",
+                name: "RCI Latinoamérica (Travel + Leisure)",
+              },
+              alumniOf: {
+                "@type": "Organization",
+                name: "Self-taught & Continuous Learning",
+              },
+              sameAs: [
+                "https://www.linkedin.com/in/oscar-alcalde/",
+                "https://github.com/oalcalde21",
+                "https://twitter.com/oalcalde21",
+                "https://www.instagram.com/oalcalde21/",
+              ],
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "oalcalde211@gmail.com",
+                contactType: "professional",
+              },
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Montevideo",
-                addressCountry: "UY",
+                addressRegion: "Montevideo",
+                addressCountry: {
+                  "@type": "Country",
+                  name: "Uruguay",
+                },
+              },
+              nationality: {
+                "@type": "Country",
+                name: "Uruguayan",
               },
             }),
           }}
         />
 
-        {/* Structured Data - Portfolio Schema */}
+        {/* Structured Data - WebSite Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": "https://oscar.alcalde.vercel.app/#website",
               name: "Oscar Alcalde Portfolio",
-              url: "https://oscaralcalde.dev",
+              url: "https://oscar.alcalde.vercel.app",
               description:
-                "Personal portfolio of Oscar Alcalde - IT Professional changing now to Frontend Development",
+                "Portfolio profesional de Oscar Alcalde - Frontend Developer y Analista Sr. de Soporte IT en Uruguay",
+              inLanguage: ["es-UY", "en-US"],
+              isPartOf: {
+                "@type": "WebPage",
+                "@id": "https://oscar.alcalde.vercel.app/#webpage",
+              },
               author: {
-                "@type": "Person",
-                name: "Oscar Alcalde",
+                "@id": "https://oscar.alcalde.vercel.app/#person",
+              },
+              about: {
+                "@id": "https://oscar.alcalde.vercel.app/#person",
+              },
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate:
+                    "https://oscar.alcalde.vercel.app/?search={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+
+        {/* Structured Data - WebPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "@id": "https://oscar.alcalde.vercel.app/#webpage",
+              url: "https://oscar.alcalde.vercel.app",
+              name: "Oscar Alcalde - Portfolio | Frontend Developer & IT Support | Uruguay",
+              description:
+                "Portfolio profesional de Oscar Alcalde. Frontend Developer y Analista Sr. de Soporte IT con 13+ años de experiencia. Especializado en React, JavaScript, Tailwind, ServiceNow, Intune.",
+              isPartOf: {
+                "@id": "https://oscar.alcalde.vercel.app/#website",
+              },
+              author: {
+                "@id": "https://oscar.alcalde.vercel.app/#person",
+              },
+              breadcrumb: {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://oscar.alcalde.vercel.app",
+                  },
+                ],
+              },
+              mainEntity: {
+                "@id": "https://oscar.alcalde.vercel.app/#person",
+              },
+              inLanguage: "es-UY",
+            }),
+          }}
+        />
+
+        {/* Structured Data - ProfessionalService Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              name: "Oscar Alonso - Frontend Developer",
+              description:
+                "Desarrollo web frontend especializado en React, Next.js y Tailwind. Servicios de desarrollo web enfocado en conversión.",
+              url: "https://altasweb.uy",
+              areaServed: {
+                "@type": "Country",
+                name: "Uruguay",
+              },
+              priceRange: "$$",
+              knowsAbout: [
+                "Frontend Development",
+                "React",
+                "Next.js",
+                "Tailwind CSS",
+                "Web Development",
+              ],
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                ],
+                opens: "09:00",
+                closes: "18:00",
               },
             }),
           }}

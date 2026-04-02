@@ -18,6 +18,8 @@ export const LanguageToggle = ({ className }) => {
   return (
     <button
       onClick={toggleLanguage}
+      aria-label={`Switch to ${language === "EN" ? "Spanish" : "English"}`}
+      aria-pressed={language === "EN"}
       className={twMerge(
         `relative flex items-center justify-center w-16 h-7 rounded-full
         bg-zinc-800 border border-zinc-600 text-xs font-bold

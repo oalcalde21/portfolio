@@ -19,7 +19,7 @@ import { Typewriter } from "../util/Typewriter";
 const Hero = () => {
   const { t } = useLanguage();
   return (
-    <section className="text-slat-100 overflow-hidden py-24 md:py-32">
+    <section className="text-slat-100 overflow-hidden py-24 md:py-32" aria-label="Hero">
       <div className="relative">
         {/* Content layer - z-10 keeps it above the dot grid */}
         <div className="pointer-events-none relative z-10">

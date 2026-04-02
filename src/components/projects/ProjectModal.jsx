@@ -20,7 +20,7 @@ import { AiOutlineExport } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
 import { useLanguage } from "../../context/LanguageContext";
 
-export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isOpen, title, code, tech }) => {
+export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isOpen, title, tech }) => {
   const { t } = useLanguage();
 
   // Lock/unlock body scroll when modal opens/closes
@@ -38,7 +38,7 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
     // Clicking the backdrop closes the modal
     <div className="fixed inset-0 z-50 px-4 py-12 bg-zinc-950/50 backdrop-blur overflow-y-scroll flex justify-center cursor-pointer" onClick={() => setIsOpen(false)}>
       {/* Close button */}
-      <button className="absolute top-4 md:top-6 text-xl right-4"><MdClose /></button>
+      <button onClick={() => setIsOpen(false)} aria-label="Close modal" className="absolute top-4 md:top-6 text-xl right-4"><MdClose /></button>
       
       {/* Modal card - clicking it doesn't close (stops propagation) */}
       <motion.div
@@ -47,7 +47,7 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-2xl h-fit rounded-lg overflow-hidden bg-zinc-900 shadow-lg cursor-auto"
       >
-        {imgSrc && <img className="w-full" src={imgSrc} alt={`An image of the ${title} project.`} />}
+        {imgSrc && <img className="w-full" src={imgSrc} alt={`An image of the ${title} project.`} width={800} height={450} loading="lazy" />}
         <div className="p-8">
           <h4 className="text-3xl font-bold mb-2">{title}</h4>
           <div className="flex flex-wrap gap-2 text-sm text-green-400">{tech.join(" - ")}</div>
@@ -56,8 +56,8 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
             <p className="font-bold mb-2 text-xl">{t("projectLinks")}<span className="text-green-400">.</span></p>
             <div className="flex items-center gap-4 text-sm">
               {projectLink && (
-                <Link target="_blank" rel="nofollow" className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1" href={projectLink}>
-                  <AiOutlineExport /> {t("projectLiveProject")}
+                <Link target="_blank" rel="noopener noreferrer" aria-label={t("projectLiveProject")} className="text-zinc-300 hover:text-green-400 transition-colors flex items-center gap-1" href={projectLink}>
+                  <AiOutlineExport aria-hidden="true" /> {t("projectLiveProject")}
                 </Link>
               )}
             </div>

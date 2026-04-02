@@ -9,7 +9,7 @@ This is Oscar's personal portfolio website. It's a single-page portfolio that sh
 ### Key Features
 
 - **Bilingual Support (EN/ES)**: The entire site switches between English and Spanish with a smooth fade animation
-- **Interactive Elements**: 
+- **Interactive Elements**:
   - Clickable dot grid in the hero section that creates ripple animations
   - Typewriter effect cycling through career roles
   - Cards that animate in when scrolling into view
@@ -73,6 +73,7 @@ src/
 The `LanguageContext.jsx` file contains all text in both English and Spanish. Each key exists in both languages, and the `t("key")` function returns the text in whichever language is currently selected.
 
 To change text:
+
 1. Find the translation key in `LanguageContext.jsx`
 2. Update either the `EN` or `ES` section
 
@@ -94,7 +95,7 @@ Este es el portfolio personal de Oscar. Es una página única que muestra su tra
 ### Características Principales
 
 - **Soporte Bilingüe (EN/ES)**: Todo el sitio cambia entre inglés y español con una animación suave
-- **Elementos Interactivos**: 
+- **Elementos Interactivos**:
   - Cuadrícula de puntos en la sección hero que crea animaciones tipo ola
   - Efecto de máquina de escribir rotando entre títulos de carrera
   - Tarjetas que se animan al aparecer en pantalla
@@ -158,6 +159,7 @@ src/
 El archivo `LanguageContext.jsx` contiene todo el texto en inglés y español. Cada clave existe en ambos idiomas, y la función `t("clave")` devuelve el texto en el idioma actualmente seleccionado.
 
 Para cambiar texto:
+
 1. Encuentra la clave de traducción en `LanguageContext.jsx`
 2. Actualiza la sección `EN` o `ES`
 
@@ -199,7 +201,7 @@ This portfolio includes several SEO improvements to help it rank when searching 
 ### Important: Update These for Production
 
 1. **Replace the placeholder URL** in these files:
-   - `src/pages/_document.jsx` - Change `https://oscaralcalde.dev` to your actual domain
+   - `src/pages/_document.jsx` - Change `https://oscar.alcalde.vercel.app` to your actual domain
    - `public/robots.txt` - Same
    - `public/sitemap.xml` - Same
 

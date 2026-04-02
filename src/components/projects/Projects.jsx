@@ -17,8 +17,8 @@ import { useLanguage } from "../../context/LanguageContext";
 export const Projects = () => {
   const { t } = useLanguage();
   return (
-    <section className="section-wrapper" id="projects">
-      <SectionHeader title={t("projectsTitle")} dir="r" />
+    <section className="section-wrapper" id="projects" aria-labelledby="projects-heading">
+      <SectionHeader title={t("projectsTitle")} dir="r" id="projects-heading" />
       <div className="grid gap-12 grid-cols-1 md:grid-cols-2">
         {projects.map((project) => {
           return <Project key={project.title} {...project} />;

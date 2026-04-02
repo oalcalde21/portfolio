@@ -10,12 +10,12 @@ import { useLanguage } from "../../context/LanguageContext";
 export const Contact = () => {
   const { t } = useLanguage();
   return (
-    <section className="section-wrapper" id="contact">
+    <section className="section-wrapper" id="contact" aria-labelledby="contact-heading">
       <div className="max-w-xl mx-auto bg-zinc-800 px-8 py-12 rounded-xl">
         <Reveal width="w-full">
-          <h4 className="text-4xl md:text-5xl text-center font-black">
+          <h2 id="contact-heading" className="text-4xl md:text-5xl text-center font-black">
             {t("contactTitle")}<span className="text-green-400">.</span>
-          </h4>
+          </h2>
         </Reveal>
         
         <Reveal width="w-full">
@@ -42,18 +42,18 @@ export const Contact = () => {
         </Reveal>
         
         <Reveal width="w-full">
-          <Link href="mailto:oalcalde211@gmail.com">
+          <Link href="mailto:oalcalde211@gmail.com" aria-label={t("contactEmail")}>
             <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
-              <AiFillMail />
+              <AiFillMail aria-hidden="true" />
               <span>{t("contactEmail")}</span>
             </div>
           </Link>
         </Reveal>
         
         <Reveal width="w-full">
-          <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer">
+          <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer" aria-label={t("contactWriteMe")}>
             <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-xl whitespace-normal mx-auto mt-4 text-green-400 hover:underline">
-              <AiOutlineWhatsApp />
+              <AiOutlineWhatsApp aria-hidden="true" />
               <span>{t("contactWriteMe")}</span>
             </div>
           </Link>
