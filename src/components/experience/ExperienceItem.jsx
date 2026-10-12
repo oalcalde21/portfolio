@@ -13,6 +13,9 @@
 
 // Maps company names to their translation keys
 const expKeys = {
+  "AltasWeb": { title: "expAltasTitle", pos: "expAltasPos", time: "expAltasTime", desc: "expAltasDesc", desc2: "expAltasDesc2" },
+  "Urudata": { title: "expUruTitle", pos: "expUruPos", time: "expUruTime", desc: "expUruDesc" },
+  "HYC Hardware": { title: "expHycTitle", pos: "expHycPos", time: "expHycTime", desc: "expHycDesc" },
   "RCI Latinoamericana (Travel + Leisure)": { title: "expRciTitle", pos: "expRciPos", time: "expRciTime", desc: "expRciDesc", desc2: "expRciDesc2", desc3: "expRciDesc3", desc4: "expRciDesc4", desc5: "expRciDesc5" },
   "ITS - Infrastructure Technology Services": { title: "expItsTitle", pos: "expItsPos", time: "expItsTime", desc: "expItsDesc", desc2: "expItsDesc2", desc3: "expItsDesc3", desc4: "expItsDesc4" },
   "Infocorp": { title: "expInfoTitle", pos: "expInfoPos", time: "expInfoTime", desc: "expInfoDesc", desc2: "expInfoDesc2", desc3: "expInfoDesc3" },
@@ -85,7 +88,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
   return (
     <div className="mb-6 border-b pb-6 border-zinc-700">
       {/* Header: title and time */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-2">
         <Reveal>
           <span className="font-bold text-xl">{translatedTitle}</span>
         </Reveal>
@@ -95,7 +98,7 @@ export const ExperienceItem = ({ title, position, time, location, description, t
       </div>
 
       {/* Subheader: position and location */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-4">
         <Reveal>
           <span className="text-green-400 font-bold">{translatedPos}</span>
         </Reveal>

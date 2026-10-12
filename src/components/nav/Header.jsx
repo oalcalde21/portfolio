@@ -13,24 +13,26 @@ export const Header = () => {
   const cvUrl = language === "EN" ? "/resume.pdf" : "/cv.pdf";
   
   return (
-    <header className="h-[72px] px-4 flex items-center justify-between sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
+    <header className="h-[72px] px-3 sm:px-4 flex items-center justify-between gap-2 sticky top-0 z-20 bg-zinc-900/50 backdrop-blur-md">
       <MyLinks />
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <LanguageToggle />
-        <button 
-          onClick={() => window.open(cvUrl)} 
+        <a
+          href={cvUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label={t("resumeBtn")}
-          className="w-[120px] text-center border border-white text-white px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+          className="sm:w-[120px] shrink-0 text-center border border-white text-white px-3 sm:px-4 py-2 rounded text-sm font-medium hover:bg-white hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
         >
           {t("resumeBtn")}
-        </button>
+        </a>
       </div>
     </header>
   );
 };
 
 export const MyLinks = () => (
-  <div className="flex items-center text-lg gap-4">
+  <div className="flex items-center text-lg gap-3 sm:gap-4">
     <Link href="https://www.linkedin.com/in/oscar-alcalde/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-zinc-300 hover:text-green-400">
       <FaLinkedin />
     </Link>

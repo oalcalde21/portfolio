@@ -28,27 +28,39 @@ export const Experience = () => {
 // Work experience data - ordered from most recent to oldest
 const experience = [
   {
+    title: "AltasWeb",
+    location: "Uruguay",
+    tech: ["React", "Vite", "Tailwind CSS", "Supabase / PostgreSQL", "Git / GitHub", "Vercel", "PowerShell"],
+  },
+  {
     title: "RCI Latinoamericana (Travel + Leisure)",
     position: "Sr. Help Desk Support Analyst",
-    time: "Apr 2017 - Present",
+    time: "Apr 2017 - Sep 2026",
     location: "Uruguay",
-    description: "Currently working at RCI Latin America within the IT support team, in a large corporate environment with modern management tools.",
-    tech: ["ServiceNow", "Intune", "Autopilot", "Crowdstrike", "SCCM", "MS Teams", "Microsoft Server", "Snowflake", "SQL", "PowerBi", "Zscaler", "VPN", "Meraki", "PaperCut", "OSD Images", "Bitlocker", "Global Teams", "Global Support", "Massive Migrations"],
+    tech: ["ServiceNow", "Intune", "Autopilot", "Microsoft 365", "Jamf", "macOS", "CrowdStrike", "Zscaler", "ZPA", "Meraki", "BitLocker", "Power Automate Desktop", "BAT", "PowerShell", "Global Support"],
   },
   {
     title: "ITS - Infrastructure Technology Services",
     position: "Help Desk Analyst",
     time: "May 2016 - Apr 2017",
     location: "Uruguay",
-    description: "At ITS, I worked providing IT support for Telefonica Business Solutions in a corporate environment with high service standards.",
-    tech: ["ITIL", "English Support", "Fast Adaptation"],
+    tech: ["English Support", "Windows", "Networking"],
   },
   {
     title: "Infocorp",
     position: "Help Desk Analyst",
     time: "Dec 2012 - May 2016",
     location: "Uruguay",
-    description: "At Infocorp, I provided IT support for various companies, but the one that taught me the most was CPA Ferrere, a large corporate environment with over 500 users and high demands.",
-    tech: ["Windows", "Windows AIK", "Sysprep", "Office 365", "Vendor Management", "Networking", "iOS", "Data Center", "Coordination", "VIP Support", "Global Support", "Hardware Repair", "Data Migration", "Backups", "DGI Software"],
+    tech: ["Vendor Management", "Data Center", "Coordination", "Global Support", "Data Migration"],
+  },
+  {
+    title: "Urudata",
+    location: "Uruguay",
+    tech: ["Windows", "Hardware Repair", "Networking"],
+  },
+  {
+    title: "HYC Hardware",
+    location: "Uruguay",
+    tech: ["Hardware Repair", "POS"],
   },
 ];

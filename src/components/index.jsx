@@ -26,11 +26,11 @@ export const HomPage = () => {
   const { transitionKey, t } = useLanguage();
   
   return (
-    <div className="grid grid-cols-[54px_1fr]">
+    <div className="grid grid-cols-[54px_minmax(0,1fr)]">
       {/* Vertical navigation sidebar - fixed width */}
       <SideBar />
       
-      <main>
+      <main className="min-w-0">
         {/* Sticky header with language toggle and resume button */}
         <Header />
         

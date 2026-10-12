@@ -2,8 +2,8 @@
  * Stats component - displays skill chips in the About section.
  * 
  * Skills are divided into two categories:
- * 1. Work skills - tools and technologies used in IT support (left column)
- * 2. Hobby skills - technologies learned for frontend development (right column)
+ * 1. IT operations and automation
+ * 2. Development and delivery
  * 
  * Each skill is rendered as a Chip component with a subtle border.
  */
@@ -35,11 +35,15 @@ export const Stats = () => {
             <Chip>{t("statsMicrosoft")}</Chip>
             <Chip>{t("statsApple")}</Chip>
             <Chip>{t("statsHardware")}</Chip>
+            <Chip>Autopilot / BitLocker</Chip>
+            <Chip>CrowdStrike</Chip>
+            <Chip>Power Automate Desktop</Chip>
+            <Chip>BAT / PowerShell</Chip>
           </div>
         </div>
       </Reveal>
       
-      {/* Hobby/fun skills section */}
+      {/* Development and delivery skills */}
       <Reveal>
         <div>
           <h4 className="flex items-center mb-6">
@@ -54,6 +58,9 @@ export const Stats = () => {
             <Chip>{t("statsCSS")}</Chip>
             <Chip>{t("statsGit")}</Chip>
             <Chip>{t("statsGitHub")}</Chip>
+            <Chip>Vite</Chip>
+            <Chip>Supabase / PostgreSQL</Chip>
+            <Chip>Vercel</Chip>
           </div>
         </div>
       </Reveal>
