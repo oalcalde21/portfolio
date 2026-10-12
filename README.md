@@ -205,10 +205,10 @@ This portfolio includes several SEO improvements to help it rank when searching 
    - `public/robots.txt` - Same
    - `public/sitemap.xml` - Same
 
-2. **Create a proper OG image** (1200x630px recommended):
-   - Replace `public/og-image.svg` with a PNG/JPG version
-   - Use a tool like Canva or Figma to create a branded image
-   - Should include your name and title clearly
+2. **Social sharing image**:
+   - `public/og-image.jpg` contains the supplied portrait artwork (1280x669px).
+   - Open Graph, Twitter and Person schema reference its absolute production URL.
+   - When replacing it, update the image dimensions and alternative text in `src/pages/_document.jsx`.
 
 3. **Submit to Google Search Console**:
    - Go to https://search.google.com/search-console

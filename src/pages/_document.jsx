@@ -48,9 +48,11 @@ export default function Document() {
           property="og:description"
           content="Portfolio profesional de Oscar Alcalde. Profesional senior de IT, gestión de endpoints, automatización y desarrollo web freelance. Especializado en React, JavaScript, Tailwind. Montevideo, Uruguay."
         />
-        <meta property="og:image" content="/og-image.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image" content="https://oscaralcalde.vercel.app/og-image.jpg" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1280" />
+        <meta property="og:image:height" content="669" />
+        <meta property="og:image:alt" content="Oscar Alcalde — Senior IT Support & Web Developer" />
         <meta property="og:locale" content="es_UY" />
         <meta property="og:locale:alternate" content="en_US" />
         <meta property="og:site_name" content="Oscar Alcalde Portfolio" />
@@ -67,7 +69,8 @@ export default function Document() {
           name="twitter:description"
           content="Portfolio profesional de Oscar Alcalde. Profesional senior de IT, gestión de endpoints, automatización y desarrollo web freelance. Montevideo, Uruguay."
         />
-        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:image" content="https://oscaralcalde.vercel.app/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Oscar Alcalde — Senior IT Support & Web Developer" />
         <meta name="twitter:creator" content="@oalcalde21" />
 
         {/* Canonical URL */}
@@ -87,7 +90,7 @@ export default function Document() {
               givenName: "Oscar",
               familyName: "Alcalde",
               url: "https://oscaralcalde.vercel.app",
-              image: "https://oscaralcalde.vercel.app/og-image.png",
+              image: "https://oscaralcalde.vercel.app/og-image.jpg",
               jobTitle: "Senior IT Support | Endpoint Management | IT Automation | Technical Leadership",
               description:
                 "Oscar Alcalde - Profesional senior de IT, gestión de endpoints, automatización y desarrollo web freelance con 15+ años de experiencia. Especializado en React, JavaScript, Tailwind, ServiceNow, Intune. Montevideo, Uruguay.",
