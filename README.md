@@ -1,5 +1,15 @@
 # Portfolio - Oscar Alcalde
 
+## Runtime de desarrollo / Development runtime
+
+- Node.js **24.19.0** (`.node-version`).
+- npm **11.17.0** (`packageManager`).
+- `engines` admite Node `>=24.19.0 <25` y npm `>=11.17.0 <12`; para reproducir el baseline, usar las versiones exactas anteriores.
+- Con FNM, ejecutar `fnm use` desde la raíz y verificar `node --version` y `npm --version` antes de `npm ci`. No actualizar npm globalmente como parte de la instalación del proyecto.
+- With FNM, run `fnm use` at the repository root, verify both versions, then run `npm ci` using the committed lockfile.
+
+Ver [baseline técnico y funcional](docs/runtime-baseline-2026-10.md) para las validaciones, warnings y vulnerabilidades existentes. Este cambio conserva Next.js, React, Tailwind y la arquitectura actual; no constituye una aplicación completa del Repository Standard AltasWeb.
+
 ## English
 
 ### What is this?
