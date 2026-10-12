@@ -3,7 +3,8 @@
  * 
  * Layout:
  * - Left side: text content with paragraphs about Oscar's background
- * - Right side: skill chips showing technologies (divided into work vs hobby)
+ * - Right side: skill chips for IT operations and development
+ * - Below: training, education and languages
  * 
  * The first paragraph has a special green "Hi!" or "ola!" prefix.
  * Links to social profiles are shown at the bottom of the text.
@@ -52,11 +53,6 @@ export const About = () => {
               {t("aboutP3")}
             </p>
           </Reveal>
-          <Reveal>
-            <p className="leading-relaxed text-zinc-300">
-              {t("aboutP4")}
-            </p>
-          </Reveal>
           
           {/* Social links section */}
           <Reveal>
@@ -72,6 +68,23 @@ export const About = () => {
         
         {/* Right side: skill chips */}
         <Stats />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8 border-t border-zinc-700 pt-6 mt-6">
+        <Reveal>
+          <h3 className="text-xl font-bold mb-4">{t("trainingTitle")}</h3>
+          <ul className="space-y-2 text-zinc-300 leading-relaxed">
+            <li>{t("trainingMicrosoft")}</li>
+            <li>Google IT Support Professional Certificate — Google / Coursera</li>
+            <li>{t("trainingDell")}</li>
+            <li>{t("trainingMac")}</li>
+          </ul>
+          <p className="mt-4 text-zinc-300 leading-relaxed">{t("educationText")}</p>
+        </Reveal>
+        <Reveal>
+          <h3 className="text-xl font-bold mb-4">{t("languagesTitle")}</h3>
+          <p className="text-zinc-300 leading-relaxed">{t("languageSpanish")}</p>
+          <p className="text-zinc-300 leading-relaxed">{t("languageEnglish")}</p>
+        </Reveal>
       </div>
     </section>
   );

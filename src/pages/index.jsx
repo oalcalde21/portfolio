@@ -6,6 +6,7 @@
  */
 
 import { Inter } from "next/font/google";
+import Head from "next/head";
 import { HomPage } from "@/components";
 
 // Load Inter font with latin character support
@@ -15,6 +16,9 @@ export default function Home() {
   return (
     // The font class is applied here so it cascades to all children
     <main className={inter.className}>
+      <Head>
+        <title>Oscar Alcalde - Portfolio | Senior IT Support & Automation | Uruguay</title>
+      </Head>
       <HomPage />
     </main>
   );

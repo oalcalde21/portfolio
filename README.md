@@ -4,7 +4,7 @@
 
 ### What is this?
 
-This is Oscar's personal portfolio website. It's a single-page portfolio that showcases his professional experience changing now from IT Support to Frontend Development.
+This is Oscar's personal portfolio website. It showcases his senior IT support, endpoint management, automation and technical coordination experience, alongside freelance web and product development at AltasWeb.
 
 ### Key Features
 
@@ -19,7 +19,7 @@ This is Oscar's personal portfolio website. It's a single-page portfolio that sh
 ### Sections
 
 1. **Hero** - Introduction with name, animated role titles, and contact button
-2. **About** - Oscar's background, skills separated into "work" and "hobby" categories
+2. **About** - Oscar's background, IT operations and development skills, training, education and languages
 3. **Projects** - Showcases real projects with screenshots, descriptions, and links
 4. **Experience** - Work history with detailed descriptions and technology tags
 5. **Contact** - Links to LinkedIn, GitHub, and email
@@ -37,7 +37,7 @@ This is Oscar's personal portfolio website. It's a single-page portfolio that sh
 
 ```bash
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -90,7 +90,7 @@ To change text:
 
 ### Qué es esto?
 
-Este es el portfolio personal de Oscar. Es una página única que muestra su transición profesional de Soporte TI a Desarrollo Frontend.
+Este es el portfolio personal de Oscar. Muestra su experiencia senior en soporte IT, gestión de endpoints, automatización y coordinación técnica, junto con desarrollo web y de productos freelance en AltasWeb.
 
 ### Características Principales
 
@@ -105,7 +105,7 @@ Este es el portfolio personal de Oscar. Es una página única que muestra su tra
 ### Secciones
 
 1. **Hero** - Introducción con nombre, títulos animados y botón de contacto
-2. **About** - Fondo de Oscar, habilidades separadas en "trabajo" y "hobby"
+2. **About** - Trayectoria de Oscar, competencias de operaciones IT y desarrollo, formación, educación e idiomas
 3. **Projects** - Muestra proyectos reales con capturas, descripciones y enlaces
 4. **Experience** - Historial laboral con descripciones detalladas y etiquetas de tecnología
 5. **Contact** - Enlaces a LinkedIn, GitHub y email
@@ -123,7 +123,7 @@ Este es el portfolio personal de Oscar. Es una página única que muestra su tra
 
 ```bash
 # Instalar dependencias
-npm install
+npm ci
 
 # Iniciar servidor de desarrollo
 npm run dev
@@ -227,5 +227,9 @@ This portfolio includes several SEO improvements to help it rank when searching 
 - Use descriptive alt text for any images you add
 
 ---
+
+## Auditoría de contenido
+
+Ver [auditoría de octubre de 2026](docs/cv-audit-2026-10.md) para las fuentes, cambios, validaciones y deuda detectada. Los PDFs públicos corresponden a los CV actualizados en ambos idiomas.
 
 **Credits**: Template inspired by [hover.dev](https://hover.dev)
