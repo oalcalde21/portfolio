@@ -12,6 +12,10 @@ Ver [baseline técnico y funcional](docs/runtime-baseline-2026-10.md) para las v
 
 ## English
 
+### Next.js 16 migration in progress
+
+The current migration branch uses Webpack explicitly and runs ESLint through its CLI. Run `npm run qa` to execute lint before the production build. The two initial lint findings have been resolved and browser smoke QA completed; see [the migration report](docs/next16-migration-2026-10.md) for results, limitations and residual security findings. The migration remains pending review and is not approved for deployment.
+
 ### What is this?
 
 This is Oscar's personal portfolio website. It showcases his senior IT support, endpoint management, automation and technical coordination experience, alongside freelance web and product development at AltasWeb.
@@ -37,7 +41,7 @@ This is Oscar's personal portfolio website. It showcases his senior IT support, 
 
 ### Tech Stack
 
-- **Framework**: Next.js 14
+- **Framework**: Next.js 16
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion, Anime.js
 - **Icons**: React Icons
@@ -123,7 +127,7 @@ Este es el portfolio personal de Oscar. Muestra su experiencia senior en soporte
 
 ### Stack Tecnológico
 
-- **Framework**: Next.js 14
+- **Framework**: Next.js 16
 - **Estilos**: Tailwind CSS
 - **Animaciones**: Framer Motion, Anime.js
 - **Iconos**: React Icons

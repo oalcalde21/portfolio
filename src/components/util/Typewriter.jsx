@@ -29,12 +29,14 @@ export const Typewriter = ({ className }) => {
     { prefix: "> ", text: t("typewriter2") },
   ];
 
-  // Reset when language changes (to re-render with new translations)
-  useEffect(() => {
+  // Reset before committing translated text, without a cascading effect render.
+  const [previousRoleText, setPreviousRoleText] = useState(roles[0].text);
+  if (previousRoleText !== roles[0].text) {
+    setPreviousRoleText(roles[0].text);
     setDisplayText("");
     setRoleIndex(0);
     setIsDeleting(false);
-  }, [t("typewriter1")]);
+  }
 
   // The typing/deleting logic
   useEffect(() => {
