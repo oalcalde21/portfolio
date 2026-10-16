@@ -50,7 +50,7 @@ const Hero = () => {
               onClick={() => {
                 document.getElementById("contact")?.scrollIntoView();
               }}
-              className="pointer-events-auto before:bg-green-600 hover:text-white hover:border-green-600 mt-4 bg-green-400 text-zinc-100 border-green-400 md:mt-6"
+              className="pointer-events-auto before:bg-green-600 hover:text-zinc-950 hover:border-green-600 mt-4 bg-green-400 text-zinc-950 border-green-400 md:mt-6 focus-visible:ring-inset focus-visible:ring-zinc-950 focus-visible:ring-offset-0"
             >
               {t("contactBtn")}
             </OutlineButton>

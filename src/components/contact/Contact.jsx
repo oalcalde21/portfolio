@@ -12,7 +12,7 @@ export const Contact = () => {
   return (
     <section className="section-wrapper" id="contact" aria-labelledby="contact-heading">
       <div className="max-w-xl mx-auto bg-zinc-800 px-8 py-12 rounded-xl">
-        <Reveal width="w-full">
+        <Reveal width="w-auto -mx-4 sm:mx-0">
           <h2 id="contact-heading" className="text-4xl md:text-5xl text-center font-black">
             {t("contactTitle")}<span className="text-green-400">.</span>
           </h2>
@@ -25,7 +25,7 @@ export const Contact = () => {
               href="https://www.linkedin.com/in/oscar-alcalde/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-400 hover:underline"
+              className="text-green-400 underline underline-offset-2"
             >
               {t("contactLinkedin")}
             </Link>{" "}
@@ -34,7 +34,7 @@ export const Contact = () => {
               href="https://github.com/oalcalde21"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-400 hover:underline"
+              className="text-green-400 underline underline-offset-2"
             >
               {t("contactTwitter")}
             </Link>

@@ -34,7 +34,7 @@ export const About = () => {
           <Reveal>
             <p className="leading-relaxed text-zinc-300">
               {/* Green "Hi!" or "H" box */}
-              <span className="bg-green-400 text-white py-2 px-3 rounded font-bold mr-1 float-left text-2xl">
+              <span className="bg-green-400 text-zinc-950 py-2 px-3 rounded font-bold mr-1 float-left text-2xl">
                 {hiText}
               </span>
               {/* Rest of the paragraph, without "Hi!" for EN since it's in the box */}
