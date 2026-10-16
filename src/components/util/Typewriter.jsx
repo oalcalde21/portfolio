@@ -1,81 +1,61 @@
-/**
- * Typewriter component - creates a typing animation effect.
- * 
- * Cycles through different roles/career paths, typing them out
- * letter by letter, then deleting, then typing the next one.
- * 
- * Current roles:
- * - "> IT Support Sr. Analyst" (English)
- * - "> Frontend Developer" (English)
- * 
- * The green color and blinking cursor give it that terminal vibe.
- */
-
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 
-export const Typewriter = ({ className }) => {
+export const Typewriter = ({ className = "", isPaused, reducedMotion }) => {
   const { t } = useLanguage();
-  // Current role being typed
-  const [roleIndex, setRoleIndex] = useState(0);
-  // What text is currently displayed
-  const [displayText, setDisplayText] = useState("");
-  // Whether we're deleting or typing
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  // The roles to cycle through - wrapped in useState to get translated text
-  const roles = [
-    { prefix: "> ", text: t("typewriter1") },
-    { prefix: "> ", text: t("typewriter2") },
-  ];
-
-  // Reset before committing translated text, without a cascading effect render.
-  const [previousRoleText, setPreviousRoleText] = useState(roles[0].text);
-  if (previousRoleText !== roles[0].text) {
-    setPreviousRoleText(roles[0].text);
-    setDisplayText("");
-    setRoleIndex(0);
-    setIsDeleting(false);
-  }
-
-  // The typing/deleting logic
-  useEffect(() => {
-    const currentRole = roles[roleIndex];
-    // Type faster than we delete
-    const typeSpeed = isDeleting ? 50 : 100;
-    // Pause a bit after typing before deleting
-    const pauseBeforeDelete = isDeleting ? 1500 : 2000;
-
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        // Still typing...
-        if (displayText.length < currentRole.text.length) {
-          setDisplayText(currentRole.text.slice(0, displayText.length + 1));
-        } else {
-          // Done typing, wait then start deleting
-          setTimeout(() => setIsDeleting(true), pauseBeforeDelete);
-        }
-      } else {
-        // Deleting...
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1));
-        } else {
-          // Done deleting, move to next role
-          setIsDeleting(false);
-          setRoleIndex((prev) => (prev + 1) % roles.length);
-        }
-      }
-    }, typeSpeed);
-
-    // Cleanup the timeout if the effect re-runs
-    return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, roleIndex, roles]);
+  const roles = useMemo(() => [t("typewriter1"), t("typewriter2")], [t]);
 
   return (
     <span className={`text-green-400 ${className}`}>
-      {roles[roleIndex].prefix}{displayText}
-      {/* Blinking cursor */}
-      <span className="animate-pulse">|</span>
+      <span className="sr-only">{roles.join(" / ")}</span>
+      <span aria-hidden="true">
+        <AnimatedRoles
+          key={roles.join("/")}
+          roles={roles}
+          isPaused={isPaused}
+          reducedMotion={reducedMotion}
+        />
+        <span className="typewriter-static">{roles.join(" / ")}</span>
+      </span>
     </span>
   );
 };
+
+// A translation change resets only this local animation, without stale timers.
+function AnimatedRoles({ roles, isPaused, reducedMotion }) {
+  const [frame, setFrame] = useState(() => ({
+    role: 0,
+    length: isPaused ? roles[0].length : 0,
+    deleting: false,
+  }));
+
+  useEffect(() => {
+    if (isPaused || reducedMotion !== false) return;
+
+    const text = roles[frame.role];
+    // Preserve the previous 100 ms scheduling step + 2000 ms hold.
+    const delay = frame.deleting ? 50 : frame.length === text.length ? 2100 : 100;
+    const timeout = setTimeout(() => {
+      if (!frame.deleting) {
+        setFrame(
+          frame.length < text.length
+            ? { ...frame, length: frame.length + 1 }
+            : { ...frame, deleting: true }
+        );
+      } else if (frame.length > 0) {
+        setFrame({ ...frame, length: frame.length - 1 });
+      } else {
+        setFrame({ role: (frame.role + 1) % roles.length, length: 0, deleting: false });
+      }
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [frame, roles, isPaused, reducedMotion]);
+
+  return (
+    <span className="typewriter-animated">
+      {"> "}{roles[frame.role].slice(0, frame.length)}
+      <span className="typewriter-cursor animate-pulse" data-paused={isPaused}>|</span>
+    </span>
+  );
+}

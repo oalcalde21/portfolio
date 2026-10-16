@@ -24,3 +24,29 @@
 html {
   scroll-behavior: smooth;
 }
+
+.typewriter-static {
+  display: none;
+}
+
+.typewriter-cursor[data-paused="true"] {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .typewriter-animated {
+    display: none;
+  }
+
+  .typewriter-static {
+    display: inline;
+  }
+
+  .typewriter-cursor {
+    animation: none;
+  }
+}
