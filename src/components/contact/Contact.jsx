@@ -41,14 +41,14 @@ export const Contact = () => {
           </p>
         </Reveal>
         
-        <Reveal width="w-full">
-          <Link href="mailto:oalcalde211@gmail.com" aria-label={t("contactEmail")}>
-            <div className="flex items-center justify-center gap-2 w-fit text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
-              <AiFillMail aria-hidden="true" />
-              <span>{t("contactEmail")}</span>
+        <Link href="mailto:oalcalde211@gmail.com" aria-label={t("contactEmail")} className="block rounded-sm">
+          <Reveal width="w-full">
+            <div className="flex items-center justify-center gap-2 w-fit max-w-full text-lg md:text-2xl whitespace-normal mx-auto hover:text-green-400 transition-colors">
+              <AiFillMail aria-hidden="true" className="shrink-0" />
+              <span className="min-w-0 [overflow-wrap:anywhere]">{t("contactEmail")}</span>
             </div>
-          </Link>
-        </Reveal>
+          </Reveal>
+        </Link>
         
         <Reveal width="w-full">
           <Link href="https://wa.me/59894299470?text=Hola!%20llegue%20desde%20tu%20portfolio%20hasta%20vos" target="_blank" rel="noopener noreferrer" aria-label={t("contactWriteMe")}>
