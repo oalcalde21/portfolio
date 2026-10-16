@@ -21,7 +21,7 @@ export const LanguageToggle = ({ className }) => {
       aria-label={`Switch to ${language === "EN" ? "Spanish" : "English"}`}
       aria-pressed={language === "EN"}
       className={twMerge(
-        `relative flex items-center justify-center w-16 h-7 rounded-full
+        `relative flex shrink-0 items-center justify-center w-16 h-7 rounded-full
         bg-zinc-800 border border-zinc-600 text-xs font-bold
         transition-all duration-300 hover:border-green-400 hover:bg-zinc-700
         overflow-hidden`,

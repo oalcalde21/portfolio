@@ -33,7 +33,13 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
   const [isOpen, setIsOpen] = useState(false);
   const controls = useAnimation();
   const ref = useRef(null);
+  const openerRef = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const openModal = (event) => {
+    openerRef.current = event.currentTarget;
+    setIsOpen(true);
+  };
 
   // Get translation keys for this project
   const keys = projectKeys[title] || {};
@@ -75,7 +81,7 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
           type="button"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onClick={() => setIsOpen(true)}
+          onClick={openModal}
           aria-label={`View details for ${translatedTitle}`}
           className="w-full aspect-video bg-zinc-700 cursor-pointer relative rounded-lg overflow-hidden"
         >
@@ -114,7 +120,7 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
               {translatedDesc}{" "}
               <button
                 type="button"
-                onClick={() => setIsOpen(true)}
+                onClick={openModal}
                 className="inline-block text-sm text-green-400 cursor-pointer hover:underline"
               >
                 {t("projectLearnMore")} {">"}
@@ -126,6 +132,7 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
       
       {/* Modal with more details */}
       <ProjectModal
+        openerRef={openerRef}
         modalContent={modalContent}
         projectLink={projectLink}
         setIsOpen={setIsOpen}
