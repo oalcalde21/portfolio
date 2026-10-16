@@ -38,11 +38,11 @@ export const LanguageToggle = ({ className }) => {
       />
       {/* EN | ES text */}
       <span className="relative z-10 flex items-center justify-center gap-2 text-center w-full">
-        <span className={`pl-1 ${language === "EN" ? "text-green-400" : "text-zinc-500"}`}>
+        <span className={`pl-1 ${language === "EN" ? "text-green-300" : "text-zinc-300"}`}>
           EN
         </span>
         <span className="text-zinc-600 select-none -ml-1 -mr-1">|</span>
-        <span className={`${language === "ES" ? "text-green-400" : "text-zinc-500"}`}>
+        <span className={`${language === "ES" ? "text-green-300" : "text-zinc-300"}`}>
           ES
         </span>
       </span>

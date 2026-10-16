@@ -20,8 +20,6 @@ export const OutlineButton = ({ children, className, ...rest }) => {
         border-white px-4 py-2 font-medium text-sm min-w-[120px]
         text-white transition-all duration-300
         
-        // The "before" pseudo-element creates the fill animation
-        // It starts scaled up and hidden off-screen, then moves into view on hover
         before:absolute before:inset-0
         before:-z-10 before:translate-x-[150%]
         before:translate-y-[150%] before:scale-[2.5]
@@ -29,12 +27,10 @@ export const OutlineButton = ({ children, className, ...rest }) => {
         before:transition-transform before:duration-1000
         before:content-[""]
 
-        // Hover state: text turns dark, the fill animation plays
         hover:text-zinc-950
         hover:before:translate-x-[0%]
         hover:before:translate-y-[0%]
         
-        // Active/click state: slight scale down
         active:scale-95`,
         className
       )}

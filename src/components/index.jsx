@@ -53,7 +53,7 @@ export const HomPage = () => {
         </AnimatePresence>
         
         {/* Footer with copyright and credits */}
-        <footer className="text-center text-zinc-500 text-sm py-4">
+        <footer className="text-center text-zinc-400 text-sm py-4">
           {t("legalText")}
         </footer>
       </main>

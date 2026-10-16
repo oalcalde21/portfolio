@@ -300,3 +300,84 @@ El árbol accesible nativo y el teclado sí confirman el aislamiento del fondo. 
 No se ejecutó un lector de pantalla real: no se encontró NVDA ni una sesión activa de lector; Narrator.exe existe en Windows, pero la interfaz disponible no permite conducir/verificar su salida de forma fiable. El árbol accesible no sustituye esa prueba. Se intentó Ctrl+plus en la pestaña de QA: innerWidth, devicePixelRatio=1 y visualViewport.scale=1 no cambiaron; se restauró Ctrl+0. No se declaran probados zoom nativo 200/400 % ni la matriz Safari/Firefox/dispositivos físicos.
 
 A02, A05, A07, U01, política de movimiento y mejoras opcionales siguen pendientes. A06 solo se resolvió en el contenido accesible del modal. Capturas y resultados JSON de QA se conservan como artefactos locales fuera del repositorio; no se agregaron imágenes generadas de pruebas al producto. El reporte no declara conformidad WCAG completa.
+
+## 12. Etapa 5C — CTA, contraste y ajustes móviles
+
+### Inspección previa a la implementación
+
+Base: `90f09e119c52efb8c432124855ecfc7df8788133`, main limpio y sincronizado con origin/main. Rama: `fix/portfolio-accessibility-cta-contrast`. Se conservaron capturas de producción del hero y Contacto en 320, 390, 768 y 1440 × 900 px, fuera del repositorio, en `~/.codex/visualizations/portfolio-stage5c/`.
+
+- U01 reproducido: comentarios escritos dentro del string de clases de OutlineButton contienen la palabra `hidden`. Tailwind/twMerge la interpretan como clase y el botón del hero tiene display:none. Único consumidor: Hero.
+- A05 reproducido: saludo blanco/verde 1.74:1; idioma inactivo 3.08:1 en reposo y 2.16:1 en hover; footer 3.66:1. El selector activo también requiere ajuste en hover: verde sobre la composición del indicador al 20 % y zinc-700 da 4.05:1. Se comprobaron los colores calculados del hover real en navegador.
+- Al recuperar el CTA, su texto claro sobre verde tampoco alcanza AA; se necesita texto oscuro en reposo y hover. Su foco debe quedar dentro del botón para evitar el recorte del Reveal existente.
+- A08 reproducido: LinkedIn/GitHub de Contacto solo tienen subrayado al pasar el puntero.
+- Recorte de Contacto reproducido únicamente a 320 px: heading clientWidth=155, scrollWidth=181. A 390/768/1440 no desborda. La causa es el ancho interior de la tarjeta y el recorte de Reveal, no overflow del documento. Se prevé ampliar solo el espacio horizontal del encabezado móvil, conservando tamaño tipográfico y padding del resto.
+
+No se requieren dependencias ni cambios en Reveal, Typewriter, política de movimiento, modal, contenido o assets.
+
+### Implementación y contrastes
+
+Se retiraron cuatro líneas de prosa del string de clases de OutlineButton, sin cambiar las utilities de transición, transformaciones ni sus duraciones. El CTA conserva texto, callback y destino Contacto; ahora tiene texto zinc-950 y anillo de foco interior de 2 px, que Reveal no recorta. El saludo usa también zinc-950; footer zinc-400; el selector usa zinc-300 para el idioma inactivo y green-300 para el activo. No se modificó la paleta global.
+
+LinkedIn y GitHub tienen subrayado persistente con separación de 2 px; conservan destinos, textos, target y rel. El wrapper exclusivo del título Contacto usa márgenes horizontales de -16 px por debajo de sm. Recupera 32 px dentro del padding existente, sin reducir la fuente ni modificar el resto de la tarjeta. Reveal global permanece intacto.
+
+Ratios calculados con luminancia relativa sRGB de los colores computados en navegador; para el indicador se compone green-400 al 20 % sobre el fondo del selector. Hover real del selector y del CTA inspeccionado, incluidos sus pseudo-elementos. Focus conserva los mismos colores de texto/fondo.
+
+| Elemento/estado | Antes | Después | Colores finales y umbral |
+| --- | --- | --- | --- |
+| Saludo, 24 px bold | 1.74:1 | 11.42:1 | #09090b / #4ade80; mínimo 3:1 |
+| Idioma inactivo normal/focus | 3.08:1 | 10.08:1 | #d4d4d8 / #27272a; mínimo 4.5:1 |
+| Idioma inactivo hover | 2.16:1 | 7.07:1 | #d4d4d8 / #3f3f46; mínimo 4.5:1 |
+| Idioma activo normal/focus | 5.47:1 | 6.79:1 | #86efac sobre indicador compuesto; mínimo 4.5:1 |
+| Idioma activo hover | 4.05:1 | 5.02:1 | #86efac sobre indicador compuesto; mínimo 4.5:1 |
+| Footer, 14 px | 3.67:1 | 6.91:1 | #a1a1aa / #18181b; mínimo 4.5:1 |
+| CTA normal/focus, 14 px | Oculto; combinación prevista 1.59:1 | 11.42:1 | #09090b / #4ade80; mínimo 4.5:1 |
+| CTA hover | Oculto; combinación prevista 3.30:1 | 6.04:1 | #09090b / #16a34a; mínimo 4.5:1 |
+| Anillo interior del CTA | No alcanzable | 11.42:1 normal; 6.04:1 hover | #09090b contra superficie verde; mínimo 3:1 |
+
+Los enlaces de Contacto conservan verde sobre zinc-800 (8.55:1); la corrección de A08 es el indicador persistente, no un cambio de color. El foco global verde conserva 10.17:1 contra su offset zinc-900. No se alteraron bordes ni estados de navegación fuera de alcance.
+
+### QA técnico y funcional
+
+| Comprobación | Resultado |
+| --- | --- |
+| Runtime | Node 24.19.0 / npm 11.17.0, mediante FNM |
+| npm ci | Exit 0; 385 instalados / 386 auditados; lockfile y manifiesto intactos; scripts pendientes sin aprobar |
+| npm run qa | Exit 0; ESLint sin errores ni warnings; build Next 16.4.1 con Webpack correcto, / y /404 estáticos |
+| npm audit --json | Exit 1; 9 afectados: 7 altos y 2 moderados; 0 críticos, sin variación |
+| npm audit --omit=dev --json | Exit 0; 0 afectados, sin variación |
+| git diff --check | Correcto; avisos previos LF/CRLF en copia local, sin normalización masiva |
+| Alcance | Solo seis componentes y este informe; sin cambios en dependencias, assets, traducciones, Typewriter, Reveal, modal, navegación o estilos globales |
+| HTTP | /, cv.pdf, resume.pdf, og-image.jpg, robots.txt y sitemap.xml: 200 |
+| Metadatos | Canonical y todos los tags OG/Twitter iguales al HTML de producción; cuatro schemas conservados |
+| Consola | Sin warnings ni errores capturados en las sesiones locales de QA |
+
+Continúan los avisos previos de ESLint 9 sin soporte, React 18 deprecado en Next 16 y allowScripts pendiente para unrs-resolver@1.11.1. No se ejecutó audit fix, no se aprobó ningún script y no se cambió el gate de seguridad. Los nueve afectados de tooling siguen siendo deuda, sin aceptación permanente.
+
+| Viewport × 900 | Documento/clientWidth | Título Contacto antes → después | Fuente del título | Selector |
+| --- | --- | --- | --- | --- |
+| 320 | 305 / 305 px | 155 px, scrollWidth 181 → 187/187 px | 36 px, intacta | 64 px |
+| 390 | 375 / 375 px | 225 → 257/257 px | 36 px, intacta | 64 px |
+| 768 | 753 / 753 px | 512 → 512/512 px | 48 px, intacta | 64 px |
+| 1440 | 1425 / 1425 px | 512 → 512/512 px | 48 px, intacta | 64 px |
+
+Los 15 px restantes corresponden a la barra vertical; no hay overflow horizontal. Se revisaron hero y Contacto, EN/ES, en móvil, tablet y escritorio. CTA visible de 120×38 px, con texto traducido, sin duplicados. Se comprobó Tab desde CV al CTA y foco interior visible; Enter en EN/ES y Espacio en EN desplazan a Contacto. El destino queda a aproximadamente 274 px del borde superior a 320 px y 416 px en escritorio por el límite inferior de scroll, conservando el callback original. LinkedIn y GitHub mantienen subrayado y foco verde al recorrerlos con teclado. Selector responde a Enter/Espacio y mantiene ambas opciones completas. El correo conserva la corrección 5B.
+
+Smoke del modal: Plenitud Fit en móvil y escritorio, nombres EN/ES, foco inicial en cierre, Tab/Shift+Tab dentro del diálogo, Escape y restauración del disparador/overflow. Se abrieron y cerraron también CFR Estudio, Revisión Automotriz y AltasWeb con foco restaurado al disparador correspondiente. No se modificó la implementación del modal.
+
+### Axe y revisión manual de incomplete
+
+Se reutilizó axe-core 4.11.1 existente, sin instalar paquetes, con los mismos tags WCAG/best-practice de 5B. Proxy temporal fuera del repositorio: build local 3110, auditoría 3111. No se deshabilitaron reglas; resultados completos y capturas quedan como artefactos locales en `~/.codex/visualizations/portfolio-stage5c/`.
+
+- Documento cerrado EN/ES, móvil/escritorio: ya no se reportan color-contrast en los tres elementos de A05 ni link-in-text-block en Contacto. Persisten cuatro reglas previas: heading-order, landmark-main-is-top-level, landmark-no-duplicate-main y landmark-unique. Muestras cerradas: 38 reglas aprobadas; el número de incomplete varía según visibilidad y solapamientos.
+- ES, Contacto a 320 px y escritorio: muestras con cero incomplete y las cuatro reglas anteriores. No equivale a conformidad global.
+- EN, Plenitud Fit abierto a 320 px: cero violaciones en documento y diálogo acotado; 17 reglas aprobadas en el diálogo. Dos párrafos de contraste incomplete por solapamiento, conservados para revisión manual.
+- CTA: axe puede dejarlo incomplete por el pseudo-elemento. Se inspeccionaron texto, fondo y fill; las combinaciones estables y el relleno conservan al menos 6.04:1. Anillo interior comprobado mediante teclado y captura, sin depender de una aprobación automática.
+- Modal: se inspeccionaron rectángulos, pila de elementos y ancestros de los párrafos en escritorio. Opacidad 1, sin otro elemento sobre el centro del texto y tarjeta opaca #18181b: texto #d4d4d8 alcanza 11.99:1. La revisión manual sustenta esa muestra, sin borrar los incomplete originales del modal móvil.
+- Hero: h1, Typewriter y descripción pueden quedar incomplete porque se superponen a DotGrid. Se revisaron DOM, captura y código, que permanecen intactos. Sobre fondo base cumplen; la cuadrícula tiene gradientes, opacidad y estados interactivos, por lo que no se da una aprobación global. Como límite conservador con zinc-400 al 50 % sobre zinc-900, el verde puede bajar a 3.78:1 y la descripción a 4.46:1 si coinciden con píxeles claros. Es una hipótesis residual preexistente que requiere comprobar coincidencia de glifos/píxeles; no una regresión demostrada de 5C. No se alteró DotGrid, Typewriter ni movimiento para cerrar artificialmente este resultado.
+
+### Resultado y pendientes
+
+U01, A05 (tres combinaciones documentadas), A08 y el recorte de Contacto a 320 px quedan corregidos en el alcance comprobado. Cambios visuales localizados previstos: CTA recuperado, texto de mayor contraste, subrayado persistente y título completo. Se mantienen identidad, tamaños, contenido y tiempos de animación.
+
+Persisten A02/movimiento, A06 parcial, A07/landmarks, mejoras opcionales y el contraste del hero sobre fondos decorativos variables pendiente de comprobación específica. No se ejecutó lector de pantalla real, zoom nativo 200/400 %, Safari/Firefox ni dispositivos físicos; las limitaciones de 5B siguen vigentes. No se declara conformidad WCAG completa ni seguridad total del proyecto. No se hizo merge ni despliegue manual.
