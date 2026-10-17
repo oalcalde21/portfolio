@@ -567,3 +567,41 @@ Se intentó F12 en la página local; la acción no pudo abrir Rendering con la A
 Antes de merge, Oscar debe verificar en Brave: DevTools → Rendering → prefers-reduced-motion: reduce; confirmar `matchMedia('(prefers-reduced-motion: reduce)').matches` true y recargar. La cuadrícula debe seguir visible y estática ante clics. En no-preference iniciar una onda y varios clics, pasar a reduce: cancelar/restaurar reposo sin estilo residual. Volver a no-preference: no replay, nuevo clic normal. Repetir durante EN/ES y en 320/390/768/1440; comprobar foco, CTA, pausa y modal. Registrar consola/capturas y volver a No emulation. No se presenta el fallback como conformidad WCAG integral.
 
 Siguen pendientes D41 (contraste, 5D.4C), D47 (CSS, 5D.4D), precisión nativa de contraste, CPU/heap en dispositivos reales, lector de pantalla y zoom nativo. La corrección de reduce no soluciona contraste durante una onda normal. Este PR se prepara Draft para revisión, sin merge ni despliegue manual.
+
+## 16. Etapa 5D.4C — contraste localizado del hero
+
+Rama `fix/portfolio-hero-contrast`, basada en `fix/portfolio-dotgrid-lifecycle` (`99a66c8`, PR Draft #9), todavía sin merge. El PR de esta etapa debe apuntar a esa rama, no a main. Único cambio de aplicación: añadir `bg-zinc-900/80` a h1, h2 y descripción en Hero.jsx. Se preservan texto, jerarquía, tipografía, tamaños, disposición, CTA, pausa y parámetros de DotGrid. No se cambian dependencias ni lockfile.
+
+### Comparación previa y elección
+
+Se compararon prototipos locales externos al repositorio: backdrop-filter brightness(.3) y superficie opaca #18181b detrás de los tres bloques. El filtro se descartó: oscurecía también el fondo base y generaba rectángulos negros visibles. La superficie opaca mantenía el fondo, pero ocultaba completamente los puntos en los bloques. Se eligió una superficie **translúcida al 80 % del mismo color existente**, limitada a las cajas de texto: reduce la intensidad de los puntos detrás de la lectura y los conserva perceptibles. No hay overlay de todo el hero ni cambios de paleta, posición o cantidad de puntos. El resto de la cuadrícula conserva su intensidad y onda.
+
+Comparación local en `portfolio-stage5d4c/option-filter-1440.jpg`, `option-surface-1440.jpg` y capturas finales `en/es-role1/role2-320/390/768/1440.jpg`; baseline visual 5D.4B en los `settled-*` de su directorio. Las vistas no son un diff sincronizado: Typewriter, hover y scroll pueden variar. En la revisión de las vistas finales no se observaron cambios de tipografía o layout; el tratamiento del fondo es el cambio visual intencional de accesibilidad.
+
+### Medición y criterio de aceptación
+
+En las 16 muestras reales de navegador (EN/ES × dos roles completos pausados mediante el control existente × cuatro anchos), el estilo calculado de cada bloque es `rgba(24,24,27,0.8)`; primer plano #f4f4f5 para titular, #4ade80 para ambos roles/puntuación y #d4d4d8 para descripción. No hay overflow medido. Se registraron ondas del componente definitivo en los cuatro anchos, con 55/63/62/62 frames muestreados respectivamente y opacidades de puntos hasta 1, incluidas muestras hover. Se usan los rectángulos de texto **de cada frame**, para no confundir el scroll automático del navegador con posiciones del baseline.
+
+Para evitar la incertidumbre de máscara JPEG de 5D.4A, la nueva verificación calcula una **cota conservadora de contraste** sobre toda la caja pintada del texto, incluidos espacios: para cada punto que cruza la caja se evalúan ambos extremos del gradiente y se compone su opacidad; después la superficie del texto. No es el mínimo observado exactamente bajo un glifo ni una medición de píxel sin pérdida. Se complementa con una cota aún más adversa: blanco puro opaco detrás del bloque, más luminoso que cualquier punto gris o fondo de hover. La captura comprueba cobertura/lectura y los estilos reales verifican la composición usada; los ratios se obtienen de sRGB CSS, no del antialias de letras.
+
+Procedimiento reproducible: leer getComputedStyle de los bloques/roles y rectángulos; registrar por frame rectángulos/opacidad/gradiente de puntos alcanzables durante una onda; calcular por canal `P = punto * opacidad + [24,24,27] * (1-opacidad)` y `B = [24,24,27] * 0.8 + P * 0.2`; aplicar luminancia relativa WCAG a foreground y B. Para la cota global, sustituir P por [255,255,255]. Fondo efectivo máximo resultante **[70.2,70.2,72.6]**. La ecuación y los colores bastan para repetir el cálculo sin añadir paquetes. El diagnóstico instrumentado no se utiliza para concluir rendimiento.
+
+| Texto | Antes: mínimo aproximado muestreado en 5D.4A | Después: cota para cualquier fondo hasta blanco opaco | Umbral |
+| --- | --- | --- | --- |
+| Titular #f4f4f5 | ≈2.55:1 durante onda | **≥8.54:1** | 3:1, grande |
+| Typewriter / puntuación #4ade80 | ≈1.63:1 durante onda | **≥5.38:1** | 4.5:1 texto móvil normal; 3:1 grande |
+| Descripción #d4d4d8 | ≈1.92:1 durante onda | **≥6.35:1** | 4.5:1 |
+
+Las columnas emplean métodos distintos y están etiquetadas: no se presenta una razón exacta de mejora ni se convierte la cota en un mínimo de glifos observado. En reposo, usando el extremo más claro de un punto gris al 50 %, las cotas corregidas son 13.77:1 / 8.69:1 / 10.24:1. Para el extremo gris opaco durante la onda son 11.37:1 / 7.17:1 / 8.46:1. El muestreo real por rectángulos obtuvo, como peores cotas entre los anchos, 8.54:1 titular (incluye extremo blanco hover), 7.17:1 rol y 8.46:1 descripción; la cota global de blanco cubre posiciones/instantes no capturados y ambos roles/idiomas con el mismo foreground y superficie.
+
+CTA y pausa mantienen sus fondos opacos y estilos: CTA normal 11.42:1, hover 6.04:1; icono pausa normal 11.99:1, verde/foco 10.17:1; borde interior 3.67:1. Se volvió a inspeccionar hover real del CTA (#09090b sobre #16a34a), activación por Enter, recorrido de foco y modal. Las señales de foco permanecen; no se modificaron OutlineButton ni el control de pausa. No se extrapola el borde interior a todos los colores exteriores de la cuadrícula.
+
+### QA y límites
+
+`npm ci --ignore-scripts` correcto (385 paquetes). Hubo un intento de QA antes de que terminara la instalación: falló porque eslint todavía no existía; se registró y repitió una vez finalizado npm ci. **npm run qa completo correcto, exit 0**. `npm run qa:motion` repetido interactivamente: **36/36**, hydrationErrors=[], pendingTimers=0, listeners=0, exit 0. Auditoría completa 9 (7 altos, 2 moderados), exit 1; sin desarrollo 0, exit 0. `git diff --check` correcto. Sin aprobación de scripts ni nuevas dependencias; persisten los warnings de ESLint sin soporte y React 18 deprecado.
+
+Se comprobaron EN/ES, ambos roles completos, cuatro anchos, CTA con teclado, cambio de idioma, modal Plenitud Fit y Escape/restauración de foco; consola sin errores/warnings capturados. La revisión móvil incluye el segundo rol envuelto en varias líneas. Evidencia en `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-stage5d4c/`: `samples.json`, `wave-en-320/390/768/1440.json`, `wave-contrast-bounds.json`, `contrast-bounds.json`, `controlled-tests.json`, scripts locales de cálculo y capturas. Los scripts son auxiliares externos, no dependencias del proyecto.
+
+**Reduce nativo sigue pendiente**, con la limitación Rendering documentada en sección 15. La misma superficie permanece en CSS al cambiar preferencia y la cota cubre ambos roles; eso no sustituye revisar visualmente el bloque estático completo en Brave. Antes de merge, seguir la guía de sección 15 y comprobar ambos roles simultáneos, wrapping y cobertura de la superficie, hover/focus, idiomas y cuatro anchos. No se declara probado ese estado nativo ni conformidad WCAG integral. D41 queda corregido en el alcance de las superficies renderizadas y cotas verificadas; se conserva la aceptación visual nativa pendiente. No hay lector real, zoom nativo ni medición de CPU/heap.
+
+Se prepara PR Draft dependiente de #9. La deuda de nueve afectados de tooling sigue abierta y el gate completo no pasa. Sin merge, despliegue manual ni cambios ajenos.

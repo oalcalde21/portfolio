@@ -31,21 +31,21 @@ const Hero = ({ isTypewriterPaused, onToggleTypewriter }) => {
         <div className="pointer-events-none relative z-10">
           {/* Main heading: "Hi, I'm Oscar." */}
           <Reveal>
-            <h1 className="pointer-events-auto text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
+            <h1 className="pointer-events-auto bg-zinc-900/80 text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
               {t("heroTitle")}{t("heroName")}<span className="text-green-400">.</span>
             </h1>
           </Reveal>
           
           {/* Typewriter effect: cycles through roles */}
           <Reveal>
-            <h2 id="hero-roles" className="pointer-events-auto my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
+            <h2 id="hero-roles" className="pointer-events-auto bg-zinc-900/80 my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
               <Typewriter isPaused={isTypewriterPaused} reducedMotion={reducedMotion} />
             </h2>
           </Reveal>
           
           {/* Short description */}
           <Reveal>
-            <p className="pointer-events-auto leading-relaxed md:leading-relaxed max-w-xl text-sm text-zinc-300 md:text-base">
+            <p className="pointer-events-auto bg-zinc-900/80 leading-relaxed md:leading-relaxed max-w-xl text-sm text-zinc-300 md:text-base">
               {t("heroDescription")}
             </p>
           </Reveal>
