@@ -21,10 +21,10 @@ export const Stats = () => {
       {/* Work skills section */}
       <Reveal>
         <div>
-          <h4 className="flex items-center mb-6">
+          <h3 className="flex items-center mb-6">
             <AiFillCode className="text-green-400 text-2xl" aria-hidden="true" />
             <span className="font-bold ml-2">{t("statsUseAtWork")}</span>
-          </h4>
+          </h3>
           <div className="flex flex-wrap gap-2 mb-12">
             <Chip>{t("statsWindows")}</Chip>
             <Chip>{t("statsNetwork")}</Chip>
@@ -46,10 +46,10 @@ export const Stats = () => {
       {/* Development and delivery skills */}
       <Reveal>
         <div>
-          <h4 className="flex items-center mb-6">
+          <h3 className="flex items-center mb-6">
             <AiFillSmile className="text-green-400 text-2xl" aria-hidden="true" />
             <span className="font-bold ml-2">{t("statsUseForFun")}</span>
-          </h4>
+          </h3>
           <div className="flex flex-wrap gap-2 mb-12">
             <Chip>{t("statsJS")}</Chip>
             <Chip>{t("statsReact")}</Chip>

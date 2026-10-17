@@ -33,7 +33,7 @@ export const HomPage = () => {
       {/* Vertical navigation sidebar - fixed width */}
       <SideBar />
       
-      <main className="min-w-0">
+      <main id="main-content" className="min-w-0">
         {/* Sticky header with language toggle and resume button */}
         <Header />
         

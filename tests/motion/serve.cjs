@@ -48,6 +48,11 @@ webpackPackage.webpack({
   entry: path.join(__dirname, "browser.jsx"),
   output: { path: output, filename: "tests.js" },
   resolve: { extensions: [".jsx", ".js"] },
+  // Next/Link normally receives these browser constants from Next's compiler.
+  // Supply a development env for the standalone fixture, without a process shim.
+  plugins: [new webpackPackage.webpack.DefinePlugin({
+    "process.env": JSON.stringify({ NODE_ENV: "development" }),
+  })],
   module: { rules: [{ test: /\.jsx?$/, exclude: /node_modules/, use: loader }] },
 }, (error, stats) => {
   if (error || stats.hasErrors()) {

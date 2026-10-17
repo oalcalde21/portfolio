@@ -381,3 +381,58 @@ Se reutilizó axe-core 4.11.1 existente, sin instalar paquetes, con los mismos t
 U01, A05 (tres combinaciones documentadas), A08 y el recorte de Contacto a 320 px quedan corregidos en el alcance comprobado. Cambios visuales localizados previstos: CTA recuperado, texto de mayor contraste, subrayado persistente y título completo. Se mantienen identidad, tamaños, contenido y tiempos de animación.
 
 Persisten A02/movimiento, A06 parcial, A07/landmarks, mejoras opcionales y el contraste del hero sobre fondos decorativos variables pendiente de comprobación específica. No se ejecutó lector de pantalla real, zoom nativo 200/400 %, Safari/Firefox ni dispositivos físicos; las limitaciones de 5B siguen vigentes. No se declara conformidad WCAG completa ni seguridad total del proyecto. No se hizo merge ni despliegue manual.
+
+## 13. Etapa 5E — navegación y semántica, 17 de octubre de 2026
+
+Base verificada: main `327e827bc8efe3cdfa530658f8b0daf6a35cbd00`, limpio y sincronizado tras fetch. Rama `fix/portfolio-navigation-semantics`. Se conservan las conclusiones históricas: las etapas de movimiento posteriores a 5C están documentadas en motion-accessibility-audit-2026-10.md y PR #7–#11. Esta sección registra únicamente el nuevo alcance 5E, sin actualizar librerías ni lockfile.
+
+### Diagnóstico previo y clasificación
+
+| Hallazgo | Estado / evidencia | Corrección acotada |
+| --- | --- | --- |
+| Navegación desactualizada tras EN/ES | Defecto confirmado: SideBar observa una única colección de nodos con efecto de dependencias vacías. AnimatePresence reemplaza las secciones después del fade; el observer queda ligado a los nodos retirados. En producción, ES a 320: Contacto visible a top 273.5 px, pero Proyectos seguía marcado tras Control+End. | Seguir la posición de lectura y renovar la colección cuando cambian realmente los nodos. |
+| Umbral imposible para secciones largas | Defecto confirmado: Experiencia EN mide 5266 px a 320 × 900; su máxima intersección posible es 900/5266 = 0.171, inferior al threshold 0.3 anterior. | No exigir un porcentaje de la sección completa. |
+| Estado activo solo visual | Confirmado: cero aria-current en el baseline (parte de U02). | aria-current=location exclusivamente en el enlace actual; ninguno en el hero. No se añade un fallo WCAG automático por la ausencia histórica del atributo. |
+| Main duplicado y saltos h2→h4 | A07 confirmado por código y DOM: dos main anidados; competencias y proyectos h4; modal h4. Avisos best-practice relacionados con 1.3.1, no equivalencia automática a incumplimiento normativo. | Wrapper de fuente div con la misma clase; un main estable; competencias/proyectos h3 y título del diálogo h2, conservando todas las clases. |
+| Nombres funcionales en inglés bajo html.lang=es | A06 confirmado: navegación, hero, selector, aperturas/enlaces/alternativas de proyectos. | Nombres EN/ES mediante el contexto existente; marcas, destinos, contenido visible y gestión del modal se conservan. |
+| Mover foco desde cada enlace ancla al contenido | Mejora opcional, no defecto confirmado por conservar el foco en un enlace nativo. | Sin cambio: Tab/Shift+Tab y Enter siguen operando los enlaces existentes. |
+| Empresas como encabezados; patrón de acción/aria-pressed del selector | Mejoras opcionales de la auditoría anterior. No se demostró un nuevo bloqueo funcional. | Sin cambios en esta etapa; el selector solo traduce su nombre. |
+| Lectura real, zoom nativo, dispositivos físicos y otros motores | Pendientes no verificados. | Mantener la limitación, sin afirmar conformidad WCAG integral. |
+
+### Implementación y ciclo de vida
+
+SideBar reemplaza el IntersectionObserver porcentual por un listener pasivo de scroll y un listener de resize, agrupados en un único requestAnimationFrame pendiente. Se leen cuatro rectángulos por actualización, tomando la altura real del header como línea de lectura; en los espacios entre secciones se conserva la sección precedente y, al alcanzar el fondo, se reconoce Contacto aunque sea demasiado corto para llegar al header. No hay un bucle de animación permanente ni actualización del hash durante scroll manual.
+
+Un MutationObserver limitado al main estable detecta cambios en identidad/cantidad de las secciones. Solo al reemplazarse esa colección solicita recalcular: no depende del instante de cambio de idioma, que precede al remount con mode=wait. Se conserva el feedback inmediato del enlace y la posición actual pasa a seguir el scroll real. El cleanup desconecta el observer, retira ambos listeners y cancela el frame pendiente. No se modifica AnimatePresence, Typewriter, DotGrid, Reveal, controles de movimiento, foco/portal/Escape/scroll lock del modal ni estilos globales.
+
+La fuente continúa heredándose desde el mismo wrapper y con la misma clase. Los cambios de nivel de encabezado mantienen las clases y el reset de Tailwind. No se agregan tabIndex positivos, controles artificiales, dependencias, exclusiones ni reglas deshabilitadas. El main único también ofrece un destino estable al seguimiento de navegación.
+
+### Validaciones realizadas
+
+| Comprobación | Resultado |
+| --- | --- |
+| Instalación limpia | `npm ci --ignore-scripts` PASS: 385 instalados / 386 auditados, Node 24.19.0 y npm 11.17.0. No se aprueban scripts pendientes. |
+| Calidad | `npm run qa` PASS: lint y build Webpack, exit 0; / y /404 generados. Lint repetido tras ajustar el arnés. |
+| Movimiento y navegación controlados | `npm run qa:motion` mediante Run controlled tests: **47/47**, 36 anteriores y 11 nuevos. hydrationErrors=[], pendingTimers=0, listeners=0, exit 0. |
+| Cobertura nueva del arnés | Hero sin selección falsa, cuatro secciones, remount posterior al cambio de idioma, cinco remounts repetidos, una pareja de listeners y un observer propios, ambas direcciones de preferencia, final de documento y cleanup. React/DOM/MutationObserver/frames son reales; geometría, scrollY y matchMedia son controlados. No es validación nativa de medios ni navegador completo. |
+| Navegación del build | 32 recorridos de enlaces por Enter: EN/ES × cuatro secciones × 320/390/768/1440 × 900. Posición y selección estabilizadas, aria-current correcto y sin overflow. |
+| Scroll de teclado | Ocho recorridos adicionales: Control+End desde Proyectos después del remount selecciona Contacto; PageDown dentro de Experiencia mantiene su estado actual en los cuatro anchos. Reproducción inicial ya no falla. |
+| Idioma y semántica | Seis cambios rápidos EN/ES en móvil: cuatro secciones finales, un main, cero main anidados, encabezados sin h4 intermedios y nombres/alternativas de proyectos en ES. Pausa manual conservada y rol primario completo. |
+| Foco y controles | Tab desde Sobre mí a Proyectos y Shift+Tab de vuelta; anillo visible de foco calculado, Enter en enlaces y Espacio en selector. CTA lleva a Contacto, seleccionado por el seguimiento. |
+| Modal | Cuatro proyectos × 320/1440: aperturas con nombres traducidos, h2 asociado al diálogo, foco en cierre, Shift+Tab al enlace, Escape y restauración de foco/overflowY; sin modificar su gestión. |
+| DotGrid | 500 puntos, onda normal real con 500 targets y opacidad observada hasta 1. Casos de cancelación/reduce conservados en las 36 pruebas anteriores. |
+| Consola | Sin errores/warnings capturados en la sesión del build local. SSR/hidratación del arnés sin errores. No se declara lectura real con tecnología de asistencia. |
+| Seguridad | Completa: FAIL, exit 1, **9 afectados: 7 altos y 2 moderados**. Sin desarrollo: PASS, exit 0, **0 afectados**. Gate completo pendiente y deuda sin aceptación permanente. |
+| Diff / CSS | `git diff --check` PASS. El CSS de utilidades varía solo por la generación automática de `.resize{resize:both}` al aparecer el nombre de evento resize: 21987→22007 bytes. Al retirar esa única regla, el texto es idéntico al CSS productivo del baseline; ningún elemento usa esa clase. No se modifican estilos ni paleta. |
+
+Los intentos iniciales del arnés ampliado no se marcaron como PASS: Next/Link necesita constantes de entorno de su compilador, suministradas ahora solo al fixture con DefinePlugin ya disponible en Next; la simulación de media queries se limitó al query exacto del hook. Otra aserción contaba un listener resize compartido de Framer además del propio: se inspeccionó la librería y se acotó el seguimiento al callback de SideBar, sin retirar comprobaciones de cleanup del componente. Se repitió la suite completa hasta 47/47. No se modificó producto para ocultar esos fallos auxiliares ni se instalaron herramientas.
+
+La automatización de enlaces también se ajustó al href real de Next (`/#sección`) y a una posición de lectura estabilizada, sin exigir que el rectángulo quedara exactamente en top=0 durante el scroll suave o su anclaje. Las comprobaciones contrastan geometría y estado actual, además del clic inicial.
+
+### Evidencia, riesgos y aceptación pendiente
+
+Artefactos fuera de Git: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-5e/`: baseline.json y baseline-contact-stale.jpg; controlled-tests.json; navigation-matrix.json; manual-scroll.json; semantics-es-after-six-toggles.json; modal-smoke.json; wave.json; console.json; css-comparison.json; qa.log; auditorías JSON y capturas EN/ES de Contacto en cuatro anchos y del hero. Son muestras de diagnóstico, no un diff sincronizado de píxeles.
+
+La consulta nativa disponible devuelve reduce=false y las capacidades del navegador integrado no exponen emulación Rendering. **Reduce nativo de 5E: NOT RUN.** Antes del merge, en Brave activar Rendering → prefers-reduced-motion reduce, confirmar matchMedia=true y recorrer las cuatro secciones, scroll manual, EN/ES repetido y final de documento; pasar reduce→no-preference→reduce sin recargar y verificar aria-current/foco, pausa y modal. La aprobación manual de Oscar de 5D.4 es histórica y no se reutiliza como una prueba nueva de 5E.
+
+Riesgos acotados: la política de sección actual en huecos y al final del documento queda ahora explícita; validar con lector real la utilidad de aria-current y nombres traducidos. Los nombres de empresas como headings, el patrón del selector y posibles mejoras de foco del destino siguen opcionales. Persisten lector real, zoom nativo, dispositivos físicos y deuda de seguridad. No se instala axe ni se afirma una nueva auditoría axe en esta etapa. Warnings previos: ESLint 9 sin soporte y React 18 deprecado en Next 16; no se ocultan. Se prepara PR Draft, sin merge, despliegue manual ni cambios de dependencias.

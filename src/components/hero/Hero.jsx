@@ -25,7 +25,7 @@ const Hero = ({ isTypewriterPaused, onToggleTypewriter }) => {
     ? t("typewriterReduced")
     : t(isTypewriterPaused ? "typewriterResume" : "typewriterPause");
   return (
-    <section className="text-slat-100 overflow-hidden py-24 md:py-32" aria-label="Hero">
+    <section className="text-slat-100 overflow-hidden py-24 md:py-32" aria-label={t("heroLabel")}>
       <div className="relative">
         {/* Content layer - z-10 keeps it above the dot grid */}
         <div className="pointer-events-none relative z-10">

@@ -17,6 +17,11 @@ import { createContext, useContext, useState, useCallback, useEffect } from "rea
 // All the text used throughout the portfolio, organized by language
 const translations = {
   EN: {
+    navLabel: "Main navigation",
+    languageToggleLabel: "Switch to Spanish",
+    heroLabel: "Introduction",
+    projectDetailsLabel: "View details for",
+    projectVisitLabel: "Visit project website:",
     trainingTitle: "Training & education",
     trainingMicrosoft: "MCSA: Office 365 — Microsoft (legacy certification)",
     trainingDell: "Dell TechDirect — Client Systems / Self-Dispatch training",
@@ -172,6 +177,11 @@ const translations = {
     expHycDesc: "Performed preventive maintenance and repairs on PCs, POS systems, printers and scanners.",
   },
   ES: {
+    navLabel: "Navegación principal",
+    languageToggleLabel: "Cambiar a inglés",
+    heroLabel: "Presentación",
+    projectDetailsLabel: "Ver detalles de",
+    projectVisitLabel: "Visitar sitio del proyecto:",
     trainingTitle: "Formación y educación",
     trainingMicrosoft: "MCSA: Office 365 — Microsoft (certificación histórica de un programa retirado)",
     trainingDell: "Dell TechDirect — Formación en Client Systems / Self-Dispatch",
