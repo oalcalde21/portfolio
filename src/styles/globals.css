@@ -49,4 +49,19 @@ html {
   .typewriter-cursor {
     animation: none;
   }
+
+  /* First paint and in-flight entries, without resetting structural transforms. */
+  .motion-entrance {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .motion-sidebar,
+  .motion-sidebar-link {
+    transform: none !important;
+  }
+
+  .motion-reveal-wipe {
+    display: none;
+  }
 }

@@ -8,8 +8,10 @@
  */
 
 // MotionLink wraps Next's Link with animation capabilities from framer-motion
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
+import { useEffect } from "react";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 const MotionLink = motion(Link);
 
@@ -20,10 +22,22 @@ export const SideBarLink = ({
   href,
   value,
 }) => {
+  const reducedMotion = usePrefersReducedMotion();
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      controls.stop();
+      controls.set({ x: 0 });
+    } else {
+      controls.start({ x: 0, transition: { duration: 0.5, delay: 0.1 } });
+    }
+  }, [controls, reducedMotion]);
+
   return (
     <MotionLink
       initial={{ x: -70 }}
-      animate={{ x: 0 }}
+      animate={controls}
       transition={{ duration: 0.5, delay: 0.1 }}
       href={href}
       onClick={() => {
@@ -31,7 +45,7 @@ export const SideBarLink = ({
         setSelected(value);
       }}
       // Conditional styling: green border and full opacity when selected
-      className={`writing-vertical h-24 shrink-0 flex items-center justify-center border-r-2 text-sm transition-all w-full ${
+      className={`motion-sidebar-link writing-vertical h-24 shrink-0 flex items-center justify-center border-r-2 text-sm transition-all w-full ${
         selected === value
           ? "bg-zinc-800 border-green-400 opacity-100"
           : "border-transparent hover:border-r-zinc-50 opacity-50 hover:bg-zinc-900"

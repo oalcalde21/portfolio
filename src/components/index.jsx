@@ -8,9 +8,9 @@
  * language transition when the user toggles between EN/ES.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // framer-motion handles the smooth fade animation when switching languages
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimation, usePresence } from "framer-motion";
 import { SideBar } from "./nav/SideBar";
 import { Header } from "./nav/Header";
 import Hero from "./hero/Hero";
@@ -19,12 +19,14 @@ import { Projects } from "./projects/Projects";
 import { Experience } from "./experience/Experience";
 import { Contact } from "./contact/Contact";
 import { useLanguage } from "../context/LanguageContext";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 
 export const HomPage = () => {
   // transitionKey changes every time the language is toggled
   // this triggers the fade animation on all content
   const { transitionKey, t } = useLanguage();
   const [isTypewriterPaused, setIsTypewriterPaused] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
   
   return (
     <div className="grid grid-cols-[54px_minmax(0,1fr)]">
@@ -36,15 +38,8 @@ export const HomPage = () => {
         <Header />
         
         {/* This wrapper handles the language switch animation */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={transitionKey}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mx-auto max-w-5xl px-4 md:px-8 space-y-32 pb-24"
-          >
+        <AnimatePresence mode={reducedMotion ? "sync" : "wait"}>
+          <LanguagePage key={transitionKey}>
             <Hero
               isTypewriterPaused={isTypewriterPaused}
               onToggleTypewriter={() => setIsTypewriterPaused((paused) => !paused)}
@@ -53,7 +48,7 @@ export const HomPage = () => {
             <Projects />
             <Experience />
             <Contact />
-          </motion.div>
+          </LanguagePage>
         </AnimatePresence>
         
         {/* Footer with copyright and credits */}
@@ -64,3 +59,35 @@ export const HomPage = () => {
     </div>
   );
 };
+
+// An exiting page must still observe preference changes, even after its props freeze.
+function LanguagePage({ children }) {
+  const reducedMotion = usePrefersReducedMotion();
+  const [isPresent, safeToRemove] = usePresence();
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      controls.stop();
+      controls.set({ opacity: 1 });
+      if (!isPresent) safeToRemove();
+    } else if (isPresent) {
+      controls.start({ opacity: 1 });
+    }
+  }, [controls, reducedMotion, isPresent, safeToRemove]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={controls}
+      exit={{ opacity: reducedMotion ? 1 : 0 }}
+      transition={{ duration: reducedMotion ? 0 : 0.3 }}
+      onAnimationComplete={(definition) => {
+        if (!isPresent && definition.opacity === 0) safeToRemove();
+      }}
+      className="motion-entrance mx-auto max-w-5xl px-4 md:px-8 space-y-32 pb-24"
+    >
+      {children}
+    </motion.div>
+  );
+}

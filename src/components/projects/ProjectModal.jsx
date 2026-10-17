@@ -14,17 +14,31 @@
 
 import { useEffect, useId, useRef } from "react";
 import ReactDOM from "react-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
 import { AiOutlineExport } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
 import { useLanguage } from "../../context/LanguageContext";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isOpen, title, tech, openerRef }) => {
   const { t } = useLanguage();
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const titleId = useId();
+  const reducedMotion = usePrefersReducedMotion();
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (reducedMotion) {
+      controls.stop();
+      controls.set({ y: 0, opacity: 1 });
+    } else {
+      controls.start({ y: 0, opacity: 1 });
+    }
+    return () => controls.stop();
+  }, [controls, isOpen, reducedMotion]);
 
   // showModal makes the background inert; restore global state on every exit.
   useEffect(() => {
@@ -95,9 +109,9 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
         {/* Modal card - clicking it doesn't close (stops propagation) */}
         <motion.div
           initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          animate={controls}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-2xl h-fit rounded-lg overflow-hidden bg-zinc-900 shadow-lg cursor-auto"
+          className="motion-entrance w-full max-w-2xl h-fit rounded-lg overflow-hidden bg-zinc-900 shadow-lg cursor-auto"
         >
           {imgSrc && <img className="w-full" src={imgSrc} alt={`${t("projectImageAlt")} ${title}`} width={800} height={450} loading="lazy" />}
           <div className="p-8">
