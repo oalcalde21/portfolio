@@ -91,12 +91,12 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onClick={openModal}
-          aria-label={`View details for ${translatedTitle}`}
+          aria-label={`${t("projectDetailsLabel")} ${translatedTitle}`}
           className="w-full aspect-video bg-zinc-700 cursor-pointer relative rounded-lg overflow-hidden"
         >
           <img
             src={imgSrc}
-            alt={`Screenshot of ${translatedTitle} project`}
+            alt={`${t("projectImageAlt")} ${translatedTitle}`}
             width={800}
             height={450}
             loading="lazy"
@@ -110,9 +110,9 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
           {/* Title row with link */}
           <Reveal width="w-full">
             <div className="flex items-center gap-2 w-full">
-              <h4 className="font-bold text-lg shrink-0 max-w-[calc(100%_-_150px)]">{translatedTitle}</h4>
+              <h3 className="font-bold text-lg shrink-0 max-w-[calc(100%_-_150px)]">{translatedTitle}</h3>
               <div className="w-full h-[1px] bg-zinc-600" />
-              <Link href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${translatedTitle} website`}>
+              <Link href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`${t("projectVisitLabel")} ${translatedTitle}`}>
                 <AiOutlineExport className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
               </Link>
             </div>

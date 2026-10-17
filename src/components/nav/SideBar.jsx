@@ -6,8 +6,7 @@
  * - Shows navigation links (About, Projects, Experience, Contact)
  * - Highlights the current section based on scroll position
  * 
- * It uses IntersectionObserver to detect which section is currently
- * visible on screen and updates the "selected" state accordingly.
+ * Tracks the reading position, including sections replaced by language changes.
  */
 
 import { useEffect, useState } from "react";
@@ -32,31 +31,50 @@ export const SideBar = () => {
   // Tracks which section is currently visible (highlighted in the sidebar)
   const [selected, setSelected] = useState("");
 
-  // Set up intersection observer to track scroll position
+  // Section heights can exceed the viewport; track the reading line instead
+  // of requiring a percentage of an entire section to be visible.
   useEffect(() => {
-    // Get all sections with the "section-wrapper" class
-    const sections = document.querySelectorAll(".section-wrapper");
+    const content = document.getElementById("main-content");
+    if (!content) return;
+    let sections = Array.from(content.querySelectorAll(".section-wrapper"));
+    let frame = null;
 
-    const options = {
-      threshold: 0.3, // Section is considered "visible" when 30% is on screen
-    };
-
-    // Update selected state when a section comes into view
-    const callback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setSelected(entry.target.id);
-        }
+    const updateSelected = () => {
+      frame = null;
+      const readingLine = content.querySelector("header")?.getBoundingClientRect().height || 0;
+      let active = "";
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= readingLine + 1) active = section.id;
       });
+      // The last section may not be tall enough to reach the reading line.
+      if (window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 1) {
+        active = sections.at(-1)?.id || "";
+      }
+      setSelected(active);
     };
+    const scheduleUpdate = () => {
+      if (frame === null) frame = window.requestAnimationFrame(updateSelected);
+    };
+    // AnimatePresence replaces the page after its exit finishes, so depending
+    // on the language key alone would still subscribe to the outgoing nodes.
+    const observer = new MutationObserver(() => {
+      const next = Array.from(content.querySelectorAll(".section-wrapper"));
+      if (next.length !== sections.length || next.some((section, index) => section !== sections[index])) {
+        sections = next;
+        scheduleUpdate();
+      }
+    });
+    observer.observe(content, { childList: true, subtree: true });
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    scheduleUpdate();
 
-    const observer = new IntersectionObserver(callback, options);
-
-    // Start watching all sections
-    sections.forEach((section) => observer.observe(section));
-    
-    // Cleanup when component unmounts
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
@@ -64,7 +82,7 @@ export const SideBar = () => {
       initial={{ x: -70 }}
       animate={controls}
       transition={{ duration: 0.5 }}
-      aria-label="Main navigation"
+      aria-label={t("navLabel")}
       className="motion-sidebar no-scrollbar bg-zinc-950 h-screen sticky top-0 left-0 z-20 flex flex-col items-center overflow-y-scroll"
     >
       {/* Logo mark at the top */}
