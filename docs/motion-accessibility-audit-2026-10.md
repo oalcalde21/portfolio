@@ -311,3 +311,72 @@ No se realizó ni se declara prueba con lector de pantalla real. Permanecen pend
 La deuda de seguridad continúa explícita: nueve paquetes afectados de tooling (siete altos, dos moderados), cero productivos en el baseline validado. El gate completo continúa fallando; el cierre no deshabilita controles ni acepta permanentemente esos riesgos.
 
 Revisión técnica de cierre por Codex: npm ci correcto (385 paquetes instalados); npm run qa correcto (lint y build Webpack); 21/21 pruebas controladas repetidas con hydrationErrors=[], pendingTimers=0 y listeners=0. Auditorías repetidas: completa 9 (7 altos, 2 moderados, exit 1), productiva 0 (exit 0). Diff revisado, lockfile y dependencias sin modificaciones; PR inicialmente en c36e4af, base 217fff0, sin conflictos, preview Vercel READY. Se añade exclusivamente este registro documental antes del merge autorizado. Persisten los warnings ya descritos de React 18, soporte ESLint 9, script no aprobado de unrs-resolver y LF/CRLF; no se ocultan ni se normalizan archivos ajenos.
+
+## 12. Etapa 5D.3 — Reveal, entradas y transición real de idioma
+
+### Inspección y alcance
+
+Base verificada: main y origin/main limpios, divergencia 0/0, `c6c74b202ba2944cfb7dbe991221c94492cde897`. Rama `fix/portfolio-reduced-motion-entrances`. Versiones reales y lockfile: Node 24.19.0 / npm 11.17.0, Next 16.4.1, React 18.3.1, Framer Motion 11.18.2. Se revisaron ambos informes, el contexto de idioma, entradas y CSS antes de modificar. No se alteraron conclusiones históricas.
+
+Reveal arranca en opacity=0/y=75, espera useInView once y combina .5 s + delay .25 s con un barrido .5 s easeIn. Project arranca en opacity=0/y=100 y dura .75 s. Sidebar y enlaces entran desde x=-70 en .5 s; los enlaces añaden .1 s. La tarjeta modal utiliza el spring/fade por defecto de Framer 11. La transición real está en HomPage, con key por idioma, fade .3 s y mode=wait. LanguageTransition no tiene consumidores y no se modificó. El estado de pausa del Typewriter ya vive fuera de ese remount.
+
+### Implementación acotada
+
+- **Reveal:** reutiliza usePrefersReducedMotion. Bajo reduce detiene ambos controles y fija el estado visible, sin esperar al observer. El barrido se oculta mediante una regla específica. Una ref recuerda que ya se mostró, para que volver a normal no lo oculte ni repita la entrada. useInView conserva once y los valores/duraciones/delay normales.
+- **Project:** detiene la entrada y fija opacity=1/y=0 bajo reduce, sin dependencia del observer para verlo. Conserva el estado visible al volver a normal. No cambia hover, rotación, anchura de imágenes, contenido ni disparadores.
+- **Sidebar/SideBarLink:** controles locales cancelables fijan x=0 bajo reduce. Se mantienen las clases de selección, opacidad de enlaces, foco y lógica del observer de navegación. No se corrige la deuda M08.
+- **Idioma real:** un componente local LanguagePage mantiene la suscripción reactiva incluso durante la salida, cuando AnimatePresence conserva props anteriores. En normal mantiene fade .3 s y mode=wait; completa explícitamente su registro usePresence al terminar el exit. Bajo reduce el modo es sync, la entrada/salida no tienen duración y safeToRemove libera inmediatamente el elemento saliente. El estado de pausa permanece en HomPage. No se añade provider, MotionConfig ni abstracción global; no se modifica LanguageContext.
+- **Modal:** se adapta exclusivamente la entrada de la tarjeta con controles cancelables. Reduce fija posición final/opacidad 1; normal conserva los defaults de spring y fade, sin imponer una transición nueva. Portal, dialog, Escape, backdrop, contención/restauración de foco, scroll lock y contenido permanecen sin cambios.
+- **CSS de primer render:** dentro de la media query reduce se fuerzan opacity=1/transform:none únicamente en los wrappers de entrada; sidebar/enlaces solo fuerzan transform final, preservando su opacidad de selección. Se oculta únicamente el barrido. Estos overrides locales son necesarios para prevalecer sobre los estilos inline initial antes de hidratar o al cambiar preferencia a mitad de animación. No se aplican resets globales ni se borran transforms de imágenes, indicadores, CTA o DotGrid.
+
+### QA ejecutado por Codex
+
+| Comprobación | Resultado |
+| --- | --- |
+| npm ci | Correcto; 385 paquetes instalados / 386 auditados; sin aprobar scripts. |
+| npm run qa | Lint y build Webpack correctos. |
+| npm run qa:motion | Ejecución interactiva: abrir loopback 3113 y activar Run controlled tests. 21/21; hydrationErrors=[], pendingTimers=0, listeners=0; proceso exit 0. |
+| Cobertura de qa:motion | Regresión del Typewriter/hook existentes con preferencia simulada. No cubre las nuevas entradas Framer ni prueba CSS reduce nativo. |
+| npm audit --json | 9 afectados: 7 altos, 2 moderados; exit 1. Gate completo sigue fallando. |
+| npm audit --omit=dev --json | 0 afectados; exit 0. |
+| git diff --check | Sin errores de whitespace; avisos de conversión LF/CRLF sin normalización masiva. |
+| Modo normal nativo | matchMedia reduce=false; no se alteró la preferencia del sistema. |
+| Responsive normal EN/ES | 320, 390, 768 y 1440 × 900 px: sin overflow; página final opacity=1, sidebar transform:none, control de pausa completo/traducido. |
+| Idioma normal | EN→ES→EN y cambios rápidos por Enter/Espacio: una sola página final; foco sigue en selector; Typewriter conserva pausa. Fade observado en curso y estado final visible. |
+| Proyectos normales | Navegación por teclado a Projects; entradas observadas en estado final opacity=1/transform:none. |
+| Modal normal | Cuatro proyectos abiertos/cerrados; Plenitud Fit inspeccionado a 320 y 1440 px. Tab recorre enlace/cierre y vuelve al cierre; Escape restaura disparador y overflow. |
+| CTA y Typewriter | CTA activado con Enter; pausa/reanudación y estado retenido tras EN/ES; código Typewriter y hook intactos. |
+| Consola / hidratación | Sin errores ni warnings capturados en el build local; hidratación controlada del Typewriter sin errores. No se declara hidratación nativa reduce probada. |
+
+Warnings previos conservados: ESLint 9 sin soporte, React 18 deprecado en Next 16 y script pendiente unrs-resolver 1.11.1. No se aprobaron scripts, ni se deshabilitaron reglas o gates. La deuda de nueve paquetes de tooling no se considera corregida ni aceptada permanentemente.
+
+### Comparación visual, CSS y assets
+
+Capturas normales antes (producción c6c74b2) y después (build local), EN/ES y cuatro anchos; modal móvil/escritorio. Son muestras de estado, no un diff de píxeles sincronizado de animaciones. No se observaron cambios de diseño en la revisión realizada.
+
+SHA-256 del CSS concatenado sin duplicados: producción `e39bb073348b2110620301b1e7b6e8b2328e0940e19945dfe8578e186a6fcebf`; local `895c904108b686e906d71ab401e178e0d1c089ab09e212980c7206f4b75f3c6c`. La comparación de reglas PostCSS muestra exclusivamente la ampliación de la media query reduce; ninguna regla normal cambia. Los siete WOFF2 conservan hashes; también cv.pdf, resume.pdf y og-image.jpg. Canonical y OG iguales al baseline. No se modificaron assets, fuentes ni dependencias.
+
+Evidencia local: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-stage5d3/`: before-normal-en-320/390/768/1440.jpg, after-normal-en/es-320/390/768/1440.jpg, modal-normal-320/1440.jpg, normal-responsive.json, typewriter-controlled.json y css-assets.json. Las auditorías completas del cierre se guardaron temporalmente fuera del repositorio. No hay capturas nativas reduce de esta etapa; no se reutiliza la validación manual de Oscar de 5D.2 para aprobar componentes nuevos.
+
+### Intento nativo y límite de la validación
+
+Se intentó abrir DevTools con F12 en la pestaña local de prueba. El navegador integrado no expuso UI Rendering ni controles de emulación; sus únicas capacidades son viewport/visibility y pageAssets/webmcp. La consulta real siguió devolviendo reduce=false. No se modificaron preferencias personales, no se parcheó matchMedia en la aplicación ni se presentaron pruebas simuladas como emulación nativa.
+
+**Pendiente antes de cualquier merge:** reduce real al cargar y cambios no-preference→reduce→no-preference, incluidos Reveal/modal en curso e idioma bajo reduce. La revisión de código, el CSS SSR y los tests existentes no permiten declarar esos casos aprobados. El PR se prepara Draft con esta limitación explícita, conforme al fallback autorizado por el usuario. No se declara conformidad WCAG integral ni una sesión con lector de pantalla real.
+
+### Guía manual de 5D.3 para Oscar
+
+1. Abrir el preview del PR en Brave/Chromium. DevTools → Ctrl+Shift+P → Show Rendering → Emulate CSS media feature prefers-reduced-motion → reduce. En Console ejecutar `matchMedia('(prefers-reduced-motion: reduce)').matches`; registrar true. Recargar manteniendo reduce.
+2. Revisar EN y ES a 320, 390, 768 y 1440 px. Hero, About, Projects, Experience y Contact deben estar visibles inmediatamente, incluso antes de visitar cada sección: sin y/opacity de entrada ni barrido. Sidebar/enlaces en posición final; no debe haber pérdida de información, recorte ni overflow. La opacidad atenuada de enlaces no seleccionados se conserva deliberadamente.
+3. Como evidencia auxiliar de DOM, registrar cantidad de `.motion-entrance` (debe ser mayor que cero), opacidad y transform calculados, y display de `.motion-reveal-wipe`. Bajo reduce todos los wrappers deben tener opacity=1 y transform=none; el barrido display=none. Revisar visualmente: los valores calculados no sustituyen comprobar foco/contenido.
+4. Manteniendo reduce, cambiar EN/ES varias veces: cambio inmediato, una sola página final, foco en selector y contenido completo. Pausar el Typewriter antes de cambiar preferencia/idioma y comprobar que la pausa persiste al volver a normal. El Typewriter estático bajo reduce debe conservar ambos roles.
+5. Sin recargar, pasar no-preference→reduce mientras un Reveal está entrando. Todo el contenido debe pasar al estado final inmediatamente, sin una franja verde ni reocultarse. Volver a no-preference: lo mostrado no debe volver a ocultarse ni reproducir su entrada; nuevas instancias montadas en normal conservan el comportamiento previo once.
+6. Repetir la transición de preferencia durante la apertura de un modal. La tarjeta debe quedar inmóvil en posición final, sin saltos ni transparencia. Comprobar cierre inicial enfocado, Tab/Shift+Tab, Escape, botón, backdrop, scroll interno y retorno al disparador. Al volver a normal, una nueva apertura debe conservar su spring/fade previo.
+7. Cambiar preferencia durante el fade de idioma, tanto entrando como saliendo: sin página invisible persistente, esperas de fade bajo reduce ni duplicados residuales. Comprobar selector enfocado, enlaces y CTA funcionales.
+8. Conservar Console abierto durante recarga, cambios de preferencia, idioma y modal: registrar cualquier error de hidratación o foco. Adjuntar capturas y pasos/resultados. Dejar Rendering en No emulation al terminar; no cambiar Windows.
+
+### Riesgos y pendientes de 5D.4
+
+La matriz nativa anterior requiere revisión humana antes del merge; especial atención a la salida de AnimatePresence y a las animaciones que ya estaban en curso al cambiar preferencia. La gestión del foco y el resaltado automático de sidebar tras cambio de idioma son temas separados: se conserva la deuda M08, sin confundir selección incorrecta con un fallo nuevo de navegación.
+
+DotGrid y su cleanup/contraste/onda siguen intactos. Hover de capturas, selector, CTA y transiciones CSS restantes no están adaptados aquí: quedan para 5D.4. También siguen pendientes lector real, zoom nativo, dispositivos físicos y otras deudas semánticas del informe de accesibilidad. No se actualizó ninguna dependencia, no hubo merge ni despliegue manual y no se inició 5D.4.

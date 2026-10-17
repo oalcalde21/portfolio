@@ -18,6 +18,7 @@ import { AiOutlineExport } from "react-icons/ai";
 import { ProjectModal } from "./ProjectModal";
 import Reveal from "../util/Reveal";
 import { useLanguage } from "../../context/LanguageContext";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 // Maps project titles to their translation keys
 const projectKeys = {
@@ -35,6 +36,8 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
   const ref = useRef(null);
   const openerRef = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const reducedMotion = usePrefersReducedMotion();
+  const revealed = useRef(false);
 
   const openModal = (event) => {
     openerRef.current = event.currentTarget;
@@ -46,12 +49,17 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
 
   // Animate in when the card comes into view
   useEffect(() => {
-    if (isInView) {
+    if (reducedMotion === true) {
+      revealed.current = true;
+      controls.stop();
+      controls.set("visible");
+    } else if (isInView || revealed.current) {
+      revealed.current = true;
       controls.start("visible");
     } else {
       controls.start("hidden");
     }
-  }, [isInView, controls]);
+  }, [isInView, controls, reducedMotion]);
 
   // Translate title and description
   const translatedTitle = keys.title ? t(keys.title) : title;
@@ -70,11 +78,12 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
     <>
       {/* Animated card container */}
       <motion.div
+        className="motion-entrance"
         ref={ref}
         variants={{ hidden: { opacity: 0, y: 100 }, visible: { opacity: 1, y: 0 } }}
         initial="hidden"
         animate={controls}
-        transition={{ duration: 0.75 }}
+        transition={reducedMotion ? { duration: 0 } : { duration: 0.75 }}
       >
         {/* Project screenshot - interactive hover effect */}
         <button

@@ -11,12 +11,24 @@
  */
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { SideBarLink } from "./SideBarLink";
 import { useLanguage } from "../../context/LanguageContext";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 export const SideBar = () => {
   const { t } = useLanguage();
+  const reducedMotion = usePrefersReducedMotion();
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      controls.stop();
+      controls.set({ x: 0 });
+    } else {
+      controls.start({ x: 0, transition: { duration: 0.5 } });
+    }
+  }, [controls, reducedMotion]);
   // Tracks which section is currently visible (highlighted in the sidebar)
   const [selected, setSelected] = useState("");
 
@@ -50,10 +62,10 @@ export const SideBar = () => {
   return (
     <motion.nav
       initial={{ x: -70 }}
-      animate={{ x: 0 }}
+      animate={controls}
       transition={{ duration: 0.5 }}
       aria-label="Main navigation"
-      className="no-scrollbar bg-zinc-950 h-screen sticky top-0 left-0 z-20 flex flex-col items-center overflow-y-scroll"
+      className="motion-sidebar no-scrollbar bg-zinc-950 h-screen sticky top-0 left-0 z-20 flex flex-col items-center overflow-y-scroll"
     >
       {/* Logo mark at the top */}
       <span className="shrink-0 text-xl font-black leading-[1] size-10 flex items-center justify-center my-4">
