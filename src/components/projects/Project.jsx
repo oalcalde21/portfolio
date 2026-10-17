@@ -101,7 +101,7 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
             height={450}
             loading="lazy"
             style={{ width: hovered ? "90%" : "85%", rotate: hovered ? "2deg" : "0deg" }}
-            className="w-[100%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-3 transition-all rounded"
+            className="motion-project-preview w-[100%] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-3 transition-all rounded"
           />
         </button>
         

@@ -64,4 +64,26 @@ html {
   .motion-reveal-wipe {
     display: none;
   }
+
+  /* Keep color feedback and immediate focus, without decorative movement. */
+  .motion-outline-button,
+  .motion-language-toggle {
+    transition-property: color, background-color, border-color;
+  }
+
+  .motion-outline-button::before,
+  .motion-language-indicator {
+    transition: none;
+  }
+
+  .motion-outline-button:active {
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+  }
+
+  .motion-project-preview {
+    transition: none;
+    width: 85% !important;
+    rotate: 0deg !important;
+  }
 }
