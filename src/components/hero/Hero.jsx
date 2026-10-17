@@ -29,27 +29,39 @@ const Hero = ({ isTypewriterPaused, onToggleTypewriter }) => {
       <div className="relative">
         {/* Content layer - z-10 keeps it above the dot grid */}
         <div className="pointer-events-none relative z-10">
-          {/* Main heading: "Hi, I'm Oscar." */}
-          <Reveal>
-            <h1 className="pointer-events-auto bg-zinc-900/80 text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
-              {t("heroTitle")}{t("heroName")}<span className="text-green-400">.</span>
-            </h1>
-          </Reveal>
+          <div className="relative w-fit max-w-full">
+            {/* One reading surface; its feather stays outside every text box. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-6 bg-zinc-900/80"
+              style={{
+                maskImage: "linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent), linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent)",
+                maskComposite: "intersect",
+              }}
+            />
+            {/* Main heading: "Hi, I'm Oscar." */}
+            <Reveal>
+              <h1 className="pointer-events-auto text-4xl sm:text-6xl font-black text-zinc-100 md:text-8xl">
+                {t("heroTitle")}{t("heroName")}<span className="text-green-400">.</span>
+              </h1>
+            </Reveal>
           
-          {/* Typewriter effect: cycles through roles */}
-          <Reveal>
-            <h2 id="hero-roles" className="pointer-events-auto bg-zinc-900/80 my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
-              <Typewriter isPaused={isTypewriterPaused} reducedMotion={reducedMotion} />
-            </h2>
-          </Reveal>
+            {/* Typewriter effect: cycles through roles */}
+            <Reveal>
+              <h2 id="hero-roles" className="pointer-events-auto my-2 text-xl sm:text-2xl text-zinc-300 md:my-4 md:text-4xl">
+                <Typewriter isPaused={isTypewriterPaused} reducedMotion={reducedMotion} />
+              </h2>
+            </Reveal>
           
-          {/* Short description */}
-          <Reveal>
-            <p className="pointer-events-auto bg-zinc-900/80 leading-relaxed md:leading-relaxed max-w-xl text-sm text-zinc-300 md:text-base">
-              {t("heroDescription")}
-            </p>
-          </Reveal>
+            {/* Short description */}
+            <Reveal>
+              <p className="pointer-events-auto leading-relaxed md:leading-relaxed max-w-xl text-sm text-zinc-300 md:text-base">
+                {t("heroDescription")}
+              </p>
+            </Reveal>
           
+          </div>
+
           {/* Contact button - scrolls to contact section */}
           <Reveal>
             <div className="flex items-center gap-2">
