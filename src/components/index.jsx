@@ -8,7 +8,7 @@
  * language transition when the user toggles between EN/ES.
  */
 
-import React from "react";
+import React, { useState } from "react";
 // framer-motion handles the smooth fade animation when switching languages
 import { AnimatePresence, motion } from "framer-motion";
 import { SideBar } from "./nav/SideBar";
@@ -24,6 +24,7 @@ export const HomPage = () => {
   // transitionKey changes every time the language is toggled
   // this triggers the fade animation on all content
   const { transitionKey, t } = useLanguage();
+  const [isTypewriterPaused, setIsTypewriterPaused] = useState(false);
   
   return (
     <div className="grid grid-cols-[54px_minmax(0,1fr)]">
@@ -44,7 +45,10 @@ export const HomPage = () => {
             transition={{ duration: 0.3 }}
             className="mx-auto max-w-5xl px-4 md:px-8 space-y-32 pb-24"
           >
-            <Hero />
+            <Hero
+              isTypewriterPaused={isTypewriterPaused}
+              onToggleTypewriter={() => setIsTypewriterPaused((paused) => !paused)}
+            />
             <About />
             <Projects />
             <Experience />

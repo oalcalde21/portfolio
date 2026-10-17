@@ -12,7 +12,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
-    "qa": "npm run lint && npm run build"
+    "qa": "npm run lint && npm run build",
+    "qa:motion": "node tests/motion/serve.cjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
