@@ -392,3 +392,178 @@ Se conserva como evidencia separada la regresión interactiva qa:motion del Type
 Continúan fuera del cierre DotGrid, hover/CTA/selector CSS y las demás tareas previstas para 5D.4; esa etapa no se inicia. La deuda M08 del observer y las deudas semánticas/accesibles restantes siguen registradas. Los nueve afectados de tooling y cero productivos del último diagnóstico no representan un gate completo aprobado ni aceptación permanente del riesgo.
 
 Revalidación de cierre por Codex: head/base iniciales 4895ac0/c6c74b2 y ocho archivos esperados, sin conflictos ni cambios de dependencias/lockfile. npm ci correcto (385 instalados/386 auditados), npm run qa correcto, qa:motion repetido mediante su botón Run controlled tests (21/21, hydrationErrors=[], pendingTimers=0, listeners=0; exit 0). Auditorías repetidas: completa 9 (7 altos, 2 moderados, exit 1), productiva 0 (exit 0). git diff --check correcto. Preview inicial READY para 4895ac0. Se publica únicamente este registro documental antes del merge autorizado, sin cambios adicionales de producto. Continúan los warnings de React 18 deprecado en Next 16, soporte ESLint 9, script pendiente de unrs-resolver sin aprobar y LF/CRLF sin normalización masiva.
+
+## 14. Etapa 5D.4A — diagnóstico de DotGrid, contraste e interacciones
+
+Fecha de cierre del diagnóstico: 17/10/2026. Solo inspección y documentación local; no se implementan las propuestas siguientes. Las conclusiones históricas anteriores se conservan.
+
+### Baseline y alcance de la evidencia
+
+`main` confirmado limpio y sincronizado tras actualizar referencias: `8bb7ac4f8e602808aeee27c6eaa47577ad6080d6`. Manifest y lockfile: Next 16.4.1, React 18.3.1, Framer Motion 11.18.2, Anime.js 3.2.2 y Tailwind 3.4.19. Runtime Node 24.19.0 / npm 11.17.0. Se revisaron ambos informes y los consumidores reales; no se normaliza el proyecto legacy ni se agregan herramientas.
+
+Las muestras normales del build de producción local cubren ES a 320 y 768 px y EN a 390 y 1440 px, alto de viewport 900 px. No se observó overflow horizontal en esas muestras. No equivalen a una matriz exhaustiva de ambos idiomas, ambos roles y todos los estados en cada ancho. Se registraron reposo, clic/onda, clics repetidos, cambio de idioma, hover y foco de los controles del hero. El Typewriter se pausó mediante su control para fijar el texto durante las mediciones.
+
+Evidencia fuera del repositorio: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-stage5d4a/`. Incluye `baseline-*.json/.jpg`, `wave-*.json/.jpg`, `contrast-*.json`, `cleanup-repeated-clicks.json`, `cta-hover-focus.jpg`, `pause-hover-focus.jpg` y `typewriter-tests.json`. Son artefactos locales, no adjuntos versionados ni evidencia de producción remota. Los observadores y el analizador temporales de ese directorio no modifican archivos de aplicación, handlers ni estilos: un proxy loopback añade instrumentación al HTML servido localmente. Esa instrumentación tiene coste y límites detallados abajo.
+
+### Inventario técnico de DotGrid
+
+Ubicación: `src/components/hero/DotGrid.jsx`; único consumidor encontrado: `Hero.jsx`, al final de la capa de contenido. Usa DOM y Anime.js, sin Canvas ni SVG. Renderiza 500 puntos (25 columnas × 20 filas), 500 wrappers y el contenedor: 1001 nodos de cuadrícula. Cada punto mide 8 × 8 px; el padding del wrapper produce pasos de 24 px. Todos existen y son targets aunque parte de la cuadrícula quede fuera del área visible.
+
+Existe un `onClick` React en el contenedor, no 500 listeners individuales. Cada clic crea una instancia Anime sobre el selector global `.dot-point`, sin conservarla ni cancelarla. `from` proviene de `event.target.dataset.index`. El hover del wrapper cambia fondo y gradiente mediante CSS; no inicia la onda. El contenido superior tiene z-index 10: sus textos/controles con pointer-events auto interceptan el puntero; no se forzó hover a través de las letras.
+
+| Propiedad | Primera fase | Segunda fase |
+| --- | --- | --- |
+| Escala | 1 → 1.35, 250 ms, easeOutSine | → 1, 500 ms, easeInOutQuad |
+| translateY | 0 → −15 px, mismos tiempos | → **+1 px**, no al cero inicial |
+| Opacidad | 0.5 → 1 | → 0.5 |
+| Delay | anime.stagger(100), grid [25,20], origen del clic | Se suma a los 750 ms de las fases |
+
+El delay depende de la distancia al origen, no es un intervalo permanente. Con la implementación instalada se obtuvieron duraciones nominales máximas de 3811 ms desde índice 0, 3750 ms desde 25 y 2952 ms desde 132. Anime mantiene una lista compartida de instancias y un requestAnimationFrame del motor; retira las instancias terminadas y detiene ese loop cuando no quedan. Su listener global visibilitychange es propio del módulo; no hay evidencia de un nuevo listener nativo por cada remount de DotGrid.
+
+No hay efecto de cleanup, cancelación al desmontar, consulta del hook reactivo ni guardia de reduce en DotGrid. El remount por idioma crea otra cuadrícula mientras la anterior puede seguir animándose. Las reglas reduce de globals.css cubren otras entradas y Typewriter, pero no estos puntos ni los hover restantes.
+
+### Hallazgos y clasificación
+
+| ID | Clasificación / impacto | Evidencia e implicación |
+| --- | --- | --- |
+| D41 | Problema confirmado, alto: contraste dinámico | La onda coloca puntos casi opacos bajo tinta real del titular y descripción; los ratios reconstruidos quedan ampliamente por debajo de AA. Ver mediciones y límites. No basta el contraste contra el color base del body. |
+| D42 | Problema confirmado en código, medio: reduce sin implementar | DotGrid no consume usePrefersReducedMotion ni existe una regla CSS que detenga la onda. La ejecución nativa con reduce y los cambios en sesión siguen pendientes; no se declara probada por inferencia. |
+| D43 | Problema confirmado, medio: trabajo tras desmontaje | Después de tres clics en 504.9 ms y cambio EN→ES, el observer registró 86612 mutaciones de style sobre puntos desconectados, durante 1781.7 ms entre la primera y última. El trabajo cesó al terminar las ondas. |
+| D44 | Problema confirmado de ciclo de vida, medio | Cada clic inicia otra instancia sobre los mismos targets; tres eventos registrados no cancelan los anteriores. La concurrencia se deduce del código y eventos, no de una lectura directa de anime.running. No se midió su coste aislado. |
+| D45 | Deuda técnica, baja | Selector global sin ámbito y posición final +1 px respecto del reposo inicial. No se demostró un fallo visible relevante por ese píxel. Cambiar la posición final normal no se recomienda en esta etapa. |
+| D46 | Hipótesis pendiente | Fuga permanente de memoria, CPU excesiva, repaint/layout costosos o deterioro en un teléfono físico: sin perfil/heap del navegador no están demostrados. |
+| D47 | Problema confirmado en CSS, medio | CTA, capturas de proyectos y selector conservan desplazamientos/escala/rotación sin alternativa reduce. Su impacto vestibular individual no se cuantificó. |
+| D48 | Bloqueo de herramientas | Sin emulación nativa reduce ni perfil de CPU/heap accesibles en esta sesión; la recuperación posterior del navegador también falló. No equivale a un resultado aprobado. |
+
+El contador de mutaciones mide registros de atributos, no frames renderizados ni instrucciones de CPU. Los observers retienen referencias para poder observar los nodos desconectados: esa retención del arnés **no demuestra una fuga de la aplicación**. Sí permite comprobar escrituras posteriores al desmontaje, porque no genera las escrituras observadas.
+
+### Contraste: método reproducible y límites
+
+Referencia: [WCAG 2.2, contraste mínimo 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) y [contraste no textual 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html). Se emplea luminancia relativa sRGB y `(Lclaro + 0.05)/(Loscuro + 0.05)`, con colores CSS de primer plano; no se usa como primer plano el píxel suavizado del borde de una letra.
+
+Procedimiento: fijar idioma, viewport y texto mediante pausa; guardar captura y estilos/rectángulos DOM en reposo; hacer clic en un punto realmente alcanzable, verificado con elementFromPoint; muestrear rectángulo transformado, opacidad y gradiente de los puntos que cruzan los textos durante aproximadamente 4.3 s. Cadencia observada alrededor de 67 ms. Reconstruir el fondo bajo píxeles de tinta detectados en la captura inicial, interpolando el gradiente y componiendo su opacidad sobre #18181b. Usar una máscara de tinta evita confundir el espacio vacío del rectángulo del texto con letras.
+
+Las capturas del navegador son JPEG escalados: se corrigió el mapeo con anchoImagen/innerWidth y altoImagen/innerHeight, en vez de asumir relación 1:1. La máscara neutral usa tolerancia de 35 por canal frente al color CSS; la verde usa separación de canales. Se excluye un margen de 0.75 px CSS del borde del círculo para reducir errores de antialiasing. Los JSON guardan rectángulos, tiempos, coordenadas, color, punto y opacidad del peor caso muestreado.
+
+**Los valores dinámicos son aproximaciones reconstruidas, no lecturas exactas de un backdrop oculto ni mínimos absolutos de toda la animación.** JPEG, máscara, alineación, interpolación y muestreo temporal limitan la precisión. Las diferencias grandes frente al umbral respaldan el problema dinámico; resultados cercanos al umbral requieren contraste nativo con captura sin pérdida y geometría calibrada. No se declara conformidad global ni se ha cubierto cada glifo de ambos roles. El hover verde/blanco no se asumió presente bajo todos los textos: los peores casos citados corresponden a la onda gris ordinaria.
+
+| Texto / color CSS | Umbral | ES 320 reposo → onda | EN 390 reposo → onda | ES 768 reposo → onda | EN 1440 reposo → onda |
+| --- | --- | --- | --- | --- | --- |
+| H1 #f4f4f5, 36 px/900 móvil, 96 px/900 desde md | 3:1 | ≈6.68 → 2.64 | ≈6.53 → 2.57 | ≈6.47 → 2.55 | ≈6.52 → 2.60 |
+| Punto verde del H1 #4ade80, grande/negrita | 3:1 | Onda ≈1.65 | Onda ≈3.14 | Onda ≈1.91 | Onda ≈2.24 |
+| Typewriter #4ade80, 20 px/400 móvil, 36 px/400 desde md | 4.5:1 móvil; 3:1 desde md | ≈4.11 → 1.64 | ≈4.17 → 1.64 | ≈4.11 → 1.63 | ≈10.17 → 10.17* |
+| Descripción #d4d4d8, 14/16 px, normal | 4.5:1 | ≈4.79 → 2.10 | ≈8.19 → 2.02 | ≈4.87 → 1.94 | ≈5.00 → 1.92 |
+
+*En la muestra del primer rol a 1440 px no hubo superposición entre puntos y tinta; no prueba el segundo rol ni todos los estados. El Typewriter móvil en reposo, cercano a 4.5:1, queda como riesgo respaldado por reconstrucción pendiente de precisión nativa; no se certifica su cumplimiento.
+
+Ejemplos rastreables de fondo efectivo desfavorable, RGB aproximados: H1 ES320 sobre punto 126 a 732 ms, opacidad 0.982 y fondo (151,151,159); Typewriter ES320 sobre 155 a 1066 ms, opacidad 0.999 y fondo (152,152,161); descripción EN1440 sobre 331 a 1671 ms, opacidad 0.990 y fondo (153,153,161). El fondo de body sin puntos es (24,24,27). Capturas desfavorables: `wave-es-320-4.jpg`, secuencias `wave-en-390*`, `wave-es-768-*` y `wave-en-1440-*`; los tiempos/mediciones provienen de los JSON, no se afirma que cada captura coincida exactamente con el mínimo muestreado.
+
+| Control / estado real inspeccionado | Primer plano / superficie | Ratio |
+| --- | --- | --- |
+| CTA normal y foco | #09090b / #4ade80 opaco | 11.42:1 |
+| CTA hover (relleno del pseudo-elemento) | #09090b / #16a34a | 6.04:1 |
+| Foco CTA inset | #09090b / relleno verde normal o hover | 11.42:1 / 6.04:1 |
+| Icono pausa normal | #d4d4d8 / #18181b opaco | 11.99:1 |
+| Icono pausa hover; foco inset | #4ade80 / #18181b | 10.17:1 |
+| Borde pausa respecto del interior | #71717a / #18181b | 3.67:1 |
+
+Se verificó foco por Tab y hover mediante interacción real sin activar el CTA. Los fondos opacos aíslan el interior de los controles de la onda. El icono y foco cumplen 3:1 en esas combinaciones; el texto del CTA supera 4.5:1. No se extrapola la medición del borde interior a todos los colores exteriores dinámicos. El modo reduce, que cambia la disposición de los roles y el estado del control, no fue medido nativamente en esta etapa.
+
+### Rendimiento y recursos
+
+Una onda desde índice 25 produjo 46960 registros de mutación de style en unos 3727 ms, coherente con su duración nominal. La muestra de tres clics/cambio de idioma confirmó actividad sobre nodos desmontados y su finalización posterior; no un loop infinito. En esa ventana instrumentada se observaron intervalos rAF con mediana 16.7 ms, p95 alrededor de 33.3 ms y máximo 100 ms, y dos long tasks de 59 y 76 ms.
+
+**Esos tiempos están contaminados por el muestreo geométrico de 500 puntos, serialización del arnés y el remount de idioma. No se atribuyen causalmente a DotGrid ni se presentan como perfil de CPU del producto.** Se preparó una muestra más ligera sin geometría para aislar el coste, pero no pudo completarse: tras retomar la sesión se perdió la conexión al servidor local y el navegador rechazó la navegación. No se sorteó el bloqueo. No se obtuvieron CPU %, heap snapshots, trazas de layout/repaint ni mediciones en hardware móvil real. Los anchos móviles son emulación de viewport en escritorio. Reducir cantidad de puntos, cambiar a Canvas o reemplazar la librería sería una optimización hipotética sin justificación medida aquí.
+
+### Inventario de interacciones CSS restantes
+
+| Ubicación | Efecto actual / clasificación | Recomendación bajo reduce, sin implementar |
+| --- | --- | --- |
+| DotGrid.jsx | Hover de fondo zinc-600, transición de color 150 ms; gradiente verde→blanco inmediato. Feedback decorativo de interacción. | Cuadrícula estática; conservar una señal estática si aporta. Detener la onda JS exige guardia y cleanup, no solo CSS. |
+| Project.jsx, captura | Width 85→90% y rotate 0→2deg mediante estado hovered y transition-all 150 ms. Movimiento decorativo activado por interacción. | Evitar ampliación/rotación bajo reduce; conservar activación, foco y otro feedback estático. No quitar translate-x/-y estructurales. |
+| OutlineButton.jsx / Hero.jsx | Barrido ::before con translate 150%→0%, escala 2.5 fija, transición de transform 1 s; color/borde 300 ms; active escala .95. | Relleno/estado inmediato o cambio de color sin barrido ni escala activa; conservar contraste, foco y destino. |
+| LanguageToggle.jsx | Indicador cambia left/width en 300 ms; borde/fondo/colores 300 ms. Señal útil de selección con movimiento prescindible. | Posición final inmediata; selección y foco siempre claros. No eliminar el indicador. |
+| SideBarLink.jsx | transition-all 150 ms para selección, borde/fondo/opacidad; entradas Framer ya adaptadas. | Mantener feedback de selección/hover; limitar propiedades si se justifica, sin modificar observer. |
+| Header.jsx, CV | Cambio de colores 150 ms; redes con cambio inmediato de color. | Mantener señal útil; no es desplazamiento ni animación continua. |
+| Contact.jsx, correo | Cambio de color 150 ms; WhatsApp subrayado inmediato. | Mantener foco, subrayados y legibilidad. No requiere suprimir automáticamente el color. |
+| Project.jsx / ProjectModal.jsx, enlaces | Color de icono/enlace 150 ms; Learn more subrayado inmediato. | Conservar feedback y nombres accesibles; sin necesidad demostrada de eliminarlo. |
+| Typewriter / globals.css | Cursor pulse 2 s infinito, ya detenido por pausa/reduce; scroll auto bajo reduce. | Fuera de cambios: conservar 5D.2. |
+| Reveal, sidebar, idioma y modal | Entradas Framer adaptadas en 5D.3. LanguageTransition sigue como utilidad sin uso real. | Fuera de cambios: conservar 5D.3. |
+
+No se encontró otra animación CSS continua en los componentes inspeccionados. No se recomienda un reset global de transition/transform: puede borrar posiciones estructurales y señales útiles.
+
+### Propuesta mínima, riesgos y división de implementación
+
+1. **PR pequeño de ciclo de vida y reduce de DotGrid:** reutilizar usePrefersReducedMotion y un ref al contenedor; obtener targets locales. No iniciar Anime mientras reduce sea true (considerar también el estado inicial desconocido del hook). Al activar reduce o desmontar, cancelar **todas** las instancias que afectan esos nodos mediante la API instalada anime.remove(nodes), y restaurar transform/opacidad iniciales para la cuadrícula estática. Guardar solo la última instancia y pausarla no cubre ondas concurrentes anteriores. No cancelar clics previos en modo normal, cambiar puntos, delays, easing o +1 px final sin autorización: alteraría la respuesta actual. Al volver a normal, esperar un nuevo clic sin reproducir automáticamente una onda antigua. Complejidad baja/media; riesgo en cleanup concurrente y cambio de preferencia.
+2. **PR localizado de contraste del hero:** priorizar el contraste confirmado y aprobar su solución visual antes de implementarla. Evaluar una superficie/máscara opaca local del color existente #18181b bajo los textos, preservando la cuadrícula alrededor; verificar ambos roles completos, EN/ES y cuatro anchos. Otra opción es limitar luminosidad únicamente donde afecta lectura, pero requiere demostrar el peor estado. No elegir por intuición, rediseñar todo el hero, eliminar DotGrid ni modificar colores globales. Riesgo visual medio; complejidad media. No basta limitarse al reposo o al cuerpo sin puntos.
+3. **PR separado de CSS reduce:** cambios locales de CTA, hover de capturas y desplazamiento del selector, conservando los estados de color/foco. No modificar componentes de entradas ya resueltos ni Typewriter. Complejidad baja/media; riesgo de perder transforms estructurales o feedback.
+
+Este orden separa cancelación/lifecycle, corrección visual justificada y CSS de interacción. D41 sigue prioritario; puede prepararse su alternativa visual en paralelo a la revisión del primer PR, pero no se implementa ni se declara cerrado mediante el cambio de reduce. Ningún PR se crea en este diagnóstico.
+
+### QA ejecutado y deuda vigente
+
+| Comprobación de esta etapa | Resultado |
+| --- | --- |
+| npm run qa | Lint y build Webpack correctos, exit 0; warning previo de React 18 deprecado en Next 16 conservado. |
+| npm run qa:motion | Se inició el servidor y se accionó Run controlled tests en navegador: 21/21, hydrationErrors=[], pendingTimers=0, listeners=0. No es cobertura de DotGrid ni preferencia CSS nativa. |
+| npm audit --json | Exit 1: 9 afectados, 7 altos y 2 moderados. |
+| npm audit --omit=dev --json | Exit 0: 0 afectados. |
+| Instalación | No se ejecutó npm ci en este diagnóstico; no se instalaron ni actualizaron dependencias. |
+| Responsive | Muestras normales a 320, 390, 768 y 1440 px sin overflow observado; no dispositivos físicos. |
+| Gate completo | Continúa fallando por los nueve afectados de tooling. No se corrigen ni se aceptan permanentemente. |
+
+No se aprobaron scripts pendientes ni se incorporaron herramientas de QA. Continúan las limitaciones y warnings documentados en los cierres anteriores; este informe no los convierte en comprobaciones nuevas ni en éxitos. Revisión final: git diff --check correcto; único archivo modificado este informe, con 134 líneas agregadas y ninguna eliminada. Main y origin/main conservan el SHA esperado. Se detuvieron los servidores temporales de diagnóstico.
+
+### Pruebas de aceptación propuestas y guía manual pendiente
+
+La consulta real registrada en el navegador fue reduce=false. Las capacidades expuestas no incluyen media emulation ni Rendering; los intentos de DevTools de etapas anteriores tampoco lo habilitaron. En esta reanudación no fue posible completar un nuevo intento de Rendering por el bloqueo de navegación local descrito. No se simuló matchMedia para afirmar validación nativa y no se reutiliza la aprobación manual de Oscar de 5D.3 para DotGrid.
+
+1. En Brave, abrir la página local/preview correspondiente; DevTools → Ctrl+Shift+P → Show Rendering → Emulate CSS media feature prefers-reduced-motion → reduce. Verificar en Console `matchMedia('(prefers-reduced-motion: reduce)').matches === true` y recargar. Registrar resultado y captura; al terminar volver a No emulation.
+2. Diagnóstico actual: comprobar si clics producen onda bajo reduce, incluidos clics repetidos y EN/ES. Después de una futura corrección: cuadrícula visible y estática desde la carga, sin pulsación, expansión ni desplazamiento; controles funcionales.
+3. Cambiar no-preference→reduce durante una onda y durante varias ondas; debe cancelarse todo el trabajo y restaurarse el estado estático, sin transformaciones residuales. Volver a no-preference sin reanudar ondas canceladas; nuevo clic conserva respuesta original. Cambiar idioma/desmontar durante ondas y comprobar ausencia de escrituras posteriores al cleanup.
+4. Repetir EN/ES, ambos roles y reposo/onda/hover/focus a 320, 390, 768 y 1440 px. Para contraste usar captura sin pérdida y comprobar el fondo más luminoso detrás de letras reales; texto normal ≥4.5:1, grande ≥3:1 y controles/foco ≥3:1 cuando aplica. Registrar colores y ratios; no aprobar incomplete de una herramienta automática como éxito.
+5. Verificar foco por Tab/Shift+Tab, CTA, pausa, selector y modales. Las futuras reglas reduce no deben suprimir indicadores ni alterar posicionamiento estructural. Comprobar consola e hidratación.
+6. Para rendimiento, comparar reposo, una onda y clics repetidos con un perfil nativo sin el muestreador geométrico, y verificar desmontaje/idioma. No proponer una optimización de CPU o memoria hasta disponer de esa evidencia.
+
+Pendientes no verificables en esta etapa: reduce nativo/live de DotGrid y CSS, segundo rol en toda la matriz, mínimo global continuo de contraste, CPU/heap/layout/repaint sin instrumentación, teléfonos físicos, lector de pantalla real y zoom nativo. No se declara conformidad WCAG integral. Queda exclusivamente este informe local; no hay cambios de aplicación, rama, commit, PR ni despliegue, y 5D.4B requiere autorización.
+
+## 15. Etapa 5D.4B — ciclo de vida y movimiento reducido de DotGrid
+
+Implementación autorizada sobre main `8bb7ac4`, rama `fix/portfolio-dotgrid-lifecycle`. Se incorpora también el diagnóstico local de la sección 14, preservando su carácter histórico. Sin cambios de dependencias, lockfile, estilos, contenido ni otros componentes de aplicación.
+
+### Cambios y problemas corregidos
+
+DotGrid reutiliza usePrefersReducedMotion. Solo inicia una onda cuando el snapshot es explícitamente false; SSR/desconocido y reduce mantienen la cuadrícula estática. Al activar reduce se cancelan todos los targets locales y se eliminan transform/opacity inline para recuperar el reposo CSS. Volver a normal no reproduce ondas anteriores.
+
+Los targets se obtienen del contenedor propio. Un callback ref estable llama a anime.remove antes del detach; el hook existente elimina su suscripción al desmontar. No se añaden listeners nativos ni temporizadores propios. Cada clic válido cancela la onda anterior, restaura el reposo e inicia una sola onda nueva desde el punto seleccionado: se elimina la competencia entre instancias. No se conserva la acumulación anterior, conforme a la autorización de 5D.4B. Un clic individual conserva puntos, distribución, colores, escala, desplazamientos, delay, easing y duración; también el +1 px final histórico. No se adapta todavía el hover CSS.
+
+Pruebas reproducibles en el arnés existente: `npm run qa:motion`, abrir `http://127.0.0.1:3113/`, accionar **Run controlled tests**, esperar resultado y salida del servidor. Se conservan los 21 casos del Typewriter y se agregan 15 casos DotGrid en `tests/motion/dotgrid.jsx`; no se instala una librería. Anime.js y requestAnimationFrame son reales; **matchMedia está simulado solo en el fixture aislado**, sin emular CSS nativo.
+
+Cobertura añadida: SSR con 500 puntos; hidratación StrictMode y una suscripción; duración de esquina 3811 ms y 500 targets locales; escritura de frames reales; veinte clics con una sola instancia activa; reduce en curso con cancelación/reset; clic reducido estático; vuelta a normal sin replay y nuevo clic funcional; remount equivalente al idioma y diez remounts rápidos; desmontaje activo sin escrituras posteriores; reduce desde montaje; aislamiento entre dos cuadrículas y cleanup de suscripciones. El observer posterior al desmontaje se mantiene **4000 ms**, superando la onda nominal máxima de esquina, con cero registros de style. La prueba de remount también observa directamente los nodos anteriores. Esta evidencia controlada corrige D43/D44 en esos escenarios y cubre la lógica de D42; no demuestra CPU/memoria ni reemplaza reduce nativo.
+
+### QA y evidencia
+
+| Comprobación | Resultado real |
+| --- | --- |
+| npm ci --ignore-scripts | Correcto; 385 instalados, 386 auditados. No se ejecutaron ni aprobaron scripts de instalación. |
+| npm run qa | Lint y build Webpack correctos; exit 0. |
+| npm run qa:motion | Ejecución interactiva, **36/36**; hydrationErrors=[], pendingTimers=0, listeners=0; servidor exit 0. Repetida tras ampliar observación de desmontaje a 4 s. |
+| npm audit --json | Exit 1; **9 afectados: 7 altos, 2 moderados**. |
+| npm audit --omit=dev --json | Exit 0; **0 afectados**. |
+| Responsive normal | EN/ES a 320, 390, 768 y 1440 × 900; 500 puntos, CTA visible y sin overflow horizontal medido. Capturas estables separadas de capturas durante Reveal/fade. |
+| Interacciones normales | Clic en punto alcanzable y cambio de idioma en la página; pausa del Typewriter persistente; selector por Espacio; navegación y CTA por Enter con scroll a contacto. |
+| Modal / foco | Plenitud Fit abierto en desktop y móvil; cierre inicialmente enfocado, Tab a enlace y vuelta al cierre, Escape restaura disparador y overflowY. No se cambiaron portal ni gestión de foco. |
+| Consola / hidratación | Sin errores ni warnings capturados en build local durante los recorridos; SSR/hidratación del arnés sin errores. No se declara una sesión con lector de pantalla. |
+| git diff --check | Correcto. Advertencia de conversión LF→CRLF en DotGrid; diff localizado, sin normalización masiva. |
+
+Evidencia local: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-stage5d4b/controlled-tests.json`, `responsive.json`, `settled-en/es-320/390/768/1440.jpg`, `normal-es-1440-settled.jpg` y `modal-320.jpg`. Los archivos `normal-*` iniciales pueden capturar transiciones; para revisión visual se prefieren los `settled-*`. Las capturas son muestras, no un diff sincronizado de píxeles de animación. Los resultados completos del fixture también se guardan en el directorio temporal que imprime el script.
+
+Warnings previos conservados: npm informa ESLint 9.39.5 sin soporte; Next informa React 18 deprecado en Next 16. Continúa la deuda de scripts pendientes, sin aprobación. El gate completo de seguridad sigue fallando; los nueve afectados no se consideran corregidos ni aceptados permanentemente.
+
+### Límite nativo y aceptación pendiente
+
+Se intentó F12 en la página local; la acción no pudo abrir Rendering con la API integrada. Capacidades anunciadas: viewport/visibility y pageAssets/webmcp, sin emulación de medios. La consulta real devuelve reduce=false. La evidencia simulada anterior no acredita reduce nativo. No se cambió Windows, no se parcheó la preferencia de la aplicación y no se afirma aprobación manual de Oscar para esta etapa.
+
+Antes de merge, Oscar debe verificar en Brave: DevTools → Rendering → prefers-reduced-motion: reduce; confirmar `matchMedia('(prefers-reduced-motion: reduce)').matches` true y recargar. La cuadrícula debe seguir visible y estática ante clics. En no-preference iniciar una onda y varios clics, pasar a reduce: cancelar/restaurar reposo sin estilo residual. Volver a no-preference: no replay, nuevo clic normal. Repetir durante EN/ES y en 320/390/768/1440; comprobar foco, CTA, pausa y modal. Registrar consola/capturas y volver a No emulation. No se presenta el fallback como conformidad WCAG integral.
+
+Siguen pendientes D41 (contraste, 5D.4C), D47 (CSS, 5D.4D), precisión nativa de contraste, CPU/heap en dispositivos reales, lector de pantalla y zoom nativo. La corrección de reduce no soluciona contraste durante una onda normal. Este PR se prepara Draft para revisión, sin merge ni despliegue manual.

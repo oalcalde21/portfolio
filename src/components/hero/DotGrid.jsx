@@ -11,16 +11,54 @@
  */
 
 import anime from "animejs";
+import { useCallback, useEffect, useRef } from "react";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 // Grid dimensions
 const GRID_WIDTH = 25;
 const GRID_HEIGHT = 20;
 
+function resetPoints(points) {
+  points.forEach((point) => {
+    point.style.removeProperty("transform");
+    point.style.removeProperty("opacity");
+  });
+}
+
 const DotGrid = () => {
+  const gridRef = useRef(null);
+  const reducedMotion = usePrefersReducedMotion();
+
+  // A callback ref cancels targets during detachment, before another frame can
+  // write to removed nodes. It also scopes cleanup to this grid alone.
+  const setGridRef = useCallback((node) => {
+    if (gridRef.current) {
+      anime.remove(gridRef.current.querySelectorAll(".dot-point"));
+    }
+    gridRef.current = node;
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion !== false && gridRef.current) {
+      const points = gridRef.current.querySelectorAll(".dot-point");
+      anime.remove(points);
+      resetPoints(points);
+    }
+  }, [reducedMotion]);
+
   // Handle clicks - triggers the ripple animation
   const handleDotClick = (e) => {
+    if (reducedMotion !== false) return;
+    const origin = e.target.closest("[data-index]");
+    if (!origin || !e.currentTarget.contains(origin)) return;
+
+    const points = e.currentTarget.querySelectorAll(".dot-point");
+    // Replace the previous wave rather than letting instances compete for the
+    // same styles. A single click retains its original timing and keyframes.
+    anime.remove(points);
+    resetPoints(points);
     anime({
-      targets: ".dot-point",
+      targets: points,
       // Dots scale up and back down
       scale: [
         { value: 1.35, easing: "easeOutSine", duration: 250 },
@@ -39,7 +77,7 @@ const DotGrid = () => {
       // Stagger creates the ripple effect - dots further from the click animate later
       delay: anime.stagger(100, {
         grid: [GRID_WIDTH, GRID_HEIGHT],
-        from: e.target.dataset.index, // Start from the clicked dot
+        from: origin.dataset.index, // Start from the clicked dot
       }),
     });
   };
@@ -70,6 +108,7 @@ const DotGrid = () => {
 
   return (
     <div
+      ref={setGridRef}
       onClick={handleDotClick}
       style={{ gridTemplateColumns: `repeat(${GRID_WIDTH}, 1fr)` }}
       className="absolute right-0 top-[50%] z-0 grid max-w-[75%] -translate-y-[50%]"
