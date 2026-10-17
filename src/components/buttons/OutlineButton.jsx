@@ -16,7 +16,7 @@ export const OutlineButton = ({ children, className, ...rest }) => {
     <button
       className={twMerge(
         // Base button styles: white border, white text
-        `relative z-0 flex items-center justify-center gap-2 overflow-hidden rounded-md border-[1px] 
+        `motion-outline-button relative z-0 flex items-center justify-center gap-2 overflow-hidden rounded-md border-[1px]
         border-white px-4 py-2 font-medium text-sm min-w-[120px]
         text-white transition-all duration-300
         

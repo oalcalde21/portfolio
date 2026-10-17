@@ -21,7 +21,7 @@ export const LanguageToggle = ({ className }) => {
       aria-label={`Switch to ${language === "EN" ? "Spanish" : "English"}`}
       aria-pressed={language === "EN"}
       className={twMerge(
-        `relative flex shrink-0 items-center justify-center w-16 h-7 rounded-full
+        `motion-language-toggle relative flex shrink-0 items-center justify-center w-16 h-7 rounded-full
         bg-zinc-800 border border-zinc-600 text-xs font-bold
         transition-all duration-300 hover:border-green-400 hover:bg-zinc-700
         overflow-hidden`,
@@ -30,7 +30,7 @@ export const LanguageToggle = ({ className }) => {
     >
       {/* Sliding background indicator */}
       <span
-        className={`absolute top-0 bottom-0 transition-all duration-300 ${
+        className={`motion-language-indicator absolute top-0 bottom-0 transition-all duration-300 ${
           language === "EN" 
             ? "left-0 w-[calc(50%+2px)] rounded-r-none" 
             : "left-[calc(50%+2px)] w-[calc(50%-2px)] rounded-l-none"

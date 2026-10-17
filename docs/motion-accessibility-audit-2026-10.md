@@ -605,3 +605,48 @@ Se comprobaron EN/ES, ambos roles completos, cuatro anchos, CTA con teclado, cam
 **Reduce nativo sigue pendiente**, con la limitación Rendering documentada en sección 15. La misma superficie permanece en CSS al cambiar preferencia y la cota cubre ambos roles; eso no sustituye revisar visualmente el bloque estático completo en Brave. Antes de merge, seguir la guía de sección 15 y comprobar ambos roles simultáneos, wrapping y cobertura de la superficie, hover/focus, idiomas y cuatro anchos. No se declara probado ese estado nativo ni conformidad WCAG integral. D41 queda corregido en el alcance de las superficies renderizadas y cotas verificadas; se conserva la aceptación visual nativa pendiente. No hay lector real, zoom nativo ni medición de CPU/heap.
 
 Se prepara PR Draft dependiente de #9. La deuda de nueve afectados de tooling sigue abierta y el gate completo no pasa. Sin merge, despliegue manual ni cambios ajenos.
+
+## 17. Etapa 5D.4D — interacciones CSS con movimiento reducido
+
+Rama `fix/portfolio-reduced-motion-css`, basada en `fix/portfolio-hero-contrast` (`7876dfd`, PR Draft #10). Su PR apunta a esa rama; #10 depende de #9 y #9 apunta a main. No se deben eliminar las ramas base mientras tengan PR dependientes. Main permanece sin modificar en `8bb7ac4`.
+
+### Alcance y clasificación aplicada
+
+Se añadieron hooks de clase locales a OutlineButton, LanguageToggle y la captura de Project. Project solo cambia una clase; no se modifica la lógica Framer, hover, contenido ni modal. Las cuatro reglas nuevas quedan dentro de la media query reduce existente de globals.css, sin reset global:
+
+| Efecto | Clasificación / normal | Reduce implementado |
+| --- | --- | --- |
+| Barrido CTA | Movimiento decorativo por hover, 1 s | Pseudo-elemento sin transición: relleno final inmediato, sin recorrer visualmente el botón. |
+| CTA activo | Escala decorativa .95 | Variables --tw-scale-x/y = 1 solo durante active; se conserva el resto del transform. |
+| CTA y selector | Feedback de color y foco útil | Solo transicionan color/fondo/borde; box-shadow de foco inmediato. No se elimina hover ni focus-visible. |
+| Indicador EN/ES | Estado necesario; desplazamiento prescindible, 300 ms | Left/width finales inmediatos, sin transición; el indicador seleccionado permanece. |
+| Capturas de proyectos | Movimiento decorativo por hover: 85→90 %, 0→2deg, 150 ms | Width 85 % y rotate 0deg con prioridad sobre inline hovered; sin transición. Se conservan translate-x/translate-y estructurales. |
+| Enlaces, correo, CV, sidebar | Color, borde, opacidad o subrayado útiles; sin nuevo movimiento geométrico | Sin cambios. Entradas Framer ya resueltas y lógica del observer intactas. |
+
+DotGrid, Typewriter, Reveal, semántica/gestión del modal y hook no cambian en esta etapa. No se altera la intensidad de contraste resuelta en #10 ni se cambia el contenido. No hay nuevas dependencias ni lockfile modificado.
+
+### QA normal y comparación de CSS
+
+`npm ci --ignore-scripts` correcto: 385 instalados / 386 auditados, sin scripts aprobados. `npm run qa` correcto (lint/build Webpack, exit 0). `npm run qa:motion` ejecutado mediante su botón: **36/36**, hydrationErrors=[], pendingTimers=0, listeners=0, exit 0. Estos casos cubren Typewriter/hook/DotGrid, no la media query CSS nativa. `git diff --check` correcto; se eliminó el espacio final de la única línea de OutlineButton editada, sin reformatear otras líneas.
+
+Auditorías: completa **9, 7 altos y 2 moderados, exit 1**; productiva **0, exit 0**. Continúa fallando el gate de seguridad completo por la deuda previa, sin aceptación permanente. Warnings conservados: ESLint 9.39.5 sin soporte y React 18 deprecado en Next 16. Sin aprobación de scripts pendientes ni nuevas herramientas instaladas.
+
+Se comparó el CSS compilado antes/después mediante PostCSS ya instalado, excluyendo exclusivamente las media queries de prefers-reduced-motion. El orden de concatenación por nombre hash cambió entre el archivo de fuente y el de estilos, por lo que una primera comparación de texto concatenado difería. La comparación corregida separa reglas de next/font y reglas de estilos, **conserva el orden dentro de cada grupo** y elimina solo whitespace entre nodos raíz: ambas estructuras normales son idénticas. SHA-256 de esa representación: `ff1f02d6a8f13ce6af6be063cd4f667a518eea685bc570c8cd8bcf669679d983` antes y después. No es el hash del CSS crudo completo: las reglas reduce sí cambian deliberadamente.
+
+Se registraron EN/ES en 320, 390, 768 y 1440 × 900, comprobando innerWidth real en cada captura; sin overflow horizontal. Una primera serie de capturas apuntaba a una pestaña que conservaba 320 px mientras el override afectaba a la pestaña más reciente: se descartó como matriz responsive y se repitió correctamente en una pestaña nueva. El responsive.json final contiene los ocho tamaños/idiomas correctos.
+
+Hover normal observado: captura de Plenitud Fit 410.391 px sobre padre de 456 px (90 %), rotate 2deg, translateX −205.195 px / translateY 12 px, duración .15 s. CTA conserva transición de pseudo-elemento 1 s y selector .3 s. Se probaron selector por Espacio, CTA y modal por Enter, Tab al enlace del diálogo y Escape con restauración de foco/scroll. Capturas de los cuatro anchos, foco, navegación y consola sin errores/warnings capturados; sin regresiones observadas en la revisión normal. Las superficies/colores de Hero siguen iguales a #10 y conservan sus cotas de contraste documentadas.
+
+### Comprobación controlada de cascada CSS — no nativa
+
+Para comprobar especificidad e interacción con estilos inline, un proxy local externo añadió **solo las cuatro reglas nuevas compiladas**, fuera de su media query, a una copia del HTML local. La vista lleva el rótulo visible `CONTROLLED CSS ONLY — NOT NATIVE REDUCE`. MatchMedia nativo siguió false; no se parcheó. No se instaló una librería ni se cambió la aplicación para generar esta vista. Esta prueba verifica la cascada/estados de las reglas; **no verifica activación nativa, cambios de preferencia en vivo ni el modo reducido completo del portfolio**.
+
+Resultados controlados: durante hover real el estado React seguía escribiendo width 90 %/rotate 2deg inline, pero el cálculo CSS daba 387.594 px sobre 456 px (**85 %**), rotate 0deg y transición 0 s. El transform estructural seguía en translateX −193.797 px / translateY 12 px. CTA hover pasó inmediatamente a su relleno final con before transition 0 s; el foco inset de 2 px seguía visible. Indicador EN/ES pasó de left 0 / width 33 px a left 33 / width 29 px, con transición 0 s; selector operable por teclado. La regla de active se revisó en el CSS compilado; la pulsación mantenida y las transiciones de preferencia requieren la prueba manual nativa.
+
+Evidencia local: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-stage5d4d/`: `controlled-tests.json`, `responsive.json`, `normal-en/es-320/390/768/1440.jpg`, `final-hero-es-1440.jpg`, `normal-hover.json`, `controlled-css-states.json`, `controlled-css.jpg`, `css-comparison.json`, CSS antes/después y scripts auxiliares. Los artefactos controlados no se presentan como capturas nativas reduce.
+
+### Aceptación manual pendiente y riesgos consolidados
+
+Rendering sigue sin estar disponible por la API integrada (intento F12/capacidades en sección 15). Antes de cualquier merge, Oscar debe usar Brave → DevTools → Rendering → prefers-reduced-motion reduce y comprobar true con matchMedia; recargar. Revisar en ambos idiomas y cuatro anchos: CTA con relleno inmediato y sin escala al mantener presionado; indicador EN/ES inmediato y completo; capturas inmóviles ante hover sin perder posición; colores, contraste y foco útiles. Cambiar no-preference→reduce mientras cada efecto está activo y volver: sin transformaciones residuales, sin controles ocultos, comportamiento normal recuperado. Repetir CTA, enlaces, modal, teclado y consola. Completar también las guías de #9/#10, incluidos DotGrid y ambos roles estáticos simultáneos. Volver a No emulation al finalizar.
+
+D47 queda implementado y comprobado en cascada controlada, con aceptación nativa pendiente. Siguen pendientes lector real, zoom nativo, dispositivos físicos, CPU/heap y demás deudas semánticas/observer ajenas al alcance. No se afirma conformidad WCAG integral ni se reutiliza la validación de Oscar de etapas anteriores. Los tres PR quedan Draft; no se hace merge, despliegue manual ni etapa posterior. La deuda de nueve paquetes de tooling continúa registrada.
