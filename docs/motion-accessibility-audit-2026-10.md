@@ -297,3 +297,17 @@ No se dispuso de lector de pantalla real, zoom nativo ni dispositivos físicos; 
 Warnings/deuda conservados: soporte React 18 deprecado en Next 16; advertencia de soporte ESLint 9 de la instalación y script pendiente de unrs-resolver 1.11.1, sin aprobarlo. Git advierte conversión LF→CRLF para Typewriter/globals y archivos nuevos conforme a su configuración actual; no se hizo una normalización masiva.
 
 M02 continúa abierto fuera de Typewriter/scroll: Reveal, transiciones de idioma, DotGrid, proyectos, sidebar y modal conservan sus animaciones previas. M05–M08 y sus riesgos de contraste/observer/cleanup siguen documentados en la auditoría. No hubo cambios en esos componentes, dependencias, contenido comercial, infraestructura ni gate de seguridad. No se implementó 5D.3; no se autorizó merge ni despliegue manual.
+
+## 11. Cierre autorizado de 5D.2 — validación manual de Oscar
+
+Evidencia comunicada directamente por Oscar en la autorización de cierre del PR #7 (16/10/2026), sobre la implementación `c36e4af9f154615d75600753ffd4fdbb27848d54`. **Validación manual realizada por Oscar en Brave; no ejecutada ni observada por Codex.** No se atribuyen a Codex capturas, valores instrumentados ni una sesión nativa de reduce.
+
+Oscar confirmó las siete verificaciones pendientes: prefers-reduced-motion reduce activo; ambos roles completos y estáticos; cursor sin pulsación; control de pausa correctamente explicado; scroll auto; EN/ES y cambios de preferencia durante la sesión; persistencia de pausa manual, sin recortes ni errores observados. Esta declaración cierra el pendiente manual nativo de la sección 10 para el alcance acotado de 5D.2. No se recibieron capturas ni trazas nuevas, ni se presume una medición adicional de temporizadores desde DevTools.
+
+Se mantiene separada la evidencia automática de Codex: las 21 pruebas controladas de React/SSR/hidratación, tiempos, cancelación de timers y listeners complementan la observación manual; no se convierten en emulación nativa. El intento previo de Computer Use se interrumpió al no poder determinar con certeza la URL de Brave y no produjo una prueba nativa aprobada.
+
+No se realizó ni se declara prueba con lector de pantalla real. Permanecen pendientes las demás animaciones y hallazgos fuera del alcance de 5D.2, y las limitaciones de zoom nativo/dispositivos físicos. No se declara conformidad WCAG integral. No se inicia 5D.3.
+
+La deuda de seguridad continúa explícita: nueve paquetes afectados de tooling (siete altos, dos moderados), cero productivos en el baseline validado. El gate completo continúa fallando; el cierre no deshabilita controles ni acepta permanentemente esos riesgos.
+
+Revisión técnica de cierre por Codex: npm ci correcto (385 paquetes instalados); npm run qa correcto (lint y build Webpack); 21/21 pruebas controladas repetidas con hydrationErrors=[], pendingTimers=0 y listeners=0. Auditorías repetidas: completa 9 (7 altos, 2 moderados, exit 1), productiva 0 (exit 0). Diff revisado, lockfile y dependencias sin modificaciones; PR inicialmente en c36e4af, base 217fff0, sin conflictos, preview Vercel READY. Se añade exclusivamente este registro documental antes del merge autorizado. Persisten los warnings ya descritos de React 18, soporte ESLint 9, script no aprobado de unrs-resolver y LF/CRLF; no se ocultan ni se normalizan archivos ajenos.
