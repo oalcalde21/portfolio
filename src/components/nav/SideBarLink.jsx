@@ -40,8 +40,9 @@ export const SideBarLink = ({
       animate={controls}
       transition={{ duration: 0.5, delay: 0.1 }}
       href={href}
+      aria-current={selected === value ? "location" : undefined}
       onClick={() => {
-        // Update selected state so this link stays highlighted
+        // Immediate feedback; scroll tracking then follows the reading position.
         setSelected(value);
       }}
       // Conditional styling: green border and full opacity when selected

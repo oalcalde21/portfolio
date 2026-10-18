@@ -2,6 +2,7 @@ import { StrictMode, act } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { MotionCase } from "./Case";
 import { runDotGridTests } from "./dotgrid";
+import { runNavigationTests } from "./navigation";
 
 // Isolated unit fixture. This mock does NOT change native CSS media queries.
 const nativeMatchMedia = window.matchMedia.bind(window);
@@ -195,6 +196,12 @@ async function run() {
   try {
     const dotContainer = document.getElementById("dot-case");
     await runDotGridTests(dotContainer, check, hydrationErrors, dotContainer.innerHTML);
+  } catch (error) {
+    results.push({ name: error.message, passed: false });
+  }
+
+  try {
+    await runNavigationTests(check);
   } catch (error) {
     results.push({ name: error.message, passed: false });
   }

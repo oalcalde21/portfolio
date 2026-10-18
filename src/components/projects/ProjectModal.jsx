@@ -115,7 +115,7 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
         >
           {imgSrc && <img className="w-full" src={imgSrc} alt={`${t("projectImageAlt")} ${title}`} width={800} height={450} loading="lazy" />}
           <div className="p-8">
-            <h4 id={titleId} className="text-3xl font-bold mb-2">{title}</h4>
+            <h2 id={titleId} className="text-3xl font-bold mb-2">{title}</h2>
             <div className="flex flex-wrap gap-2 text-sm text-green-400">{tech.join(" - ")}</div>
             <div className="space-y-4 my-6 leading-relaxed text-sm text-zinc-300">{modalContent}</div>
             <div>

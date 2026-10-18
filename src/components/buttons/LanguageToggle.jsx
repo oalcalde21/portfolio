@@ -13,12 +13,12 @@ import { twMerge } from "tailwind-merge";
 import { useLanguage } from "../../context/LanguageContext";
 
 export const LanguageToggle = ({ className }) => {
-  const { language, toggleLanguage } = useLanguage();
+  const { language, toggleLanguage, t } = useLanguage();
 
   return (
     <button
       onClick={toggleLanguage}
-      aria-label={`Switch to ${language === "EN" ? "Spanish" : "English"}`}
+      aria-label={t("languageToggleLabel")}
       aria-pressed={language === "EN"}
       className={twMerge(
         `motion-language-toggle relative flex shrink-0 items-center justify-center w-16 h-7 rounded-full

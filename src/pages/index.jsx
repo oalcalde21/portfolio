@@ -15,11 +15,11 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
     // The font class is applied here so it cascades to all children
-    <main className={inter.className}>
+    <div className={inter.className}>
       <Head>
         <title>Oscar Alcalde - Portfolio | Senior IT Support & Automation | Uruguay</title>
       </Head>
       <HomPage />
-    </main>
+    </div>
   );
 }
