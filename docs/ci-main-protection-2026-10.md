@@ -120,3 +120,28 @@ Rollback de código: revert revisado del commit del workflow, conservando histor
 - [checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) y [setup-node v7.1.0](https://github.com/actions/setup-node/releases/tag/v7.1.0).
 
 No se declara nuevo QA nativo de movimiento, lector de pantalla, dispositivos físicos, visual responsive ni controles de promoción de Vercel. No hay cambios de interfaz/CSS. main sigue sin reglas hasta una autorización posterior; esta etapa entrega el PR y una propuesta verificable.
+
+## Activación autorizada y prueba posterior — 18/10/2026
+
+La sección anterior conserva el estado histórico de la propuesta. Tras autorización, PR #19 se integró mediante merge normal en `f7f2c70d6dac9ba7faf691705c94b1266895b91c`. Lint/build sobre main pasaron; auditorías: siete altos completos (FAIL, exit 1), cero productivos. Producción automática READY para ese SHA; dominio, PDFs, OG, robots y sitemap respondieron HTTP 200. La rama integrada se eliminó después de verificarlo.
+
+Se creó [main-quality, ID 25367275](https://github.com/oalcalde21/portfolio/rules/25367275) con el payload aprobado. Lecturas posteriores del ruleset y reglas efectivas de main confirmaron:
+
+- enforcement active; única referencia incluida refs/heads/main; sin exclusiones.
+- PR obligatorio, cero aprobaciones, sin code owners/último push aprobado ni reviewers específicos; conversaciones resueltas.
+- Único check requerido **QA**, proveedor GitHub Actions **15368**, con base actualizada obligatoria.
+- Bloqueo de borrado y non-fast-forward; bypass_actors vacío; current_user_can_bypass=never. branches/main indica protected=true.
+- Repositorio: merge commit habilitado; squash/rebase y auto-merge deshabilitados. El diagnóstico completo se conserva fallando y no es requerido.
+
+La API agrega defaults que no se enviaron: allowed_merge_methods admite tres métodos en el ruleset, pero la configuración del repositorio restringe el resultado efectivo a merge. También devuelve require_extra_approval_for_unattributed_changes=true; la [documentación oficial](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#additional-approval-for-unattributed-copilot-pull-requests) aclara que no tiene efecto con cero aprobaciones. No se añadió un aprobador externo ni se modificó la propuesta para evitar un bloqueo.
+
+Este cambio exclusivamente documental es la prueba de un PR nuevo posterior a la activación. Los resultados reales de QA, Vercel y mergeabilidad se registran en su descripción; no se integra automáticamente. Pasar a Ready for Review permite verificar el estado de merge sin ejecutar la mutación de merge.
+
+### Recuperación sin bypass
+
+1. Consultar el ruleset 25367275, rules/branches/main, el head/base del PR y el check QA con su app/steps. Conservar el JSON antes de cualquier cambio autorizado. El payload original permanece arriba; la evidencia local de activación y el procedimiento se prepararon antes del POST.
+2. Si QA falla, corregir su causa en la rama del PR y publicar sin force push. Si quedó atrasada, incorporar main mediante merge normal y repetir QA. Si GitHub/runner/registro no está disponible, esperar o reintentar la ejecución revisada; no integrar sin QA.
+3. No retirar/renombrar el workflow requerido. Si fuera imprescindible cambiar nombre/proveedor, acreditar primero un check equivalente y pedir autorización explícita para una edición administrativa que mantenga PR, bloqueos y QA. No crear bypass, desactivar reglas ni hacer push directo para conseguir un merge.
+4. Revertir código mediante otro PR con QA. Si no puede acreditarse un reemplazo o no hay permisos administrativos, detener integraciones y pedir intervención del propietario; no improvisar excepciones permanentes.
+
+No se probó rechazo mediante push directo, force push ni eliminación de main: se acredita la configuración efectiva, no un intento destructivo. El nuevo PR es la comprobación positiva del flujo del propietario único. La disponibilidad actual para repositorio público está verificada por creación/lectura exitosa, sin cambios de plan.
