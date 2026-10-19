@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import { MotionCase } from "./Case";
 import { runDotGridTests } from "./dotgrid";
 import { runNavigationTests } from "./navigation";
+import { runModalTests } from "./modal";
 
 // Isolated unit fixture. This mock does NOT change native CSS media queries.
 const nativeMatchMedia = window.matchMedia.bind(window);
@@ -202,6 +203,12 @@ async function run() {
 
   try {
     await runNavigationTests(check);
+  } catch (error) {
+    results.push({ name: error.message, passed: false });
+  }
+
+  try {
+    await runModalTests(check, hydrationErrors);
   } catch (error) {
     results.push({ name: error.message, passed: false });
   }

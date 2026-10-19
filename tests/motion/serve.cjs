@@ -25,7 +25,7 @@ function loadSource(module, filename) {
     return originalJs(module, filename);
   }
   const result = ts.transpileModule(fs.readFileSync(filename, "utf8"), {
-    compilerOptions: { jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+    compilerOptions: { esModuleInterop: true, jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   });
   module._compile(result.outputText, filename);
 }
@@ -33,6 +33,10 @@ require.extensions[".js"] = loadSource;
 require.extensions[".jsx"] = loadSource;
 const { MotionCase } = require("./Case.jsx");
 const DotGrid = require("../../src/components/hero/DotGrid.jsx").default;
+const { ModalCase } = require("./ModalCase.jsx");
+const modalClosedMarkup = renderToString(React.createElement(ModalCase));
+const modalOpenMarkup = renderToString(React.createElement(ModalCase, { initiallyOpen: true }));
+assert.doesNotMatch(modalClosedMarkup + modalOpenMarkup, /<dialog/);
 const markup = renderToString(React.createElement(React.StrictMode, null, React.createElement(MotionCase)));
 const dotMarkup = renderToString(React.createElement(DotGrid));
 require.extensions[".js"] = originalJs;
@@ -80,7 +84,7 @@ webpackPackage.webpack({
       response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
       response.end(`<!doctype html><html lang="en"><head><title>Controlled motion tests</title></head>
 <body><h1>Controlled motion tests</h1><p>SIMULATION ONLY. Native media/CSS and real reduced-motion QA remain separate.</p>
-<button id="run">Run controlled tests</button><div id="case">${markup}</div><div id="dot-case">${dotMarkup}</div><pre id="results">Not run</pre><script src="/tests.js"></script></body></html>`);
+<button id="run">Run controlled tests</button><div id="case">${markup}</div><div id="dot-case">${dotMarkup}</div><div id="modal-closed">${modalClosedMarkup}</div><div id="modal-open">${modalOpenMarkup}</div><pre id="results">Not run</pre><script src="/tests.js"></script></body></html>`);
     } else if (request.url === "/favicon.ico") {
       response.writeHead(204); response.end();
     } else {
