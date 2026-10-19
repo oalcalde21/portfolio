@@ -26,6 +26,7 @@ export const HomPage = () => {
   // this triggers the fade animation on all content
   const { transitionKey, t } = useLanguage();
   const [isTypewriterPaused, setIsTypewriterPaused] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   
   return (
@@ -45,7 +46,7 @@ export const HomPage = () => {
               onToggleTypewriter={() => setIsTypewriterPaused((paused) => !paused)}
             />
             <About />
-            <Projects />
+            <Projects showAll={showAllProjects} onToggle={() => setShowAllProjects((shown) => !shown)} />
             <Experience />
             <Contact />
           </LanguagePage>
