@@ -22,6 +22,8 @@ import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
 // Maps project titles to their translation keys
 const projectKeys = {
+  "Seguros Guerrero e Hijos": { title: "guerreroTitle", desc: "guerreroDescription", m1: "guerreroModal1", m2: "guerreroModal2", m3: "guerreroModal3" },
+  "PrimerPaso": { title: "primerpasoTitle", desc: "primerpasoDescription", m1: "primerpasoModal1", m2: "primerpasoModal2", m3: "primerpasoModal3" },
   "Plenitud Fit": { title: "plenitudTitle", desc: "plenitudDescription", m1: "plenitudModal1", m2: "plenitudModal2", m3: "plenitudModal3" },
   "CFR Estudio": { title: "cfrTitle", desc: "cfrDescription", m1: "cfrModal1", m2: "cfrModal2", m3: "cfrModal3" },
   "Revision Automotriz": { title: "revisionTitle", desc: "revisionDescription", m1: "revisionModal1", m2: "revisionModal2", m3: "revisionModal3" },
@@ -110,9 +112,9 @@ export const Project = ({ projectLink, description, imgSrc, title, tech }) => {
           {/* Title row with link */}
           <Reveal width="w-full">
             <div className="flex items-center gap-2 w-full">
-              <h3 className="font-bold text-lg shrink-0 max-w-[calc(100%_-_150px)]">{translatedTitle}</h3>
-              <div className="w-full h-[1px] bg-zinc-600" />
-              <Link href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`${t("projectVisitLabel")} ${translatedTitle}`}>
+              <h3 className="min-w-0 font-bold text-lg break-words">{translatedTitle}</h3>
+              <div className="min-w-4 flex-1 h-[1px] bg-zinc-600" aria-hidden="true" />
+              <Link className="shrink-0" href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`${t("projectVisitLabel")} ${translatedTitle}`}>
                 <AiOutlineExport className="text-xl text-zinc-300 hover:text-green-400 transition-colors" />
               </Link>
             </div>
