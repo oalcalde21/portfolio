@@ -1,0 +1,109 @@
+name: Portfolio CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  NPM_CONFIG_IGNORE_SCRIPTS: "true"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  qa:
+    name: QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24.19.0"
+          package-manager-cache: false
+
+      - name: Pin npm and verify runtime
+        run: |
+          npm install --global npm@11.17.0 --ignore-scripts
+          test "$(node --version)" = "v24.19.0"
+          test "$(npm --version)" = "11.17.0"
+
+      - name: Reproducible install without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Production build
+        run: npm run build
+
+      - name: Production security audit
+        run: npm audit --omit=dev
+
+      - name: Check tracked files were not modified
+        run: git diff --exit-code
+
+  audit-full:
+    name: Security audit (full diagnostic)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24.19.0"
+          package-manager-cache: false
+
+      - name: Pin npm and verify runtime
+        run: |
+          npm install --global npm@11.17.0 --ignore-scripts
+          test "$(node --version)" = "v24.19.0"
+          test "$(npm --version)" = "11.17.0"
+
+      - name: Reproducible install without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      # Keep this job genuinely red while audit fails. It is not the proposed
+      # required QA check and does not imply permanent acceptance of the debt.
+      - name: Full audit with visible result and original exit status
+        shell: bash
+        run: |
+          set +e
+          npm audit --json > "$RUNNER_TEMP/audit-full.json"
+          audit_status=$?
+          set -e
+          cat "$RUNNER_TEMP/audit-full.json"
+          AUDIT_STATUS="$audit_status" node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const report = JSON.parse(fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'audit-full.json'), 'utf8'));
+          const status = Number(process.env.AUDIT_STATUS);
+          const counts = report.metadata?.vulnerabilities;
+          const lines = [
+            '## Full security audit — diagnostic',
+            '',
+            `**${status === 0 ? 'PASS' : 'FAIL'} (npm exit ${status})**`,
+            '',
+            counts ? `Affected packages: ${counts.total}; high: ${counts.high}; moderate: ${counts.moderate}; critical: ${counts.critical}.` : 'No valid vulnerability counts returned; inspect the audit error in the log.',
+            '',
+            'This result is separate from QA. Existing tooling debt is neither fixed nor accepted permanently.',
+            'The original audit JSON is printed in the step log.',
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${lines.join('\n')}\n`);
+          NODE
+          exit "$audit_status"
