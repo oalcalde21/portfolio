@@ -137,7 +137,7 @@ export default function Document() {
                 "@type": "Country",
                 name: "Uruguayan",
               },
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
 
@@ -164,7 +164,7 @@ export default function Document() {
               about: {
                 "@id": "https://oscaralcalde.vercel.app/#person",
               },
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
 
@@ -201,7 +201,7 @@ export default function Document() {
                 "@id": "https://oscaralcalde.vercel.app/#person",
               },
               inLanguage: "es-UY",
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
 
@@ -227,7 +227,7 @@ export default function Document() {
                 "Tailwind CSS",
                 "Web Development",
               ],
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
       </Head>
