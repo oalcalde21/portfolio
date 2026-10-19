@@ -12,7 +12,7 @@
  * Uses a native modal dialog in a portal to isolate the background.
  */
 
-import { useEffect, useId, useRef } from "react";
+import { useCallback, useEffect, useId, useRef, useSyncExternalStore } from "react";
 import ReactDOM from "react-dom";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
@@ -21,6 +21,14 @@ import { MdClose } from "react-icons/md";
 import { useLanguage } from "../../context/LanguageContext";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 
+function getPortalContainer() {
+  return document.getElementById("root");
+}
+
+function getServerPortalContainer() {
+  return null;
+}
+
 export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isOpen, title, tech, openerRef }) => {
   const { t } = useLanguage();
   const dialogRef = useRef(null);
@@ -28,9 +36,23 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
   const titleId = useId();
   const reducedMotion = usePrefersReducedMotion();
   const controls = useAnimation();
+  const subscribeToPortal = useCallback((onChange) => {
+    if (!isOpen) return () => {};
+    const observer = new MutationObserver(onChange);
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["id"],
+    });
+    return () => observer.disconnect();
+  }, [isOpen]);
+  // The server and first hydration render agree; resolve the portal afterwards.
+  // Observe an absent/replaced target so opening can recover without polling.
+  const portalContainer = useSyncExternalStore(subscribeToPortal, getPortalContainer, getServerPortalContainer);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !portalContainer) return;
     if (reducedMotion) {
       controls.stop();
       controls.set({ y: 0, opacity: 1 });
@@ -38,11 +60,11 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
       controls.start({ y: 0, opacity: 1 });
     }
     return () => controls.stop();
-  }, [controls, isOpen, reducedMotion]);
+  }, [controls, isOpen, reducedMotion, portalContainer]);
 
   // showModal makes the background inert; restore global state on every exit.
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !portalContainer) return;
 
     const dialog = dialogRef.current;
     const opener = openerRef.current || document.activeElement;
@@ -68,7 +90,7 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
       if (opener?.isConnected) opener.focus({ preventScroll: true });
       window.scrollTo({ left: scrollX, top: scrollY, behavior: "instant" });
     };
-  }, [isOpen, openerRef]);
+  }, [isOpen, openerRef, portalContainer]);
 
   const containTab = (event) => {
     if (event.key !== "Tab") return;
@@ -86,7 +108,7 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !portalContainer) return null;
 
   // The modal content - rendered as a portal
   const content = (
@@ -135,5 +157,5 @@ export const ProjectModal = ({ modalContent, projectLink, setIsOpen, imgSrc, isO
   );
 
   // Portal renders the modal at the root level (outside the main component tree)
-  return ReactDOM.createPortal(content, document.getElementById("root"));
+  return ReactDOM.createPortal(content, portalContainer);
 };
