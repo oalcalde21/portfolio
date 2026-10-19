@@ -1,66 +1,70 @@
-# Cierre operativo del portfolio — 19/10/2026
+# Portfolio — cierre operativo — 19/10/2026
 
-## Estado: BLOQUEADO por CI requerido pendiente
+## Resultado y trazabilidad
 
-No se declara CERRADO OPERATIVAMENTE. Las correcciones están preparadas y validadas localmente, pero GitHub Actions no asignó runner a los nuevos jobs `QA` durante la ventana de comprobación. No se intentó bypass, push directo a main ni modificación del workflow/ruleset. Las condiciones de merge siguen vigentes.
+Correcciones funcionales integradas y verificadas, sin nuevos bloqueantes conocidos. El bloqueo anterior de asignación de runners quedó resuelto; QA de GitHub ejecutó realmente las revisiones aprobadas. No se usaron bypass, force push, auto-merge ni despliegues manuales.
 
-Main verificada: `f7f2c70d6dac9ba7faf691705c94b1266895b91c` (igual local/remota). No hay merges nuevos de esta tarea. Fecha objetivo: 19/10/2026. Esta es documentación del cierre pendiente por un bloqueante, no una nueva etapa.
+- SHA funcional de main: **194d4668942febde04acddfe07d305bdbebd98c0**, con modal y JSON-LD.
+- Cierre documental: [PR #23](https://github.com/oalcalde21/portfolio/pull/23), sin cambios de aplicación. El SHA final de main que incluye este mismo documento es su `merge_commit_sha`, verificable en [la API del PR #23](https://api.github.com/repos/oalcalde21/portfolio/pulls/23). Se identifica así para no insertar dentro de un commit su propio hash aún inexistente. El informe final de entrega registra ese SHA y el despliegue correspondiente después del merge.
 
-## Cambios preparados
+| PR | Implementación original | Merge normal verificado |
+|---|---|---|
+| [#21 — Modal SSR](https://github.com/oalcalde21/portfolio/pull/21) | 471dd8e610dae1d03425016cf7dedc7056bafbc1 | 9c531ce9fb187204e1a0e50a8ffe727b22da6d69 |
+| [#22 — JSON-LD](https://github.com/oalcalde21/portfolio/pull/22) | f154aef155a697f139c418e11c8183229a6e27e4 | 194d4668942febde04acddfe07d305bdbebd98c0 |
+| [#23 — Cierre](https://github.com/oalcalde21/portfolio/pull/23) | Documento actualizado tras integrar #21/#22 | Metadatos canónicos del PR, arriba |
 
-| PR | Commit | Alcance | Estado de integración |
-|---|---|---|---|
-| [#21](https://github.com/oalcalde21/portfolio/pull/21) | 471dd8e610dae1d03425016cf7dedc7056bafbc1 | Modal SSR/portal, pruebas y documentación | Draft, no merge hasta QA exitoso |
-| [#22](https://github.com/oalcalde21/portfolio/pull/22) | f154aef155a697f139c418e11c8183229a6e27e4 | Cuatro escapes JSON-LD, pruebas adversas/HTML y documentación | Draft, independiente, no merge hasta QA exitoso |
+#22 incorporó main mediante merge normal (`1cc7641759db94fb00b8452eb9f64dd3d0fcd8a5`) antes de repetir checks y merge. #23 incorpora main también con merge normal. No se reescribió historial. Diff de #22: solo cuatro escapes, prueba JSON-LD y documento; #23: solo este documento.
 
-Ambos parten del mismo main y no se solapan. Integrar primero #21; después actualizar #22 mediante merge normal de main si el check estricto exige base actualizada, esperar sus checks otra vez y revisar diff de tres archivos. No rebase/force push. La documentación final debe pasar también QA antes de integrar. No eliminar ramas hasta verificar sus merges.
+## Versiones y alcance
 
-## Versiones conservadas
+Node 24.19.0 / npm 11.17.0; Next y eslint-config-next 16.4.2; React/React DOM 19.3.1; Tailwind 3.4.19; ESLint 9.39.5; Framer Motion 11.18.2. Pages Router y Webpack explícito conservados. No se modificaron dependencias, lockfile, configuración remota de seguridad en esta reanudación, textos, estilos ni funcionalidades.
 
-Node 24.19.0, npm 11.17.0, Next/eslint-config-next 16.4.2, React/React DOM 19.3.1, Tailwind 3.4.19, ESLint 9.39.5 y Framer Motion 11.18.2. Pages Router y Webpack explícito. No se modificaron manifest, lockfile, dependencias, configuración de despliegue ni contenido comercial.
+El modal ahora tiene snapshot SSR nulo y resolución del portal después de hidratación. Recupera destino tardío mediante suscripción desconectable; animación/foco/scroll esperan al destino. Las cuatro serializaciones JSON-LD escapan `<`, conservando datos y SEO. No se implementaron LazyMotion, cambios de Typewriter, contexto, semántica de DotGrid ni otras mejoras opcionales.
 
-## Validaciones ejecutadas
+## QA y evidencia ejecutada
 
-- Instalación limpia: `npm ci --ignore-scripts`, exit 0; 386 paquetes instalados. Scripts pendientes no aprobados. Se conserva warning ESLint 9.39.5 fuera de soporte.
-- #21: `npm run qa` (lint/build) exit 0. `npm run qa:motion` ejecutado mediante su página y botón: **58/58**, los 47 anteriores más 11 pruebas del modal; `hydrationErrors=[]`, cero timers/listeners remanentes medidos. El servidor prueba SSR abierto/cerrado sin globals. Se comprueban destino ausente/tardío, apertura, nombre, foco inicial/restauración, Tab/Shift+Tab, evento cancel de Escape, backdrop, scroll y desmontaje.
-- #22: `npm run qa` exit 0. `node tests/security/jsonld.cjs` pasa: cuatro expresiones reales, cuatro cargas adversas con `</script>`, Unicode y cierre mixto; round-trip conserva valores. Los cuatro schemas del HTML productivo conservan sus hashes de datos anteriores.
-- CSS productivo: mismos hashes SHA-256 que el baseline, sin cambios de estilos.
-- `git diff --check` correcto en ambas ramas.
-- Build local #21: cuatro modales abiertos/cerrados en navegador, Escape restaura foco; consola sin errores/warnings observados. Preview #21: EN/ES, diálogo en español, Tab, Escape/foco y consola sin errores observados.
-- Layout del build #22 en iframes reales de navegador: anchos exteriores 320/390/768/1440, disponibles 305/375/753/1425 por scrollbar; scrollWidth coincide con clientWidth en las ocho muestras EN/ES. Títulos y ambos roles traducidos presentes. Es un harness local del HTML/CSS/JS productivo, no dispositivos físicos. Su consola registró dos errores de MutationObserver durante inspección instrumental del iframe; no se reproducen en la página normal/preview. No se certifica consola limpia para ese harness ni se atribuye el origen sin stack.
-- GitHub #21: [run 39280057439](https://github.com/oalcalde21/portfolio/actions/runs/39280057439). GitHub #22: [run 39280563202](https://github.com/oalcalde21/portfolio/actions/runs/39280563202). API devuelve `queued`, `runner_name:null` durante la comprobación. Actions está habilitado; no hay deployments de aprobación pendientes. No se detectó una causa concreta en logs (solo Starting job); no se atribuye a permisos, facturación ni incidente global sin evidencia.
-- Vercel Preview #21 `dpl_9n3tDAacz8ViypcVe8GXc3W4JTzT`: READY para 471dd8e. Check Vercel #22 exitoso; no equivale a QA requerido.
+| Validación | Resultado verificable |
+|---|---|
+| QA remoto #21 | SUCCESS, GitHub Actions app15368; [run 39280057439](https://github.com/oalcalde21/portfolio/actions/runs/39280057439) |
+| QA remoto #22 actualizado con main | SUCCESS, [run 39298013721](https://github.com/oalcalde21/portfolio/actions/runs/39298013721); Vercel Preview READY para 1cc7641 |
+| QA local combinado | `npm run qa`: lint y build exit0; `/` y `/404` prerenderizados |
+| Pruebas controladas | `npm run qa:motion`, pulsando Run controlled tests: **58/58** (47 previas + 11 modal), exit0; hydrationErrors=[], pendingTimers=0, listeners=0 |
+| SSR/modal | Cerrado y abierto inicialmente sin globals; hidratación, destino ausente/tardío, foco, Tab/Shift+Tab, cancel de Escape, backdrop, scroll y desmontaje correctos en fixture |
+| JSON-LD | `node tests/security/jsonld.cjs`: 4 expresiones reales + 4 cargas adversas `</script>`/Unicode + 4 schemas HTML; round-trip y hashes de datos iguales al baseline |
+| React Doctor combinado 0.9.18 | **0 errores / 12 advertencias, exit0**, frente a 1/16 inicial |
+| Auditoría completa | **FAIL, exit1, siete afectados altos**, un advisory raíz de braces |
+| Auditoría productiva | **PASS, exit0, cero afectados** |
+| Diff y estilos | `git diff --check` correcto; manifest/lockfile sin cambios; hashes CSS conservados en la preparación |
 
-Estos resultados corresponden a las ramas separadas; el QA combinado sobre main y la producción posterior a los merges están pendientes. No se presenta una suma/proyección de resultados como ejecución del estado integrado.
+Instalación limpia `npm ci --ignore-scripts` validada en preparación (386 paquetes) y en QA remoto. El procedimiento final repite instalación sin scripts y QA en main después del merge documental; no se permite aprobar scripts pendientes. El check QA de #23 debe pasar antes de integrar y su run queda enlazado en el propio PR. Las comprobaciones posteriores al merge documental se registran en la entrega final, sin asumir su ejecución de antemano.
 
-## React Doctor 0.9.18
+Evidencias JSON/logs locales de esta reanudación: `C:/Users/Oscar Alcalde/.codex/visualizations/portfolio-final-close-2026-10-19/`; preparación: `portfolio-final-2026-10-19/`. No contienen credenciales. Los enlaces GitHub anteriores y los tests versionados conservan la evidencia reproducible aunque esas carpetas locales no estén disponibles en otra máquina.
 
-Versión exacta ejecutada temporalmente mediante npm exec --ignore-scripts, con las opciones históricas no-telemetry/no-supply-chain/scope full/no-parallel. No hay dependencia/script doctor versionado propio y no se añadió en esta tarea.
+## Producción y comprobaciones de navegador
 
-| Árbol realmente escaneado | Errores | Warnings | Exit |
-|---|---:|---:|---:|
-| Baseline main | 1 | 16 | 1 |
-| Rama #21 (solo modal) | 0 | 16 | 0 |
-| Rama #22 (solo JSON-LD) | 1 previo del modal | 12 | 1 |
+Producción funcional verificada en Vercel **READY**, `dpl_8KmXTmfJBWZJY8GJ9KvYWLi8T8bC`, SHA **194d4668942febde04acddfe07d305bdbebd98c0**. Dominio https://oscaralcalde.vercel.app/ HTTP200. Prueba HTTP: 23 rutas/recursos, sin resultados inesperados; página, fuentes/JS/CSS referenciados, PDFs, OG, favicon, robots y sitemap200; ruta inexistente404; canonical y cuatro schemas presentes.
 
-Después de integrar ambos se debe ejecutar de nuevo, sin asumir el conteo combinado. Las advertencias restantes son siete recomendaciones LazyMotion (una utilidad sin consumidores encontrados), dos sobre el mismo fondo decorativo DotGrid, una transition-all, una updater de Typewriter y una identidad del value de contexto. No se demostró bug de estado en Typewriter ni ahorro de bundle; no se hicieron refactors ni PR adicionales para quitar warnings. Semántica de DotGrid y acotar CSS quedan como mantenimiento opcional, sin afirmar conformidad nueva de lector de pantalla.
+En navegador de producción se verificaron EN/ES, pausa persistente al cambiar idioma, cuatro modales en español, Tab y Escape con restauración al disparador. Consola sin errores/warnings observados en la sesión normal. El despliegue documental posterior conserva el mismo árbol de aplicación y debe verificarse READY para su propio SHA antes de declarar el cierre en la entrega.
 
-## Dependabot, braces y controles
+Responsive de la preparación: ocho muestras EN/ES en iframes reales de navegador con anchos exteriores 320/390/768/1440 (área disponible 305/375/753/1425 por scrollbar), scrollWidth=clientWidth, títulos y roles completos. Es un harness local del build, no dispositivos físicos. Su inspección instrumental produjo dos errores de MutationObserver no reproducidos en página normal/preview; no se declara consola limpia de ese harness ni se atribuye su origen sin stack.
 
-Operación autorizada del 19/10/2026: deshabilitado SOLO el preset GitHub “Dismiss low-impact alerts for development-scoped dependencies” en portfolio. Pantalla confirma Rule saved / Disabled, preset de malware conserva Disabled. GitHub reabrió automáticamente #1 tras esa operación; PATCH posterior devolvió 409 Already open y GET confirmó `state:open`, `fixed_at:null`. No se cambiaron scopes ni autenticación ante la sugerencia genérica de gh. Motivo: mantener visible la deuda, evitando interpretar auto-dismiss como corrección.
+## Seguridad y controles conservados
 
-La alerta se verifica por REST; el estado de la regla se verificó en UI autenticada. No se obtuvo una API pública soportada para releer el enforcement del preset: no declarar esa comprobación API realizada. Evidencia local: dependabot-preset-disabled.png. No se habilitaron security updates (API enabled:false), version updates, auto-merge ni workflows nuevos.
+Dependabot Alerts activo. Alerta #1 **open**, fixed_at=null, GHSA-vfj7-8cjw-p6xm (braces3.0.3). El preset “Dismiss low-impact alerts for development-scoped dependencies” fue deshabilitado exclusivamente para portfolio en la sesión autorizada previa; GitHub reabrió automáticamente #1. Su enforcement se verificó en UI autenticada; estado de alerta por API. No se afirma una lectura de API pública de la regla no disponible. Actualizaciones automáticas y auto-merge permanecen deshabilitados. No hay cambios operativos en esta reanudación.
 
-`npm audit --json`: **FAIL, exit 1, siete nombres altos, un advisory raíz GHSA-vfj7-8cjw-p6xm / braces**. `npm audit --omit=dev --json`: **PASS, exit 0, cero afectados**. Repetidos en esta tarea, sin cambios frente al baseline. Braces 3.0.3 sigue llegando por micromatch/fast-glob (Tailwind y plugin ESLint Next) y chokidar (Tailwind). Riesgo residual de recursión no acotada sobre patrones en desarrollo/build; no se identificó parche compatible en el diagnóstico. Conservar globs confiables, builds sin secretos de producción y límites existentes. Reabrir remediación cuando exista parche/upstream compatible o cambie la exposición. El riesgo no queda corregido ni aceptado permanentemente y el gate completo NO se vuelve verde.
+Un advisory raíz, siete nombres propagados altos: braces, micromatch, fast-glob, chokidar, @next/eslint-plugin-next, eslint-config-next y tailwindcss. Braces llega por globs/watchers de Tailwind y ESLint Next. Riesgo residual de agotamiento de pila en desarrollo/build al procesar patrones profundamente anidados; no se identificó parche compatible en el diagnóstico. Auditoría productiva cero no es garantía universal de seguridad. El gate completo mantiene su fallo real, visible y no requerido; no se considera corregido ni aceptado permanentemente.
 
-`main-quality` 25367275 permanece activo y solo main: PR obligatorio, cero aprobaciones externas, check `QA` GitHub Actions app15368, base actualizada, prohibición de force push/eliminación, bypass vacío. Merge commit permitido; squash/rebase/auto-merge deshabilitados a nivel repositorio. Dependabot Alerts activo (GET204). No modificar controles para destrabar el merge.
+`main-quality`25367275: activo solo en main; PR obligatorio, cero aprobaciones externas, QA app15368 requerido y base actualizada; force push/eliminación bloqueados y bypass vacío. No se altera para integrar. Conservar globs confiables, builds sin secretos productivos y límites de ejecución actuales.
 
-## Producción verificada, sin cambios de esta tarea todavía
+## Deuda no bloqueante y límites
 
-Vercel `dpl_9LKsev2a2YfuAfNiXhsiQsBhAheu`: Production READY, SHA f7f2c70d6dac9ba7faf691705c94b1266895b91c. Dominio https://oscaralcalde.vercel.app/ HTTP200. Verificación HTTP de 23 rutas/recursos: página, JS/CSS/fuentes referenciados, PDFs, OG, favicon, robots, sitemap correctos; ruta inexistente devuelve404. Canonical y cuatro schemas presentes. No se realizó despliegue manual.
+- 12 recomendaciones Doctor: siete LazyMotion (una utilidad sin consumidores encontrados), dos sobre el mismo fondo decorativo DotGrid, una transition-all de imagen, una updater de Typewriter y una identidad de contexto. No hay bug de estado ni ahorro de bundle demostrado que justifique refactors para obtener cero warnings.
+- ESLint9.39.5 fuera de soporte, unrs-resolver/scripts pendientes sin aprobar y avisos LF/CRLF; sin normalización masiva ni actualización de tooling.
+- No se ejecutó nueva emulación nativa de reduce, lector de pantalla real, zoom nativo ni dispositivos físicos. La suite controla media y algunos eventos; no equivale a validación nativa. Las validaciones manuales históricas de Oscar permanecen históricas.
+- No se declara conformidad WCAG total ni perfección técnica. Estas deudas no generan nuevas fases obligatorias.
 
-## Limitaciones y condición pendiente de cierre
+## Condiciones para reabrir mantenimiento
 
-No se ejecutó nueva emulación nativa de reduce, lector de pantalla real, zoom nativo ni dispositivos físicos. Movimiento reducido y parte de los eventos se prueban mediante simulación explícita; no reemplaza QA nativo. La validación manual histórica de Oscar permanece histórica. Los warnings LF/CRLF de archivos nuevos se informaron; no hubo normalización masiva. La instalación sin scripts y unrs-resolver se conservan sin aprobación adicional.
+Parche/upstream compatible de braces; aparición de una vulnerabilidad productiva o cambio real de exposición; regresión funcional, de accesibilidad o de publicación; fin de compatibilidad de runtime/servicios que afecte operación. La revisión futura del riesgo no habilita actualizaciones automáticas, overrides incompatibles ni migraciones sin autorización.
 
-Cuando GitHub asigne runners y `QA` pase realmente: verificar nuevamente HEAD/diff/checks, integrar con merge normal en orden, ejecutar QA/pruebas/Doctor/auditorías sobre main, comprobar READY del último SHA y dominio, completar este documento con evidencia integrada mediante PR, y limpiar ramas únicamente tras verificar merges. No hace falta nueva fase ni migraciones. Si aparece vulnerabilidad productiva nueva, fallo funcional, integridad del repositorio o publicación defectuosa, mantener BLOQUEADO. La deuda braces conocida por sí sola no bloquea el cierre.
+El cierre final requiere QA obligatorio exitoso, producción READY del SHA final, auditoría productiva cero, main sincronizada/limpia y ramas integradas eliminadas. La entrega registra esas verificaciones después de integrar #23. No queda trabajo funcional planificado adicional.
